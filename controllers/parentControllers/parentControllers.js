@@ -2,9 +2,11 @@ const parentService = require("../../services/parentServices/parentServices");
 
 const createParent = async (req, res) => {
   try {
-    const { nom_parent, prenom_parent, username, password, fils } = req.body;
+    const { cin, nom_parent, prenom_parent, username, password, fils } =
+      req.body;
 
     const parent = await parentService.createParent({
+      cin,
       nom_parent,
       prenom_parent,
       username,
@@ -79,6 +81,22 @@ const getParents = async (req, res) => {
   }
 };
 
+const deleteParent = async (req, res) => {
+  try {
+    const parentId = req.params.id;
+
+    const deletedParent = await parentService.deleteParent(parentId);
+
+    if (!deletedParent) {
+      return res.status(404).send("Parent not found");
+    }
+    res.sendStatus(200);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send(error.message);
+  }
+};
+
 module.exports = {
   createParent,
   login,
@@ -86,4 +104,5 @@ module.exports = {
   getParentByJwtToken,
   getParentById,
   getParents,
+  deleteParent,
 };

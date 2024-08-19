@@ -9,5 +9,6 @@ router.post("/logout/:id", parentController.logout);
 router.post("/getParentByToken", parentController.getParentByJwtToken);
 router.get("/getParent/:id", parentController.getParentById);
 router.get("/getAllParents", parentController.getParents);
+router.delete("/deleteParent/:id", parentController.deleteParent);
 
 module.exports = router;

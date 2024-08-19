@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 
 const parentSchema = new mongoose.Schema(
   {
+    cin: String,
     nom_parent: String,
     prenom_parent: String,
     username: String,

@@ -24,7 +24,26 @@ const getEnseignants = async (req, res) => {
   }
 };
 
+const deleteEnseignant = async (req, res) => {
+  try {
+    const enseignantId = req.params.id;
+
+    const deletedEnseignant = await enseignantService.deleteEnseignant(
+      enseignantId
+    );
+
+    if (!deletedEnseignant) {
+      return res.status(404).send("Enseignant not found");
+    }
+    res.sendStatus(200);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send(error.message);
+  }
+};
+
 module.exports = {
   createEnseignant,
   getEnseignants,
+  deleteEnseignant,
 };

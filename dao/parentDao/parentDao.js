@@ -51,6 +51,10 @@ const updateEtudiantParent = async (etudiantIds, parentId) => {
   );
 };
 
+const deleteParent = async (id) => {
+  return await Parent.findByIdAndDelete(id);
+};
+
 module.exports = {
   createParent,
   getParents,
@@ -60,4 +64,5 @@ module.exports = {
   findParentByUsername,
   updateJwtToken,
   updateEtudiantParent,
+  deleteParent,
 };

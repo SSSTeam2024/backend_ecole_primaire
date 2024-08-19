@@ -8,7 +8,12 @@ const getEnseignants = async () => {
   return await Enseignant.find();
 };
 
+const deleteEnseignant = async (id) => {
+  return await Enseignant.findByIdAndDelete(id);
+};
+
 module.exports = {
   createEnseignant,
   getEnseignants,
+  deleteEnseignant,
 };

@@ -49,6 +49,10 @@ const getParentById = async (id) => {
   return await parentDao.getParentById(id);
 };
 
+const deleteParent = async (id) => {
+  return await parentDao.deleteParent(id);
+};
+
 module.exports = {
   createParent,
   loginParent,
@@ -56,4 +60,5 @@ module.exports = {
   logout,
   getParentByToken,
   getParentById,
+  deleteParent,
 };

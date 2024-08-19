@@ -64,6 +64,7 @@ const deleteEtudiant = async (req, res) => {
     res.status(500).send(error.message);
   }
 };
+
 const getEtudiants = async (req, res) => {
   try {
     const Etudiants = await etudiantService.getEtudiants();

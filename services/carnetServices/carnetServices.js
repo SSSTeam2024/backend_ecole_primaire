@@ -1,14 +1,14 @@
-const observationDao = require("../../dao/observationDao/observationDao");
+const carnetDao = require("../../dao/carnetDao/carnetDao");
 const globalFunctions = require("../../utils/globalFunctions");
 const fs = require("fs");
 
-const createObservation = async (observationData, documents) => {
+const createCarnet = async (carnetData, documents) => {
   let saveResult = await saveDocumentsToServer(documents);
-  return await observationDao.createObservation(observationData);
+  return await carnetDao.createCarnet(carnetData);
 };
 
-const getObservations = async () => {
-  return await observationDao.getObservations();
+const getCarnets = async () => {
+  return await carnetDao.getCarnets();
 };
 
 async function saveDocumentsToServer(documents) {
@@ -36,12 +36,7 @@ async function saveFile(base64String, fileName, file_path) {
   }
 }
 
-const deleteObservation = async (id) => {
-  return await observationDao.deleteObservation(id);
-};
-
 module.exports = {
-  createObservation,
-  getObservations,
-  deleteObservation,
+  createCarnet,
+  getCarnets,
 };

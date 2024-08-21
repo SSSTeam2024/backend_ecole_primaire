@@ -8,19 +8,17 @@ const getClasses = async () => {
   return await classeDao.getClasses();
 };
 
-// const getEtudiantById = async (id) => {
-//   return await etudiantDao.getEtudiantById(id);
-// };
+const updateClasse = async (id, updateData) => {
+  return await classeDao.updateClasse(id, updateData);
+};
 
-// const deleteEtudiant = async (id) => {
-//   return await etudiantDao.deleteEtudiant(id);
-// };
-
-// const updateEtudiant = async (id, updateData) => {
-//   return await etudiantDao.updateEtudiant(id, updateData);
-// };
+const deleteClasse = async (id) => {
+  return await classeDao.deleteClasse(id);
+};
 
 module.exports = {
   createClasse,
   getClasses,
+  deleteClasse,
+  updateClasse,
 };

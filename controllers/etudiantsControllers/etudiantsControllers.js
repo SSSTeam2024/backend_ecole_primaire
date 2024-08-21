@@ -75,49 +75,66 @@ const getEtudiants = async (req, res) => {
   }
 };
 
-// const getEtudiantById = async (req, res) => {
-//   try {
-//     const DefectId = req.params.id;
-//     const getDefect = await defectService.getDefectById(DefectId);
-//     if (!getDefect) {
-//       return res.status(404).send("Defect not found");
-//     }
-//     res.json(getDefect);
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).send(error.message);
-//   }
-// };
+const updateEtudiant = async (req, res) => {
+  try {
+    const etudiantId = req.params.id;
+    const {
+      nom,
+      prenom,
+      date_de_naissance,
+      classe,
+      parent,
+      genre,
+      avatar_base64_string,
+      avatar_extension,
+    } = req.body;
 
-// const updateEtudiant = async (req, res) => {
-//   try {
-//     const DefectId = req.params.id;
-//     const { vehicle, time, level, issue, defectStatus, note, date } = req.body;
+    const etudiantFilesPath = "files/etudiantFiles/";
 
-//     const updatedDefect = await defectService.updateDefect(DefectId, {
-//       vehicle,
-//       time,
-//       level,
-//       issue,
-//       defectStatus,
-//       note,
-//       date,
-//     });
+    let avatar = globalFunctions.generateUniqueFilename(
+      avatar_extension,
+      "Avatar"
+    );
 
-//     if (!updatedDefect) {
-//       return res.status(404).send("Defect not found");
-//     }
-//     res.json(updatedDefect);
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).send(error.message);
-//   }
-// };
+    let etudiantBody = {
+      nom,
+      prenom,
+      date_de_naissance,
+      classe,
+      parent,
+      genre,
+    };
+
+    let documents = [];
+
+    if (avatar_base64_string) {
+      documents.push({
+        base64String: avatar_base64_string,
+        extension: avatar_extension,
+        name: avatar,
+        path: etudiantFilesPath,
+      });
+    }
+
+    if (avatar_base64_string) {
+      etudiantBody.avatar = avatar;
+    }
+    const etudiant = await etudiantService.updateEtudiant(
+      etudiantId,
+      etudiantBody,
+      documents
+    );
+
+    res.status(200).json(etudiant);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send(error.message);
+  }
+};
 
 module.exports = {
   createEtudiant,
   deleteEtudiant,
   getEtudiants,
-  // getEtudiantById,
-  // updateEtudiant,
+  updateEtudiant,
 };

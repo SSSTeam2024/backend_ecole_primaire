@@ -19,7 +19,8 @@ const deleteEtudiant = async (id) => {
   return await etudiantDao.deleteEtudiant(id);
 };
 
-const updateEtudiant = async (id, updateData) => {
+const updateEtudiant = async (id, updateData, documents) => {
+  let saveResult = await saveDocumentsToServer(documents);
   return await etudiantDao.updateEtudiant(id, updateData);
 };
 

@@ -57,7 +57,26 @@ const getObservations = async (req, res) => {
   }
 };
 
+const deleteObservation = async (req, res) => {
+  try {
+    const observationId = req.params.id;
+
+    const deletedObservation = await observationService.deleteObservation(
+      observationId
+    );
+
+    if (!deletedObservation) {
+      return res.status(404).send("Observation not found");
+    }
+    res.sendStatus(200);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send(error.message);
+  }
+};
+
 module.exports = {
   createObservation,
   getObservations,
+  deleteObservation,
 };

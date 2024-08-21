@@ -1,15 +1,24 @@
-const observationDao = require("../../dao/observationDao/observationDao");
+const emploiDao = require("../../dao/EmploiDao/emploiDao");
 const globalFunctions = require("../../utils/globalFunctions");
 const fs = require("fs");
 
-const createObservation = async (observationData, documents) => {
+const createEmploi = async (emploiData, documents) => {
   let saveResult = await saveDocumentsToServer(documents);
-  return await observationDao.createObservation(observationData);
+  return await emploiDao.createEmploi(emploiData);
 };
 
-const getObservations = async () => {
-  return await observationDao.getObservations();
+const getEmplois = async () => {
+  return await emploiDao.getEmplois();
 };
+
+// const deleteExercice = async (id) => {
+//   return await exerciceDao.deleteExercice(id);
+// };
+
+// const updateExercice = async (id, updateData, documents) => {
+//   let saveResult = await saveDocumentsToServer(documents);
+//   return await exerciceDao.updateExercice(id, updateData);
+// };
 
 async function saveDocumentsToServer(documents) {
   let counter = 0;
@@ -36,12 +45,9 @@ async function saveFile(base64String, fileName, file_path) {
   }
 }
 
-const deleteObservation = async (id) => {
-  return await observationDao.deleteObservation(id);
-};
-
 module.exports = {
-  createObservation,
-  getObservations,
-  deleteObservation,
+  createEmploi,
+  getEmplois,
+  //   deleteExercice,
+  //   updateExercice,
 };

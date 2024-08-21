@@ -13,21 +13,6 @@ const createClasse = async (req, res) => {
   }
 };
 
-// const deleteEtudiant = async (req, res) => {
-//   try {
-//     const etudiantId = req.params.id;
-
-//     const deleteEtudiant = await etudiantService.deleteEtudiant(etudiantId);
-
-//     if (!deleteEtudiant) {
-//       return res.status(404).send("Etudiant not found");
-//     }
-//     res.sendStatus(200);
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).send(error.message);
-//   }
-// };
 const getClasses = async (req, res) => {
   try {
     const Classes = await classeService.getClasses();
@@ -38,48 +23,44 @@ const getClasses = async (req, res) => {
   }
 };
 
-// const getEtudiantById = async (req, res) => {
-//   try {
-//     const DefectId = req.params.id;
-//     const getDefect = await defectService.getDefectById(DefectId);
-//     if (!getDefect) {
-//       return res.status(404).send("Defect not found");
-//     }
-//     res.json(getDefect);
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).send(error.message);
-//   }
-// };
+const updateClasse = async (req, res) => {
+  try {
+    const classeId = req.params.id;
+    const { nom_classe } = req.body;
 
-// const updateEtudiant = async (req, res) => {
-//   try {
-//     const DefectId = req.params.id;
-//     const { vehicle, time, level, issue, defectStatus, note, date } = req.body;
+    const updatedClasse = await classeService.updateClasse(classeId, {
+      nom_classe,
+    });
 
-//     const updatedDefect = await defectService.updateDefect(DefectId, {
-//       vehicle,
-//       time,
-//       level,
-//       issue,
-//       defectStatus,
-//       note,
-//       date,
-//     });
+    if (!updatedClasse) {
+      return res.status(404).send("Classe not found");
+    }
+    res.json(updatedClasse);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send(error.message);
+  }
+};
 
-//     if (!updatedDefect) {
-//       return res.status(404).send("Defect not found");
-//     }
-//     res.json(updatedDefect);
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).send(error.message);
-//   }
-// };
+const deleteClasse = async (req, res) => {
+  try {
+    const classeId = req.params.id;
+
+    const deletedClasse = await classeService.deleteClasse(classeId);
+
+    if (!deletedClasse) {
+      return res.status(404).send("Classe not found");
+    }
+    res.sendStatus(200);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send(error.message);
+  }
+};
 
 module.exports = {
   createClasse,
   getClasses,
-  // getEtudiantById,
-  // updateEtudiant,
+  deleteClasse,
+  updateClasse,
 };

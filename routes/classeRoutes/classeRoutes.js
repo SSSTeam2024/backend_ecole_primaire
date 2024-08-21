@@ -5,7 +5,7 @@ const router = express.Router();
 
 router.post("/newClasse", classeController.createClasse);
 router.get("/getClasses", classeController.getClasses);
-// router.get("/getDefectById/:id", etudiantController.getDefectById);
-// router.delete("/deleteEtudiant/:id", etudiantController.deleteEtudiant);
-// router.patch("/updateDefect/:id", etudiantController.updateDefect);
+router.patch("/updateClasse/:id", classeController.updateClasse);
+router.delete("/deleteClasse/:id", classeController.deleteClasse);
+
 module.exports = router;

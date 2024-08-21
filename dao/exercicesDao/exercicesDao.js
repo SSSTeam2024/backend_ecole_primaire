@@ -5,7 +5,7 @@ const createExercice = async (exerciceData) => {
 };
 
 const getExercices = async () => {
-  return await Exercice.find();
+  return await Exercice.find().populate("matiere");
 };
 
 const updateExercice = async (id, updateData) => {

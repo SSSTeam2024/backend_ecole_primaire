@@ -4,7 +4,7 @@ const exerciceSchema = new mongoose.Schema({
   classes: [String],
   matiere: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "Parent",
+    ref: "Matiere",
     required: false,
     default: null,
   },

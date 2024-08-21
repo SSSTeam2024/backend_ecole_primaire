@@ -14,6 +14,10 @@ const registerCentralApp = async (centralAppData, documents) => {
   });
 };
 
+const getCentralApps = async () => {
+  return await centralAppDao.getCentralApps();
+};
+
 // login CentralApp service acccount
 const login = async (login, password) => {
   const centralApp = await centralAppDao.findCentralAppByUsername(login);
@@ -75,4 +79,5 @@ module.exports = {
   getCentralAppById,
   getCentralAppByToken,
   logout,
+  getCentralApps,
 };

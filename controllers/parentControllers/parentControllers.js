@@ -2,13 +2,14 @@ const parentService = require("../../services/parentServices/parentServices");
 
 const createParent = async (req, res) => {
   try {
-    const { cin, nom_parent, prenom_parent, username, password, fils } =
+    const { cin, nom_parent, prenom_parent, phone, username, password, fils } =
       req.body;
 
     const parent = await parentService.createParent({
       cin,
       nom_parent,
       prenom_parent,
+      phone,
       username,
       password,
       fils,

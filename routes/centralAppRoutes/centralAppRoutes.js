@@ -10,6 +10,7 @@ router.post(
   "/getCentralAppByToken",
   centralAppController.getCentralAppByJwtToken
 );
-router.get("/getParent/:id", centralAppController.getAccountById);
+router.get("/getAccountById/:id", centralAppController.getAccountById);
+router.get("/getAccounts/:id", centralAppController.getAccounts);
 
 module.exports = router;

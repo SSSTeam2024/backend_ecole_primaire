@@ -5,6 +5,7 @@ const parentSchema = new mongoose.Schema(
     cin: String,
     nom_parent: String,
     prenom_parent: String,
+    phone: String,
     username: String,
     password: String,
     fils: [

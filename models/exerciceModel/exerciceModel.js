@@ -2,7 +2,12 @@ const mongoose = require("mongoose");
 
 const exerciceSchema = new mongoose.Schema({
   classes: [String],
-  titre: String,
+  matiere: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Parent",
+    required: false,
+    default: null,
+  },
   desc: String,
   creation_date: String,
   badge_date: String,

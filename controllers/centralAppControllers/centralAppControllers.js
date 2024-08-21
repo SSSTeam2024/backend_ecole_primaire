@@ -3,7 +3,16 @@ const globalFunctions = require("../../utils/globalFunctions");
 
 const registerCentralApp = async (req, res) => {
   try {
-    const { name, login, password, logoBase64String, logoExtension } = req.body;
+    const {
+      name,
+      email,
+      phone,
+      address,
+      login,
+      password,
+      logoBase64String,
+      logoExtension,
+    } = req.body;
 
     let logo = globalFunctions.generateUniqueFilename(
       logoExtension,
@@ -21,6 +30,9 @@ const registerCentralApp = async (req, res) => {
     await centralApp.registerCentralApp(
       {
         name,
+        email,
+        phone,
+        address,
         login,
         password,
         logo,
@@ -86,10 +98,21 @@ const getAccountById = async (req, res) => {
   }
 };
 
+const getAccounts = async (req, res) => {
+  try {
+    const accounts = await centralApp.getCentralApps();
+    res.json(accounts);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send(error.message);
+  }
+};
+
 module.exports = {
   registerCentralApp,
   login,
   logout,
   getCentralAppByJwtToken,
   getAccountById,
+  getAccounts,
 };

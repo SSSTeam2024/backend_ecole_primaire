@@ -4,6 +4,10 @@ const creatAappCentralApp = async (centralAppData) => {
   return await CentralApp.create(centralAppData);
 };
 
+const getCentralApps = async () => {
+  return await CentralApp.find();
+};
+
 const findCentralAppByUsername = async (login) => {
   return await CentralApp.findOne({ login });
 };
@@ -47,4 +51,5 @@ module.exports = {
   getCentralAppById,
   updateJwtToken,
   logout,
+  getCentralApps,
 };

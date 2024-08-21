@@ -26,7 +26,7 @@ const findParentByToken = async (token) => {
 };
 
 const getParentById = async (id) => {
-  return await Parent.findById(id);
+  return await Parent.findById(id).populate("fils");
 };
 
 const findParentByUsername = async (username) => {

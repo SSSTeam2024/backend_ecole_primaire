@@ -5,7 +5,7 @@ const createExercice = async (req, res) => {
   try {
     const {
       classes,
-      titre,
+      matiere,
       desc,
       creation_date,
       badge_date,
@@ -33,7 +33,7 @@ const createExercice = async (req, res) => {
     const newExercice = await exerciceService.createExercice(
       {
         classes,
-        titre,
+        matiere,
         desc,
         creation_date,
         badge_date,

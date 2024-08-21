@@ -3,6 +3,9 @@ const mongoose = require("mongoose");
 const centralAppSchema = new mongoose.Schema(
   {
     name: String,
+    email: String,
+    phone: String,
+    address: String,
     login: String,
     password: String,
     logo: String,

@@ -78,7 +78,6 @@ const deleteObservation = async (req, res) => {
 const getObservationByClasseId = async (req, res) => {
   try {
     const { id: classeId } = req.params;
-    console.log("classeId controller", classeId);
     const observations = await observationService.getObservationsByClasseId(
       classeId
     );

@@ -5,7 +5,7 @@ const createEtudiant = async (etudiantData) => {
 };
 
 const getEtudiants = async () => {
-  return await Etudiant.find().populate("parent");
+  return await Etudiant.find().populate("parent").populate("classe");
 };
 
 const getEtudiantById = async (id) => {

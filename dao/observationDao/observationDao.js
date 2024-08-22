@@ -16,7 +16,6 @@ const getObservationsByClasseId = async (classeId) => {
   const query = {
     classe: classeId,
   };
-  console.log("classeId dao", classeId);
   return await Observation.find(query).populate("classe");
 };
 

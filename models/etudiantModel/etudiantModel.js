@@ -4,7 +4,12 @@ const etudiantSchema = new mongoose.Schema({
   nom: String,
   prenom: String,
   date_de_naissance: String,
-  classe: String,
+  classe: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Classe",
+    required: false,
+    default: null,
+  },
   parent: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Parent",

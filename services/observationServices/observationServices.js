@@ -41,7 +41,6 @@ const deleteObservation = async (id) => {
 };
 
 const getObservationsByClasseId = async (classeId) => {
-  console.log("classeId service", classeId);
   return await observationDao.getObservationsByClasseId(classeId);
 };
 

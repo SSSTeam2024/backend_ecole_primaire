@@ -13,6 +13,7 @@ const emploiRoutes = require("./emploiRoutes/emploiRoutes");
 const matiereRoutes = require("./matiereRoutes/matiereRoutes");
 const noteRoutes = require("./noteRoutes/noteRoutes");
 const carnetRoutes = require("./carnetRoutes/carnetRoutes");
+const absenceRoutes = require("./absenceRoutes/absenceRoutes");
 
 router.use("/etudiants", etudiantRoutes);
 router.use("/classes", classeRoutes);
@@ -26,5 +27,6 @@ router.use("/emplois", emploiRoutes);
 router.use("/matieres", matiereRoutes);
 router.use("/notes", noteRoutes);
 router.use("/carnets", carnetRoutes);
+router.use("/absences", absenceRoutes);
 
 module.exports = router;

@@ -14,6 +14,7 @@ const matiereRoutes = require("./matiereRoutes/matiereRoutes");
 const noteRoutes = require("./noteRoutes/noteRoutes");
 const carnetRoutes = require("./carnetRoutes/carnetRoutes");
 const absenceRoutes = require("./absenceRoutes/absenceRoutes");
+const avisRoutes = require("./avisRoutes/avisRoutes");
 
 router.use("/etudiants", etudiantRoutes);
 router.use("/classes", classeRoutes);
@@ -28,5 +29,6 @@ router.use("/matieres", matiereRoutes);
 router.use("/notes", noteRoutes);
 router.use("/carnets", carnetRoutes);
 router.use("/absences", absenceRoutes);
+router.use("/avis", avisRoutes);
 
 module.exports = router;

@@ -12,8 +12,17 @@ const deleteObservation = async (id) => {
   return await Observation.findByIdAndDelete(id);
 };
 
+const getObservationsByClasseId = async (classeId) => {
+  const query = {
+    classe: classeId,
+  };
+  console.log("classeId dao", classeId);
+  return await Observation.find(query).populate("classe");
+};
+
 module.exports = {
   createObservation,
   getObservations,
   deleteObservation,
+  getObservationsByClasseId,
 };

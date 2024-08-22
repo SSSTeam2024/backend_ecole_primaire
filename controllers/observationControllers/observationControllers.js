@@ -75,8 +75,23 @@ const deleteObservation = async (req, res) => {
   }
 };
 
+const getObservationByClasseId = async (req, res) => {
+  try {
+    const { id: classeId } = req.params;
+    console.log("classeId controller", classeId);
+    const observations = await observationService.getObservationsByClasseId(
+      classeId
+    );
+    res.json(observations);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send(error.message);
+  }
+};
+
 module.exports = {
   createObservation,
   getObservations,
   deleteObservation,
+  getObservationByClasseId,
 };

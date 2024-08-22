@@ -40,8 +40,14 @@ const deleteObservation = async (id) => {
   return await observationDao.deleteObservation(id);
 };
 
+const getObservationsByClasseId = async (classeId) => {
+  console.log("classeId service", classeId);
+  return await observationDao.getObservationsByClasseId(classeId);
+};
+
 module.exports = {
   createObservation,
   getObservations,
   deleteObservation,
+  getObservationsByClasseId,
 };

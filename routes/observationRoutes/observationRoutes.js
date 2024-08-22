@@ -9,5 +9,8 @@ router.delete(
   "/deleteObservation/:id",
   observationController.deleteObservation
 );
-
+router.get(
+  "/observations-classe-id/:id",
+  observationController.getObservationByClasseId
+);
 module.exports = router;

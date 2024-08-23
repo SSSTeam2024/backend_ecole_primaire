@@ -11,6 +11,6 @@ router.post(
   centralAppController.getCentralAppByJwtToken
 );
 router.get("/getAccountById/:id", centralAppController.getAccountById);
-router.get("/getAccounts/:id", centralAppController.getAccounts);
+router.get("/getAccounts", centralAppController.getAccounts);
 
 module.exports = router;

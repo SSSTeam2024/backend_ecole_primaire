@@ -3,7 +3,8 @@ const globalFunctions = require("../../utils/globalFunctions");
 
 const createEmploi = async (req, res) => {
   try {
-    const { titre, date, image_base64_string, image_extension } = req.body;
+    const { titre, classe, date, image_base64_string, image_extension } =
+      req.body;
 
     const emploiFilesPath = "files/emploiFiles/";
 
@@ -24,6 +25,7 @@ const createEmploi = async (req, res) => {
     const newEmploi = await emploiService.createEmploi(
       {
         titre,
+        classe,
         date,
         image,
       },
@@ -36,25 +38,36 @@ const createEmploi = async (req, res) => {
   }
 };
 
-// const deleteExercice = async (req, res) => {
-//   try {
-//     const etudiantId = req.params.id;
+const deleteEmploi = async (req, res) => {
+  try {
+    const emploiId = req.params.id;
 
-//     const deleteEtudiant = await etudiantService.deleteEtudiant(etudiantId);
+    const deleteEmploi = await emploiService.deleteEmploi(emploiId);
 
-//     if (!deleteEtudiant) {
-//       return res.status(404).send("Etudiant not found");
-//     }
-//     res.sendStatus(200);
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).send(error.message);
-//   }
-// };
+    if (!deleteEmploi) {
+      return res.status(404).send("Emploi not found");
+    }
+    res.sendStatus(200);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send(error.message);
+  }
+};
 
 const getEmplois = async (req, res) => {
   try {
     const emplois = await emploiService.getEmplois();
+    res.json(emplois);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send(error.message);
+  }
+};
+
+const getEmploisByClasseId = async (req, res) => {
+  try {
+    const { id: classeId } = req.params;
+    const emplois = await emploiService.getEmploisByClasseId(classeId);
     res.json(emplois);
   } catch (error) {
     console.error(error);
@@ -121,7 +134,8 @@ const getEmplois = async (req, res) => {
 
 module.exports = {
   createEmploi,
-  //   deleteExercice,
+  deleteEmploi,
   getEmplois,
+  getEmploisByClasseId,
   //   updateExercice,
 };

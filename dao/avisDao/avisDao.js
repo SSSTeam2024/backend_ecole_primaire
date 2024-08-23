@@ -16,9 +16,17 @@ const deleteAvis = async (id) => {
   return await Avis.findByIdAndDelete(id);
 };
 
+const getAvisByClasseId = async (classeId) => {
+  const query = {
+    classes: classeId,
+  };
+  return await Avis.find(query).populate("classes");
+};
+
 module.exports = {
   createAvis,
   getAvis,
   updateAvis,
   deleteAvis,
+  getAvisByClasseId,
 };

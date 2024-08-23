@@ -11,9 +11,13 @@ const getEmplois = async () => {
   return await emploiDao.getEmplois();
 };
 
-// const deleteExercice = async (id) => {
-//   return await exerciceDao.deleteExercice(id);
-// };
+const deleteEmploi = async (id) => {
+  return await emploiDao.deleteEmploi(id);
+};
+
+const getEmploisByClasseId = async (classeId) => {
+  return await emploiDao.getEmploisByClasseId(classeId);
+};
 
 // const updateExercice = async (id, updateData, documents) => {
 //   let saveResult = await saveDocumentsToServer(documents);
@@ -48,6 +52,7 @@ async function saveFile(base64String, fileName, file_path) {
 module.exports = {
   createEmploi,
   getEmplois,
-  //   deleteExercice,
+  deleteEmploi,
+  getEmploisByClasseId,
   //   updateExercice,
 };

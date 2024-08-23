@@ -71,6 +71,17 @@ const deleteDocument = async (req, res) => {
   }
 };
 
+const getDocumentsByClasseId = async (req, res) => {
+  try {
+    const { id: classeId } = req.params;
+    const documents = await documentService.getDocumentsByClasseId(classeId);
+    res.json(documents);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send(error.message);
+  }
+};
+
 // const updateAvis = async (req, res) => {
 //   try {
 //     const etudiantId = req.params.id;
@@ -132,5 +143,6 @@ module.exports = {
   createDocument,
   deleteDocument,
   getDocuments,
+  getDocumentsByClasseId,
   //   updateAvis,
 };

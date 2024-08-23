@@ -12,13 +12,21 @@ const getNotes = async () => {
 //   return await Exercice.findByIdAndUpdate(id, updateData, { new: true });
 // };
 
-// const deleteExercice = async (id) => {
-//   return await Exercice.findByIdAndDelete(id);
-// };
+const deleteNote = async (id) => {
+  return await Note.findByIdAndDelete(id);
+};
+
+const getNotesByEleveId = async (eleveId) => {
+  const query = {
+    eleve: eleveId,
+  };
+  return await Note.find(query).populate("eleve").populate("matiere");
+};
 
 module.exports = {
   createNote,
   getNotes,
   //   updateExercice,
-  //   deleteExercice,
+  deleteNote,
+  getNotesByEleveId,
 };

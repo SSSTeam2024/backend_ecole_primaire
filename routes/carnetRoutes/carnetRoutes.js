@@ -6,5 +6,7 @@ const router = express.Router();
 router.post("/newCarnet", carnetController.createCarnet);
 router.get("/getCarnets", carnetController.getCarnets);
 // router.patch("/updateEtudiant/:id", carnetController.updateEtudiant);
-// router.delete("/deleteEtudiant/:id", carnetController.deleteEtudiant);
+router.delete("/deleteCarnet/:id", carnetController.deleteCarnet);
+router.get("/carnet-eleve-id/:id", carnetController.getCarnetsByEleveId);
+
 module.exports = router;

@@ -16,9 +16,17 @@ const deleteDocument = async (id) => {
   return await Document.findByIdAndDelete(id);
 };
 
+const getDocumentsByClasseId = async (classeId) => {
+  const query = {
+    classes: classeId,
+  };
+  return await Document.find(query).populate("classes");
+};
+
 module.exports = {
   createDocument,
   getDocuments,
   updateDocument,
   deleteDocument,
+  getDocumentsByClasseId,
 };

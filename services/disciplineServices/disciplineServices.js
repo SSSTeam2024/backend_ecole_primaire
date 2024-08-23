@@ -11,9 +11,13 @@ const getDisciplines = async () => {
   return await disciplineDao.getDisciplines();
 };
 
-// const deleteExercice = async (id) => {
-//   return await exerciceDao.deleteExercice(id);
-// };
+const deleteDiscipline = async (id) => {
+  return await disciplineDao.deleteDiscipline(id);
+};
+
+const getDisciplineByEleveId = async (eleveId) => {
+  return await disciplineDao.getDisciplinesByEleveId(eleveId);
+};
 
 // const updateExercice = async (id, updateData, documents) => {
 //   let saveResult = await saveDocumentsToServer(documents);
@@ -48,6 +52,7 @@ async function saveFile(base64String, fileName, file_path) {
 module.exports = {
   createDiscipline,
   getDisciplines,
-  //   deleteExercice,
+  deleteDiscipline,
+  getDisciplineByEleveId,
   //   updateExercice,
 };

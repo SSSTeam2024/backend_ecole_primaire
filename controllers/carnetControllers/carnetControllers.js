@@ -55,7 +55,36 @@ const getCarnets = async (req, res) => {
   }
 };
 
+const getCarnetsByEleveId = async (req, res) => {
+  try {
+    const { id: eleveId } = req.params;
+    const carnets = await carnetService.getCarnetsByEleveId(eleveId);
+    res.json(carnets);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send(error.message);
+  }
+};
+
+const deleteCarnet = async (req, res) => {
+  try {
+    const carnetId = req.params.id;
+
+    const deleteCarnet = await carnetService.deleteCarnet(carnetId);
+
+    if (!deleteCarnet) {
+      return res.status(404).send("Carnet not found");
+    }
+    res.sendStatus(200);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send(error.message);
+  }
+};
+
 module.exports = {
   createCarnet,
   getCarnets,
+  getCarnetsByEleveId,
+  deleteCarnet,
 };

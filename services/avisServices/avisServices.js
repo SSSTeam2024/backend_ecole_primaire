@@ -20,6 +20,10 @@ const updateAvis = async (id, updateData, documents) => {
   return await avisDao.updateAvis(id, updateData);
 };
 
+const getAvisByClasseId = async (classeId) => {
+  return await avisDao.getAvisByClasseId(classeId);
+};
+
 async function saveDocumentsToServer(documents) {
   let counter = 0;
   for (const file of documents) {
@@ -50,4 +54,5 @@ module.exports = {
   getAvis,
   deleteAvis,
   updateAvis,
+  getAvisByClasseId,
 };

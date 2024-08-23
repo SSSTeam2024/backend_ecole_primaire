@@ -28,6 +28,17 @@ const getNotes = async (req, res) => {
   }
 };
 
+const getNotesByEleveId = async (req, res) => {
+  try {
+    const { id: eleveId } = req.params;
+    const notes = await noteService.getNotesByEleveId(eleveId);
+    res.json(notes);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send(error.message);
+  }
+};
+
 // const updateMatiere = async (req, res) => {
 //   try {
 //     const matiereId = req.params.id;
@@ -47,25 +58,26 @@ const getNotes = async (req, res) => {
 //   }
 // };
 
-// const deleteMatiere = async (req, res) => {
-//   try {
-//     const matiereId = req.params.id;
+const deleteNote = async (req, res) => {
+  try {
+    const noteId = req.params.id;
 
-//     const deletedMatiere = await matiereService.deleteMatiere(matiereId);
+    const deletedNote = await noteService.deleteNote(noteId);
 
-//     if (!deletedMatiere) {
-//       return res.status(404).send("Matiere not found");
-//     }
-//     res.sendStatus(200);
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).send(error.message);
-//   }
-// };
+    if (!deletedNote) {
+      return res.status(404).send("Note not found");
+    }
+    res.sendStatus(200);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send(error.message);
+  }
+};
 
 module.exports = {
   createNote,
   getNotes,
   //   updateMatiere,
-  //   deleteMatiere,
+  deleteNote,
+  getNotesByEleveId,
 };

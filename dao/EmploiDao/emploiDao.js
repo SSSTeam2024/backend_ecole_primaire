@@ -5,20 +5,28 @@ const createEmploi = async (disciplineData) => {
 };
 
 const getEmplois = async () => {
-  return await Emploi.find();
+  return await Emploi.find().populate("classe");
 };
 
 // const updateExercice = async (id, updateData) => {
 //   return await Exercice.findByIdAndUpdate(id, updateData, { new: true });
 // };
 
-// const deleteExercice = async (id) => {
-//   return await Exercice.findByIdAndDelete(id);
-// };
+const deleteEmploi = async (id) => {
+  return await Emploi.findByIdAndDelete(id);
+};
+
+const getEmploisByClasseId = async (classeId) => {
+  const query = {
+    classe: classeId,
+  };
+  return await Emploi.find(query).populate("classe");
+};
 
 module.exports = {
   createEmploi,
   getEmplois,
   //   updateExercice,
-  //   deleteExercice,
+  deleteEmploi,
+  getEmploisByClasseId,
 };

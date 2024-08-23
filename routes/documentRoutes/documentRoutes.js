@@ -7,5 +7,9 @@ router.post("/newDocument", documentController.createDocument);
 router.get("/getDocuments", documentController.getDocuments);
 // router.patch("/updateMatiere/:id", documentController.updateMatiere);
 router.delete("/deleteDocument/:id", documentController.deleteDocument);
+router.get(
+  "/document-classe-id/:id",
+  documentController.getDocumentsByClasseId
+);
 
 module.exports = router;

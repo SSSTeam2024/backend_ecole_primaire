@@ -20,6 +20,10 @@ const updateDocument = async (id, updateData, documents) => {
   return await documentDao.updateDocument(id, updateData);
 };
 
+const getDocumentsByClasseId = async (classeId) => {
+  return await documentDao.getDocumentsByClasseId(classeId);
+};
+
 async function saveDocumentsToServer(documents) {
   let counter = 0;
   for (const file of documents) {
@@ -50,4 +54,5 @@ module.exports = {
   getDocuments,
   deleteDocument,
   updateDocument,
+  getDocumentsByClasseId,
 };

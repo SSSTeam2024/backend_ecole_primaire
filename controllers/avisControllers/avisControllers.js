@@ -73,6 +73,17 @@ const deleteAvis = async (req, res) => {
   }
 };
 
+const getAvisByClasseId = async (req, res) => {
+  try {
+    const { id: classeId } = req.params;
+    const avis = await avisService.getAvisByClasseId(classeId);
+    res.json(avis);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send(error.message);
+  }
+};
+
 // const updateAvis = async (req, res) => {
 //   try {
 //     const etudiantId = req.params.id;
@@ -134,5 +145,6 @@ module.exports = {
   createAvis,
   deleteAvis,
   getAvis,
+  getAvisByClasseId,
   //   updateAvis,
 };

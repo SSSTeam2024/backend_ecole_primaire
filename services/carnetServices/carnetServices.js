@@ -11,6 +11,14 @@ const getCarnets = async () => {
   return await carnetDao.getCarnets();
 };
 
+const deleteCarnet = async (id) => {
+  return await carnetDao.deleteCarnet(id);
+};
+
+const getCarnetsByEleveId = async (eleveId) => {
+  return await carnetDao.getCarnetsByEleveId(eleveId);
+};
+
 async function saveDocumentsToServer(documents) {
   let counter = 0;
   for (const file of documents) {
@@ -39,4 +47,6 @@ async function saveFile(base64String, fileName, file_path) {
 module.exports = {
   createCarnet,
   getCarnets,
+  deleteCarnet,
+  getCarnetsByEleveId,
 };

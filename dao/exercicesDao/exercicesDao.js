@@ -16,9 +16,17 @@ const deleteExercice = async (id) => {
   return await Exercice.findByIdAndDelete(id);
 };
 
+const getExercicesByClasseId = async (classeId) => {
+  const query = {
+    classes: classeId,
+  };
+  return await Exercice.find(query).populate("classes").populate("matiere");
+};
+
 module.exports = {
   createExercice,
   getExercices,
   updateExercice,
   deleteExercice,
+  getExercicesByClasseId,
 };

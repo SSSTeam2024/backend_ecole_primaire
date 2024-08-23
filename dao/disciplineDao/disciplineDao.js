@@ -12,13 +12,21 @@ const getDisciplines = async () => {
 //   return await Exercice.findByIdAndUpdate(id, updateData, { new: true });
 // };
 
-// const deleteExercice = async (id) => {
-//   return await Exercice.findByIdAndDelete(id);
-// };
+const deleteDiscipline = async (id) => {
+  return await Discipline.findByIdAndDelete(id);
+};
+
+const getDisciplinesByEleveId = async (eleveId) => {
+  const query = {
+    eleve: eleveId,
+  };
+  return await Discipline.find(query).populate("eleve");
+};
 
 module.exports = {
   createDiscipline,
   getDisciplines,
   //   updateExercice,
-  //   deleteExercice,
+  deleteDiscipline,
+  getDisciplinesByEleveId,
 };

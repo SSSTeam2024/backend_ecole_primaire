@@ -47,25 +47,38 @@ const createDiscipline = async (req, res) => {
   }
 };
 
-// const deleteExercice = async (req, res) => {
-//   try {
-//     const etudiantId = req.params.id;
+const deleteDiscipline = async (req, res) => {
+  try {
+    const disciplineId = req.params.id;
 
-//     const deleteEtudiant = await etudiantService.deleteEtudiant(etudiantId);
+    const deleteDiscipline = await disciplineService.deleteDiscipline(
+      disciplineId
+    );
 
-//     if (!deleteEtudiant) {
-//       return res.status(404).send("Etudiant not found");
-//     }
-//     res.sendStatus(200);
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).send(error.message);
-//   }
-// };
+    if (!deleteDiscipline) {
+      return res.status(404).send("Discipline not found");
+    }
+    res.sendStatus(200);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send(error.message);
+  }
+};
 
 const getDisciplines = async (req, res) => {
   try {
     const disciplines = await disciplineService.getDisciplines();
+    res.json(disciplines);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send(error.message);
+  }
+};
+
+const getDisciplinesByEleveId = async (req, res) => {
+  try {
+    const { id: eleveId } = req.params;
+    const disciplines = await disciplineService.getDisciplineByEleveId(eleveId);
     res.json(disciplines);
   } catch (error) {
     console.error(error);
@@ -132,7 +145,8 @@ const getDisciplines = async (req, res) => {
 
 module.exports = {
   createDiscipline,
-  //   deleteExercice,
+  deleteDiscipline,
   getDisciplines,
+  getDisciplinesByEleveId,
   //   updateExercice,
 };

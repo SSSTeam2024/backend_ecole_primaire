@@ -49,25 +49,36 @@ const createExercice = async (req, res) => {
   }
 };
 
-// const deleteExercice = async (req, res) => {
-//   try {
-//     const etudiantId = req.params.id;
+const deleteExercice = async (req, res) => {
+  try {
+    const exerciceId = req.params.id;
 
-//     const deleteEtudiant = await etudiantService.deleteEtudiant(etudiantId);
+    const deleteExercice = await exerciceService.deleteExercice(exerciceId);
 
-//     if (!deleteEtudiant) {
-//       return res.status(404).send("Etudiant not found");
-//     }
-//     res.sendStatus(200);
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).send(error.message);
-//   }
-// };
+    if (!deleteExercice) {
+      return res.status(404).send("Exercice not found");
+    }
+    res.sendStatus(200);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send(error.message);
+  }
+};
 
 const getExercices = async (req, res) => {
   try {
     const exercices = await exerciceService.getExercices();
+    res.json(exercices);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send(error.message);
+  }
+};
+
+const getExercicesByClasseId = async (req, res) => {
+  try {
+    const { id: classeId } = req.params;
+    const exercices = await exerciceService.getExercicesByClasseId(classeId);
     res.json(exercices);
   } catch (error) {
     console.error(error);
@@ -134,7 +145,8 @@ const getExercices = async (req, res) => {
 
 module.exports = {
   createExercice,
-  //   deleteExercice,
+  deleteExercice,
   getExercices,
+  getExercicesByClasseId,
   //   updateExercice,
 };

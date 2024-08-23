@@ -5,6 +5,7 @@ const router = express.Router();
 
 router.post("/newEmploi", emploiController.createEmploi);
 router.get("/getEmplois", emploiController.getEmplois);
-// router.patch("/updateEtudiant/:id", etudiantController.updateEtudiant);
-// router.delete("/deleteEtudiant/:id", etudiantController.deleteEtudiant);
+router.delete("/deleteEmploi/:id", emploiController.deleteEmploi);
+router.get("/emploi-classe-id/:id", emploiController.getEmploisByClasseId);
+
 module.exports = router;

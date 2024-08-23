@@ -12,13 +12,21 @@ const getCarnets = async () => {
 //   return await Carnet.findByIdAndUpdate(id, updateData, { new: true });
 // };
 
-// const deleteCarnet = async (id) => {
-//   return await Carnet.findByIdAndDelete(id);
-// };
+const deleteCarnet = async (id) => {
+  return await Carnet.findByIdAndDelete(id);
+};
+
+const getCarnetsByEleveId = async (eleveId) => {
+  const query = {
+    eleve: eleveId,
+  };
+  return await Carnet.find(query).populate("eleve");
+};
 
 module.exports = {
   createCarnet,
   getCarnets,
   //   updateCarnet,
-  //   deleteCarnet,
+  deleteCarnet,
+  getCarnetsByEleveId,
 };

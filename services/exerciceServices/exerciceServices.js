@@ -15,6 +15,10 @@ const deleteExercice = async (id) => {
   return await exerciceDao.deleteExercice(id);
 };
 
+const getExercicesByClasseId = async (classeId) => {
+  return await exerciceDao.getExercicesByClasseId(classeId);
+};
+
 const updateExercice = async (id, updateData, documents) => {
   let saveResult = await saveDocumentsToServer(documents);
   return await exerciceDao.updateExercice(id, updateData);
@@ -50,4 +54,5 @@ module.exports = {
   getExercices,
   deleteExercice,
   updateExercice,
+  getExercicesByClasseId,
 };

@@ -17,6 +17,7 @@ const absenceRoutes = require("./absenceRoutes/absenceRoutes");
 const avisRoutes = require("./avisRoutes/avisRoutes");
 const documentRoutes = require("./documentRoutes/documentRoutes");
 const evenementRoutes = require("./evenementRoutes/evenementRoutes");
+const compteRenduRoutes = require("./compteRenduRoutes/compteRenduRoutes");
 
 router.use("/etudiants", etudiantRoutes);
 router.use("/classes", classeRoutes);
@@ -34,5 +35,6 @@ router.use("/absences", absenceRoutes);
 router.use("/avis", avisRoutes);
 router.use("/documents", documentRoutes);
 router.use("/evenements", evenementRoutes);
+router.use("/compteRendus", compteRenduRoutes);
 
 module.exports = router;

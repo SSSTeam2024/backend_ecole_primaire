@@ -19,6 +19,9 @@ const documentRoutes = require("./documentRoutes/documentRoutes");
 const evenementRoutes = require("./evenementRoutes/evenementRoutes");
 const compteRenduRoutes = require("./compteRenduRoutes/compteRenduRoutes");
 const gallerieRoutes = require("./gallerieRoutes/gallerieRoutes");
+const messagerieRoutes = require("./msgRoutes/msgRoutes");
+const cantineRoutes = require("./cantineRoutes/cantineRoutes");
+const paiementRoutes = require("./paiementRoutes/paiementRoutes");
 
 router.use("/etudiants", etudiantRoutes);
 router.use("/classes", classeRoutes);
@@ -38,5 +41,8 @@ router.use("/documents", documentRoutes);
 router.use("/evenements", evenementRoutes);
 router.use("/compteRendus", compteRenduRoutes);
 router.use("/galleries", gallerieRoutes);
+router.use("/messages", messagerieRoutes);
+router.use("/cantines", cantineRoutes);
+router.use("/paiements", paiementRoutes);
 
 module.exports = router;

@@ -16,9 +16,14 @@ const deleteAbsence = async (id) => {
   return await absenceDao.deleteAbsence(id);
 };
 
+const getAbsencesByEleveId = async (eleveId) => {
+  return await absenceDao.getAbsencesByEleveId(eleveId);
+};
+
 module.exports = {
   createAbsence,
   getAbsences,
   updateAbsence,
   deleteAbsence,
+  getAbsencesByEleveId,
 };

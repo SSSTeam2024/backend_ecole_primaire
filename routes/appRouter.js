@@ -24,6 +24,7 @@ const cantineRoutes = require("./cantineRoutes/cantineRoutes");
 const paiementRoutes = require("./paiementRoutes/paiementRoutes");
 const salleRoutes = require("./salleRoutes/salleRoutes");
 const calendrierRoutes = require("./calendrierRoutes/calendrierRoutes");
+const evaluationRoutes = require("./evaluationRoutes/evaluationsRoutes");
 
 router.use("/etudiants", etudiantRoutes);
 router.use("/classes", classeRoutes);
@@ -48,5 +49,6 @@ router.use("/cantines", cantineRoutes);
 router.use("/paiements", paiementRoutes);
 router.use("/salles", salleRoutes);
 router.use("/calendriers", calendrierRoutes);
+router.use("/evaluations", evaluationRoutes);
 
 module.exports = router;

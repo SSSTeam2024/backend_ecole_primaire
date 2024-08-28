@@ -19,9 +19,17 @@ const deleteAbsence = async (id) => {
   return await Absence.findByIdAndDelete(id);
 };
 
+const getAbsencesByEleveId = async (eleveId) => {
+  const query = {
+    eleve: eleveId,
+  };
+  return await Absence.find(query).populate("eleve").populate("matiere");
+};
+
 module.exports = {
   createAbsence,
   getAbsences,
   updateAbsence,
   deleteAbsence,
+  getAbsencesByEleveId,
 };

@@ -11,9 +11,9 @@ const getAbsences = async () => {
     .populate("enseignant");
 };
 
-// const updateExercice = async (id, updateData) => {
-//   return await Exercice.findByIdAndUpdate(id, updateData, { new: true });
-// };
+const updateAbsence = async (id, updateData) => {
+  return await Absence.findByIdAndUpdate(id, updateData, { new: true });
+};
 
 const deleteAbsence = async (id) => {
   return await Absence.findByIdAndDelete(id);
@@ -22,6 +22,6 @@ const deleteAbsence = async (id) => {
 module.exports = {
   createAbsence,
   getAbsences,
-  //   updateExercice,
+  updateAbsence,
   deleteAbsence,
 };

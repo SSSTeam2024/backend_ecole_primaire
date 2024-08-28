@@ -28,6 +28,30 @@ const getAbsences = async (req, res) => {
   }
 };
 
+const updateAbsence = async (req, res) => {
+  try {
+    const absenceId = req.params.id;
+    const { eleve, matiere, enseignant, type, heure, date } = req.body;
+
+    const updateAbsence = await absenceService.updateAbsence(absenceId, {
+      eleve,
+      matiere,
+      enseignant,
+      type,
+      heure,
+      date,
+    });
+
+    if (!updateAbsence) {
+      return res.status(404).send("Absence not found");
+    }
+    res.json(updateAbsence);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send(error.message);
+  }
+};
+
 const deleteAbsence = async (req, res) => {
   try {
     const absenceId = req.params.id;
@@ -47,6 +71,6 @@ const deleteAbsence = async (req, res) => {
 module.exports = {
   createAbsence,
   getAbsences,
-  //   updateMatiere,
+  updateAbsence,
   deleteAbsence,
 };

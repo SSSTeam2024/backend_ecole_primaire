@@ -8,9 +8,9 @@ const getNotes = async () => {
   return await noteDao.getNotes();
 };
 
-// const updateMatiere = async (id, updateData) => {
-//   return await matiereDao.updateMatiere(id, updateData);
-// };
+const updateNote = async (id, updateData) => {
+  return await noteDao.updateNote(id, updateData);
+};
 
 const deleteNote = async (id) => {
   return await noteDao.deleteNote(id);
@@ -23,7 +23,7 @@ const getNotesByEleveId = async (eleveId) => {
 module.exports = {
   createNote,
   getNotes,
-  //   updateMatiere,
+  updateNote,
   deleteNote,
   getNotesByEleveId,
 };

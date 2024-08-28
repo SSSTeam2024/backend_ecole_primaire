@@ -30,6 +30,9 @@ const getPaiementByEleveId = async (req, res) => {
   try {
     const { id: eleveId } = req.params;
     const paiements = await paiementServices.getPaiementByEleveId(eleveId);
+    if (!paiements) {
+      return res.status(404).send("No payment to this student");
+    }
     res.json(paiements);
   } catch (error) {
     console.error(error);
@@ -37,24 +40,27 @@ const getPaiementByEleveId = async (req, res) => {
   }
 };
 
-// const updateMatiere = async (req, res) => {
-//   try {
-//     const matiereId = req.params.id;
-//     const { nom_matiere } = req.body;
+const updatePaiement = async (req, res) => {
+  try {
+    const paiementId = req.params.id;
+    const { eleve, annee_scolaire, montant, date_paiement } = req.body;
 
-//     const updatedMatiere = await paiementServices.updateMatiere(matiereId, {
-//       nom_matiere,
-//     });
+    const updatePaiement = await paiementServices.updatePaiement(paiementId, {
+      eleve,
+      annee_scolaire,
+      montant,
+      date_paiement,
+    });
 
-//     if (!updatedMatiere) {
-//       return res.status(404).send("Matiere not found");
-//     }
-//     res.json(updatedMatiere);
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).send(error.message);
-//   }
-// };
+    if (!updatePaiement) {
+      return res.status(404).send("Paiement not found");
+    }
+    res.json(updatePaiement);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send(error.message);
+  }
+};
 
 const deletePaiement = async (req, res) => {
   try {
@@ -75,7 +81,7 @@ const deletePaiement = async (req, res) => {
 module.exports = {
   createPaiement,
   getPaiements,
-  //   updateMatiere,
+  updatePaiement,
   getPaiementByEleveId,
   deletePaiement,
 };

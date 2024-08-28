@@ -8,9 +8,9 @@ const getAbsences = async () => {
   return await absenceDao.getAbsences();
 };
 
-// const updateMatiere = async (id, updateData) => {
-//   return await matiereDao.updateMatiere(id, updateData);
-// };
+const updateAbsence = async (id, updateData) => {
+  return await absenceDao.updateAbsence(id, updateData);
+};
 
 const deleteAbsence = async (id) => {
   return await absenceDao.deleteAbsence(id);
@@ -19,6 +19,6 @@ const deleteAbsence = async (id) => {
 module.exports = {
   createAbsence,
   getAbsences,
-  //   updateMatiere,
+  updateAbsence,
   deleteAbsence,
 };

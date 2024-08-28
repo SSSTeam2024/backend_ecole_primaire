@@ -39,24 +39,29 @@ const getNotesByEleveId = async (req, res) => {
   }
 };
 
-// const updateMatiere = async (req, res) => {
-//   try {
-//     const matiereId = req.params.id;
-//     const { nom_matiere } = req.body;
+const updateNote = async (req, res) => {
+  try {
+    const noteId = req.params.id;
+    const { eleve, matiere, trimestre, type, note, date } = req.body;
 
-//     const updatedMatiere = await matiereService.updateMatiere(matiereId, {
-//       nom_matiere,
-//     });
+    const updateNote = await noteService.updateNote(noteId, {
+      eleve,
+      matiere,
+      trimestre,
+      type,
+      note,
+      date,
+    });
 
-//     if (!updatedMatiere) {
-//       return res.status(404).send("Matiere not found");
-//     }
-//     res.json(updatedMatiere);
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).send(error.message);
-//   }
-// };
+    if (!updateNote) {
+      return res.status(404).send("Note not found");
+    }
+    res.json(updateNote);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send(error.message);
+  }
+};
 
 const deleteNote = async (req, res) => {
   try {
@@ -77,7 +82,7 @@ const deleteNote = async (req, res) => {
 module.exports = {
   createNote,
   getNotes,
-  //   updateMatiere,
+  updateNote,
   deleteNote,
   getNotesByEleveId,
 };

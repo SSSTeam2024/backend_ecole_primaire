@@ -21,6 +21,10 @@ const deleteEtudiant = async (id) => {
 
 const updateEtudiant = async (id, updateData, documents) => {
   let saveResult = await saveDocumentsToServer(documents);
+  if (updateData.parent) {
+    // Handle parent reassignment if parent ID is provided
+    await etudiantDao.updateEtudiantParentAssignment(id, updateData.parent);
+  }
   return await etudiantDao.updateEtudiant(id, updateData);
 };
 

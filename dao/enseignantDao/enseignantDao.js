@@ -8,6 +8,10 @@ const getEnseignants = async () => {
   return await Enseignant.find();
 };
 
+const updateEnseignant = async (id, updateData) => {
+  return await Enseignant.findByIdAndUpdate(id, updateData, { new: true });
+};
+
 const deleteEnseignant = async (id) => {
   return await Enseignant.findByIdAndDelete(id);
 };
@@ -16,4 +20,5 @@ module.exports = {
   createEnseignant,
   getEnseignants,
   deleteEnseignant,
+  updateEnseignant,
 };

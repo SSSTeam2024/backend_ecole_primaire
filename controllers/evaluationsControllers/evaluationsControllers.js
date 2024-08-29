@@ -56,7 +56,6 @@ const updateEvaluation = async (req, res) => {
         eleve,
         matiere,
         trimestre,
-        type,
         note,
         date,
       }

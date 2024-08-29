@@ -5,7 +5,7 @@ const router = express.Router();
 
 router.post("/newDocument", documentController.createDocument);
 router.get("/getDocuments", documentController.getDocuments);
-// router.patch("/updateMatiere/:id", documentController.updateMatiere);
+router.patch("/updateDocument/:id", documentController.updateDocument);
 router.delete("/deleteDocument/:id", documentController.deleteDocument);
 router.get(
   "/document-classe-id/:id",

@@ -132,9 +132,26 @@ const updateEtudiant = async (req, res) => {
   }
 };
 
+const getEtudiantsByClasseId = async (req, res) => {
+  try {
+    const { id: classeId } = req.params;
+    const etudiants = await etudiantService.getEtudiantsByClasseId(classeId);
+
+    if (!etudiants) {
+      return res.status(404).send("This classe does not have any students!!");
+    }
+
+    res.json(etudiants);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send(error.message);
+  }
+};
+
 module.exports = {
   createEtudiant,
   deleteEtudiant,
   getEtudiants,
   updateEtudiant,
+  getEtudiantsByClasseId,
 };

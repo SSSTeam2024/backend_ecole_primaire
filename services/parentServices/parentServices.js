@@ -49,6 +49,39 @@ const getParentById = async (id) => {
   return await parentDao.getParentById(id);
 };
 
+const updateParent = async (id, updateData) => {
+  const existingParent = await parentDao.getParentById(id);
+
+  const updatedParent = await parentDao.updateParent(id, updateData);
+
+  if (!updatedParent) {
+    throw new Error("Parent not found");
+  }
+
+  if (updateData.fils) {
+    const oldFils = existingParent.fils || [];
+    const newFils = updateData.fils;
+
+    const removedFils = oldFils.filter(
+      (filsId) => !newFils.includes(filsId.toString())
+    );
+
+    const addedFils = newFils.filter(
+      (filsId) => !oldFils.includes(filsId.toString())
+    );
+
+    if (removedFils.length > 0) {
+      await parentDao.updateEtudiantParent(removedFils, null);
+    }
+
+    if (addedFils.length > 0) {
+      await parentDao.updateEtudiantParent(addedFils, updatedParent._id);
+    }
+  }
+
+  return updatedParent;
+};
+
 const deleteParent = async (id) => {
   return await parentDao.deleteParent(id);
 };
@@ -61,4 +94,5 @@ module.exports = {
   getParentByToken,
   getParentById,
   deleteParent,
+  updateParent,
 };

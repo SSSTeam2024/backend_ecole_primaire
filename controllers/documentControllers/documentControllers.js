@@ -82,67 +82,63 @@ const getDocumentsByClasseId = async (req, res) => {
   }
 };
 
-// const updateAvis = async (req, res) => {
-//   try {
-//     const etudiantId = req.params.id;
-//     const {
-//       nom,
-//       prenom,
-//       date_de_naissance,
-//       classe,
-//       parent,
-//       genre,
-//       avatar_base64_string,
-//       avatar_extension,
-//     } = req.body;
+const updateDocument = async (req, res) => {
+  try {
+    const documentIdId = req.params.id;
+    const {
+      classes,
+      titre,
+      desc,
+      creation_date,
+      fichier_base64_string,
+      fichier_extension,
+    } = req.body;
 
-//     const etudiantFilesPath = "files/etudiantFiles/";
+    const documentFilesPath = "files/documentFiles/";
 
-//     let avatar = globalFunctions.generateUniqueFilename(
-//       avatar_extension,
-//       "Avatar"
-//     );
+    let fichier = globalFunctions.generateUniqueFilename(
+      fichier_extension,
+      "Document"
+    );
 
-//     let etudiantBody = {
-//       nom,
-//       prenom,
-//       date_de_naissance,
-//       classe,
-//       parent,
-//       genre,
-//     };
+    let documentBody = {
+      classes,
+      titre,
+      desc,
+      creation_date,
+    };
 
-//     let documents = [];
+    let documents = [];
 
-//     if (avatar_base64_string) {
-//       documents.push({
-//         base64String: avatar_base64_string,
-//         extension: avatar_extension,
-//         name: avatar,
-//         path: etudiantFilesPath,
-//       });
-//     }
+    if (fichier_base64_string) {
+      documents.push({
+        base64String: fichier_base64_string,
+        extension: fichier_extension,
+        name: fichier,
+        path: documentFilesPath,
+      });
+    }
 
-//     if (avatar_base64_string) {
-//       etudiantBody.avatar = avatar;
-//     }
-//     const etudiant = await etudiantService.updateEtudiant(
-//       etudiantId,
-//       etudiantBody,
-//       documents
-//     );
+    if (fichier_base64_string) {
+      documentBody.fichier = fichier;
+    }
+    const document = await documentService.updateDocument(
+      documentIdId,
+      documentBody,
+      documents
+    );
 
-//     res.status(200).json(etudiant);
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).send(error.message);
-//   }
-// };
+    res.status(200).json(document);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send(error.message);
+  }
+};
 
 module.exports = {
   createDocument,
   deleteDocument,
   getDocuments,
   getDocumentsByClasseId,
-  //   updateAvis,
+  updateDocument,
 };

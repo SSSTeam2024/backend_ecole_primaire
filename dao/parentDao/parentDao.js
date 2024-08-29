@@ -6,7 +6,12 @@ const createParent = async (parentData) => {
 };
 
 const getParents = async () => {
-  return await Parent.find().populate("fils");
+  return await Parent.find().populate({
+    path: "fils",
+    populate: {
+      path: "classe",
+    },
+  });
 };
 
 const logout = async (id) => {
@@ -56,6 +61,10 @@ const updateEtudiantParent = async (etudiantIds, parentId) => {
   );
 };
 
+const updateParent = async (id, updateData) => {
+  return await Parent.findByIdAndUpdate(id, updateData, { new: true });
+};
+
 const deleteParent = async (id) => {
   return await Parent.findByIdAndDelete(id);
 };
@@ -70,4 +79,5 @@ module.exports = {
   updateJwtToken,
   updateEtudiantParent,
   deleteParent,
+  updateParent,
 };

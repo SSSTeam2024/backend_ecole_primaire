@@ -22,28 +22,31 @@ const updateEtudiant = async (id, updateData) => {
 };
 
 const updateEtudiantParentAssignment = async (etudiantId, newParentId) => {
-  // Find the student by ID
   const etudiant = await Etudiant.findById(etudiantId);
 
   if (!etudiant) {
     throw new Error("Etudiant not found");
   }
 
-  // If the student already has a parent, remove the student from the old parent's "fils" array
   if (etudiant.parent) {
     await Parent.findByIdAndUpdate(etudiant.parent, {
       $pull: { fils: etudiantId },
     });
   }
 
-  // Add the student to the new parent's "fils" array
   await Parent.findByIdAndUpdate(newParentId, {
     $addToSet: { fils: etudiantId },
   });
 
-  // Update the student's parent reference
   etudiant.parent = newParentId;
   return await etudiant.save();
+};
+
+const getEtudiantsByClasseId = async (classeId) => {
+  const query = {
+    classe: classeId,
+  };
+  return await Etudiant.find(query).populate("classe");
 };
 
 module.exports = {
@@ -53,4 +56,5 @@ module.exports = {
   deleteEtudiant,
   updateEtudiant,
   updateEtudiantParentAssignment,
+  getEtudiantsByClasseId,
 };

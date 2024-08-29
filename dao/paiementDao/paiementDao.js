@@ -16,7 +16,7 @@ const deletePaiement = async (id) => {
   return await Paiement.findByIdAndDelete(id);
 };
 
-const getPaiementByEleveId = async (classeId) => {
+const getPaiementByEleveId = async (eleveId) => {
   const query = {
     eleve: eleveId,
   };

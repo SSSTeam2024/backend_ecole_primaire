@@ -12,6 +12,7 @@ const createCompteRendu = async (req, res) => {
       creation_date,
       fichier_base64_string,
       fichier_extension,
+      notes,
     } = req.body;
 
     const compteRenduFilesPath = "files/compteRenduFiles/";
@@ -39,6 +40,7 @@ const createCompteRendu = async (req, res) => {
         desc,
         creation_date,
         fichier,
+        notes,
       },
       documents
     );

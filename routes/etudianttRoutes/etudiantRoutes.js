@@ -7,4 +7,8 @@ router.post("/newEtudiant", etudiantController.createEtudiant);
 router.get("/getEtudiants", etudiantController.getEtudiants);
 router.patch("/updateEtudiant/:id", etudiantController.updateEtudiant);
 router.delete("/deleteEtudiant/:id", etudiantController.deleteEtudiant);
+router.get(
+  "/etudiants-classe-id/:id",
+  etudiantController.getEtudiantsByClasseId
+);
 module.exports = router;

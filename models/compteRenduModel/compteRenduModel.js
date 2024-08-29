@@ -23,6 +23,17 @@ const compteRenduSchema = new mongoose.Schema({
   desc: String,
   creation_date: String,
   fichier: String,
+  notes: [
+    {
+      note: String,
+      eleve: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Etudiant",
+        required: false,
+        default: null,
+      },
+    },
+  ],
 });
 
 module.exports = mongoose.model("CompteRendu", compteRenduSchema);

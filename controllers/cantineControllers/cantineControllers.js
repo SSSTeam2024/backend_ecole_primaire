@@ -71,66 +71,62 @@ const deleteCantine = async (req, res) => {
   }
 };
 
-// const updateAvis = async (req, res) => {
-//   try {
-//     const etudiantId = req.params.id;
-//     const {
-//       nom,
-//       prenom,
-//       date_de_naissance,
-//       classe,
-//       parent,
-//       genre,
-//       avatar_base64_string,
-//       avatar_extension,
-//     } = req.body;
+const updateCantine = async (req, res) => {
+  try {
+    const cantineId = req.params.id;
+    const {
+      jour,
+      repas,
+      desc,
+      creation_date,
+      fichier_base64_string,
+      fichier_extension,
+    } = req.body;
 
-//     const etudiantFilesPath = "files/etudiantFiles/";
+    const cantineFilesPath = "files/cantineFiles/";
 
-//     let avatar = globalFunctions.generateUniqueFilename(
-//       avatar_extension,
-//       "Avatar"
-//     );
+    let fichier = globalFunctions.generateUniqueFilename(
+      fichier_extension,
+      "Cantine"
+    );
 
-//     let etudiantBody = {
-//       nom,
-//       prenom,
-//       date_de_naissance,
-//       classe,
-//       parent,
-//       genre,
-//     };
+    let cantineBody = {
+      jour,
+      repas,
+      desc,
+      creation_date,
+    };
 
-//     let documents = [];
+    let documents = [];
 
-//     if (avatar_base64_string) {
-//       documents.push({
-//         base64String: avatar_base64_string,
-//         extension: avatar_extension,
-//         name: avatar,
-//         path: etudiantFilesPath,
-//       });
-//     }
+    if (fichier_base64_string) {
+      documents.push({
+        base64String: fichier_base64_string,
+        extension: fichier_extension,
+        name: fichier,
+        path: cantineFilesPath,
+      });
+    }
 
-//     if (avatar_base64_string) {
-//       etudiantBody.avatar = avatar;
-//     }
-//     const etudiant = await cantineServices.updateEtudiant(
-//       etudiantId,
-//       etudiantBody,
-//       documents
-//     );
+    if (fichier_base64_string) {
+      cantineBody.fichier = fichier;
+    }
+    const cantine = await cantineServices.updateCantine(
+      cantineId,
+      cantineBody,
+      documents
+    );
 
-//     res.status(200).json(etudiant);
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).send(error.message);
-//   }
-// };
+    res.status(200).json(cantine);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send(error.message);
+  }
+};
 
 module.exports = {
   createCantine,
   deleteCantine,
   getCantines,
-  //   updateAvis,
+  updateCantine,
 };

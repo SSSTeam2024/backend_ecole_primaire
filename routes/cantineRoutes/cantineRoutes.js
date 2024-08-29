@@ -5,7 +5,7 @@ const router = express.Router();
 
 router.post("/createCantine", cantineControllers.createCantine);
 router.get("/getCantines", cantineControllers.getCantines);
-// router.patch("/updateMatiere/:id", cantineControllers.updateMatiere);
+router.patch("/updateCantine/:id", cantineControllers.updateCantine);
 router.delete("/deleteCantine/:id", cantineControllers.deleteCantine);
 
 module.exports = router;

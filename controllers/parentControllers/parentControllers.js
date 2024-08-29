@@ -33,6 +33,30 @@ const login = async (req, res) => {
   }
 };
 
+const updateParent = async (req, res) => {
+  try {
+    const parentId = req.params.id;
+    const { cin, nom_parent, prenom_parent, phone, username, fils } = req.body;
+
+    const updateParent = await parentService.updateParent(parentId, {
+      cin,
+      nom_parent,
+      prenom_parent,
+      phone,
+      username,
+      fils,
+    });
+
+    if (!updateParent) {
+      return res.status(404).send("Parent not found");
+    }
+    res.json(updateParent);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send(error.message);
+  }
+};
+
 const logout = async (req, res) => {
   let id = req.params.id;
 
@@ -106,4 +130,5 @@ module.exports = {
   getParentById,
   getParents,
   deleteParent,
+  updateParent,
 };

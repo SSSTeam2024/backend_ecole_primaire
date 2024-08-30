@@ -83,6 +83,7 @@ const updateParent = async (id, updateData) => {
 };
 
 const deleteParent = async (id) => {
+  //delete parent services
   return await parentDao.deleteParent(id);
 };
 

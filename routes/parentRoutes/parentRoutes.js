@@ -11,5 +11,6 @@ router.get("/getParent/:id", parentController.getParentById);
 router.get("/getAllParents", parentController.getParents);
 router.delete("/deleteParent/:id", parentController.deleteParent);
 router.patch("/updateParent/:id", parentController.updateParent);
+router.post("/updateApiKey", parentController.updateAPIKey);
 
 module.exports = router;

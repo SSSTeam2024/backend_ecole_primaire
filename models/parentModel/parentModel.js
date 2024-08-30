@@ -17,6 +17,7 @@ const parentSchema = new mongoose.Schema(
       },
     ],
     api_token: String,
+    onesignal_api_key: String,
   },
   {
     timestamps: true,

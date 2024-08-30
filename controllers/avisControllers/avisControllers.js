@@ -84,67 +84,61 @@ const getAvisByClasseId = async (req, res) => {
   }
 };
 
-// const updateAvis = async (req, res) => {
-//   try {
-//     const etudiantId = req.params.id;
-//     const {
-//       nom,
-//       prenom,
-//       date_de_naissance,
-//       classe,
-//       parent,
-//       genre,
-//       avatar_base64_string,
-//       avatar_extension,
-//     } = req.body;
+const updateAvis = async (req, res) => {
+  try {
+    const avisId = req.params.id;
+    const {
+      classes,
+      editeur,
+      titre,
+      desc,
+      creation_date,
+      fichier_base64_string,
+      fichier_extension,
+    } = req.body;
 
-//     const etudiantFilesPath = "files/etudiantFiles/";
+    const AvisFilesPath = "files/AvisFiles/";
 
-//     let avatar = globalFunctions.generateUniqueFilename(
-//       avatar_extension,
-//       "Avatar"
-//     );
+    let fichier = globalFunctions.generateUniqueFilename(
+      fichier_extension,
+      "Avis"
+    );
 
-//     let etudiantBody = {
-//       nom,
-//       prenom,
-//       date_de_naissance,
-//       classe,
-//       parent,
-//       genre,
-//     };
+    let avisBody = {
+      classes,
+      editeur,
+      titre,
+      desc,
+      creation_date,
+    };
 
-//     let documents = [];
+    let documents = [];
 
-//     if (avatar_base64_string) {
-//       documents.push({
-//         base64String: avatar_base64_string,
-//         extension: avatar_extension,
-//         name: avatar,
-//         path: etudiantFilesPath,
-//       });
-//     }
+    if (fichier_base64_string) {
+      documents.push({
+        base64String: fichier_base64_string,
+        extension: fichier_extension,
+        name: fichier,
+        path: AvisFilesPath,
+      });
+    }
 
-//     if (avatar_base64_string) {
-//       etudiantBody.avatar = avatar;
-//     }
-//     const etudiant = await etudiantService.updateEtudiant(
-//       etudiantId,
-//       etudiantBody,
-//       documents
-//     );
+    if (fichier_base64_string) {
+      avisBody.fichier = fichier;
+    }
+    const avis = await avisService.updateAvis(avisId, avisBody, documents);
 
-//     res.status(200).json(etudiant);
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).send(error.message);
-//   }
-// };
+    res.status(200).json(avis);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send(error.message);
+  }
+};
 
 module.exports = {
   createAvis,
   deleteAvis,
   getAvis,
   getAvisByClasseId,
-  //   updateAvis,
+  updateAvis,
 };

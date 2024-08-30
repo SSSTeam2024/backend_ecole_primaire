@@ -122,6 +122,17 @@ const deleteParent = async (req, res) => {
   }
 };
 
+const updateAPIKey = async (req, res) => {
+  try {
+    const { id, key } = req.body;
+    const sentResult = await parentService.updateApiKey(id, key);
+    res.json({ success: sentResult });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send(error.message);
+  }
+};
+
 module.exports = {
   createParent,
   login,
@@ -131,4 +142,5 @@ module.exports = {
   getParents,
   deleteParent,
   updateParent,
+  updateAPIKey,
 };

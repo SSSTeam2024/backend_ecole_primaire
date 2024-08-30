@@ -69,6 +69,18 @@ const deleteParent = async (id) => {
   return await Parent.findByIdAndDelete(id);
 };
 
+const updateApiKey = async (id, key) => {
+  return await Parent.findByIdAndUpdate(
+    id,
+    {
+      $set: {
+        onesignal_api_key: key,
+      },
+    },
+    { new: true }
+  );
+};
+
 module.exports = {
   createParent,
   getParents,
@@ -80,4 +92,5 @@ module.exports = {
   updateEtudiantParent,
   deleteParent,
   updateParent,
+  updateApiKey,
 };

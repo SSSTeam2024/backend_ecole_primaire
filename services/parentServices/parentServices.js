@@ -86,6 +86,11 @@ const deleteParent = async (id) => {
   return await parentDao.deleteParent(id);
 };
 
+const updateApiKey = async (id, key) => {
+  await parentDao.updateApiKey(id, key);
+  return "Parent Api Key is Up to date!!";
+};
+
 module.exports = {
   createParent,
   loginParent,
@@ -95,4 +100,5 @@ module.exports = {
   getParentById,
   deleteParent,
   updateParent,
+  updateApiKey,
 };

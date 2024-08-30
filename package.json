@@ -12,6 +12,7 @@
   "license": "ISC",
   "dependencies": {
     "@googlemaps/google-maps-services-js": "^3.3.42",
+    "@onesignal/node-onesignal": "^2.0.1-beta2",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.20.2",
     "bull": "^4.12.9",

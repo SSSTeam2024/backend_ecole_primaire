@@ -5,7 +5,7 @@ const router = express.Router();
 
 router.post("/newEvenement", evenementController.createEvenement);
 router.get("/getEvenement", evenementController.getEvenements);
-// router.patch("/updateMatiere/:id", noteController.updateMatiere);
+router.patch("/updateEvenement/:id", evenementController.updateEvenement);
 router.delete("/deleteEvenement/:id", evenementController.deleteEvenement);
 router.get(
   "/evenement-classe-id/:id",

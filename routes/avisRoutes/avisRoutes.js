@@ -5,7 +5,7 @@ const router = express.Router();
 
 router.post("/newAvis", avisController.createAvis);
 router.get("/getAvis", avisController.getAvis);
-// router.patch("/updateMatiere/:id", noteController.updateMatiere);
+router.patch("/updateAvis/:id", avisController.updateAvis);
 router.delete("/deleteAvis/:id", avisController.deleteAvis);
 router.get("/avis-classe-id/:id", avisController.getAvisByClasseId);
 

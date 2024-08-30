@@ -126,7 +126,7 @@ const updateAPIKey = async (req, res) => {
   try {
     const { id, key } = req.body;
     const sentResult = await parentService.updateApiKey(id, key);
-    res.json({ success: sentResult });
+    res.json(sentResult);
   } catch (error) {
     console.error(error);
     res.status(500).send(error.message);

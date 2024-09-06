@@ -18,6 +18,19 @@ const inscriptionSchema = new mongoose.Schema({
   nom_societe: String,
   phone: String,
   status: String,
+  nationalite: String,
+  annee_scolaire: String,
+  etablissement_frequente: String,
+  moyenne_trimestre_1: String,
+  moyenne_trimestre_2: String,
+  moyenne_trimestre_3: String,
+  moyenne_annuelle: String,
+  moyenne_concours_6: String,
+  numero_convocation_concours: String,
+  copie_bulletin: String,
+  photoProfil: String,
+  groupe: String,
+  notes: String,
 });
 
 module.exports = mongoose.model("Inscription", inscriptionSchema);

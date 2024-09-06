@@ -15,4 +15,14 @@ router.post(
   inscriptionController.updateInscriptionStatus
 );
 
+router.post(
+  "/updateInscriptionGroupe",
+  inscriptionController.updateInscriptionGroupe
+);
+
+router.post(
+  "/updateInscriptionNotes",
+  inscriptionController.updateInscriptionNotes
+);
+
 module.exports = router;

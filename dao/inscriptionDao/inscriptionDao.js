@@ -28,10 +28,34 @@ const updateInscriptionStatus = async (id, statusInscri) => {
   );
 };
 
+const updateInscriptionGroupe = async (id, groupeInscri) => {
+  return await Inscription.findByIdAndUpdate(
+    { _id: id },
+    {
+      $set: {
+        groupe: groupeInscri,
+      },
+    }
+  );
+};
+
+const updateInscriptionNotes = async (id, notesInscri) => {
+  return await Inscription.findByIdAndUpdate(
+    { _id: id },
+    {
+      $set: {
+        notes: notesInscri,
+      },
+    }
+  );
+};
+
 module.exports = {
   createInscription,
   getInscriptions,
   updateInscription,
   deleteInscription,
   updateInscriptionStatus,
+  updateInscriptionGroupe,
+  updateInscriptionNotes,
 };

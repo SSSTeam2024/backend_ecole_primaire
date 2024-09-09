@@ -5,16 +5,24 @@ const rendezvousSchema = new mongoose.Schema(
     titre: String,
     date: String,
     description: String,
-    enseignants: [
+    parents: [
       {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Enseignant",
+        ref: "Parent",
         required: false,
         default: null,
       },
     ],
     heure: String,
+    matiere: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Matiere",
+      required: false,
+      default: null,
+    },
+    administration: String,
   },
+
   {
     timestamps: true,
   }

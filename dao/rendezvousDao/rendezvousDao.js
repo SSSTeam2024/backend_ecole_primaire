@@ -5,7 +5,7 @@ const createRendezvous = async (rendezvousData) => {
 };
 
 const getRendezvous = async () => {
-  return await Rendezvous.find().populate("enseignants");
+  return await Rendezvous.find().populate("parents").populate("matiere");
 };
 
 const updateRendezvous = async (id, updateData) => {

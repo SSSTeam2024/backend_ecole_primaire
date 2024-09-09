@@ -2,9 +2,10 @@ const matiereService = require("../../services/matiereServices/matiereServices")
 
 const createMatiere = async (req, res) => {
   try {
-    const { nom_matiere } = req.body;
+    const { nom_matiere, classe } = req.body;
     const newMatiere = await matiereService.createMatiere({
       nom_matiere,
+      classe,
     });
     res.status(201).json(newMatiere);
   } catch (error) {
@@ -26,10 +27,11 @@ const getMatieres = async (req, res) => {
 const updateMatiere = async (req, res) => {
   try {
     const matiereId = req.params.id;
-    const { nom_matiere } = req.body;
+    const { nom_matiere, classe } = req.body;
 
     const updatedMatiere = await matiereService.updateMatiere(matiereId, {
       nom_matiere,
+      classe,
     });
 
     if (!updatedMatiere) {

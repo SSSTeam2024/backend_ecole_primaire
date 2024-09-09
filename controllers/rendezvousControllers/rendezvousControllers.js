@@ -2,13 +2,23 @@ const rendezvousServices = require("../../services/rendezvousServices/rendezvous
 
 const createRendezvous = async (req, res) => {
   try {
-    const { titre, date, description, enseignants, heure } = req.body;
+    const {
+      titre,
+      date,
+      description,
+      parents,
+      heure,
+      matiere,
+      administration,
+    } = req.body;
     const newRendezvous = await rendezvousServices.createRendezvous({
       titre,
       date,
       description,
-      enseignants,
+      parents,
       heure,
+      matiere,
+      administration,
     });
     res.status(201).json(newRendezvous);
   } catch (error) {
@@ -48,7 +58,15 @@ const getRendezvousByEnseignantId = async (req, res) => {
 const updateRendezvous = async (req, res) => {
   try {
     const rendezvousId = req.params.id;
-    const { titre, date, description, enseignants, heure } = req.body;
+    const {
+      titre,
+      date,
+      description,
+      parents,
+      heure,
+      matiere,
+      administration,
+    } = req.body;
 
     const updateRendezvous = await rendezvousServices.updateRendezvous(
       rendezvousId,
@@ -56,8 +74,10 @@ const updateRendezvous = async (req, res) => {
         titre,
         date,
         description,
-        enseignants,
+        parents,
         heure,
+        matiere,
+        administration,
       }
     );
 

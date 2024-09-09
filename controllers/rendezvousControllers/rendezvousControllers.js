@@ -37,11 +37,11 @@ const getRendezvous = async (req, res) => {
   }
 };
 
-const getRendezvousByEnseignantId = async (req, res) => {
+const getRendezvousByParentId = async (req, res) => {
   try {
-    const { id: enseignantId } = req.params;
-    const rendezvous = await rendezvousServices.getRendezvousByEnseignantId(
-      enseignantId
+    const { id: parentId } = req.params;
+    const rendezvous = await rendezvousServices.getRendezvousByParentId(
+      parentId
     );
 
     if (!rendezvous) {
@@ -112,7 +112,7 @@ const deleteRendezvous = async (req, res) => {
 module.exports = {
   createRendezvous,
   getRendezvous,
-  getRendezvousByEnseignantId,
+  getRendezvousByParentId,
   updateRendezvous,
   deleteRendezvous,
 };

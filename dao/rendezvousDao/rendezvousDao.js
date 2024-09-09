@@ -16,11 +16,11 @@ const deleteRendezvous = async (id) => {
   return await Rendezvous.findByIdAndDelete(id);
 };
 
-const getRendezvousByEnseignantId = async (enseignantId) => {
+const getRendezvousByParentId = async (parentId) => {
   const query = {
-    enseignants: enseignantId,
+    parents: parentId,
   };
-  return await Rendezvous.find(query).populate("enseignants");
+  return await Rendezvous.find(query).populate("parents").populate("matiere");
 };
 
 module.exports = {
@@ -28,5 +28,5 @@ module.exports = {
   getRendezvous,
   updateRendezvous,
   deleteRendezvous,
-  getRendezvousByEnseignantId,
+  getRendezvousByParentId,
 };

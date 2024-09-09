@@ -16,8 +16,8 @@ const deleteRendezvous = async (id) => {
   return await rendezvousDao.deleteRendezvous(id);
 };
 
-const getRendezvousByEnseignantId = async (enseignantId) => {
-  return await rendezvousDao.getRendezvousByEnseignantId(enseignantId);
+const getRendezvousByParentId = async (parentId) => {
+  return await rendezvousDao.getRendezvousByParentId(parentId);
 };
 
 module.exports = {
@@ -25,5 +25,5 @@ module.exports = {
   getRendezvous,
   updateRendezvous,
   deleteRendezvous,
-  getRendezvousByEnseignantId,
+  getRendezvousByParentId,
 };

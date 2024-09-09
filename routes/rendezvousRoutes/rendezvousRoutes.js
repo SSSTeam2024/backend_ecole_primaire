@@ -8,8 +8,8 @@ router.get("/getRendezvous", rendezvousControllers.getRendezvous);
 router.patch("/updateRendezvous/:id", rendezvousControllers.updateRendezvous);
 router.delete("/deleteRendezvous/:id", rendezvousControllers.deleteRendezvous);
 router.get(
-  "/rendezvous-enseignant-id/:id",
-  rendezvousControllers.getRendezvousByEnseignantId
+  "/rendezvous-parent-id/:id",
+  rendezvousControllers.getRendezvousByParentId
 );
 
 module.exports = router;

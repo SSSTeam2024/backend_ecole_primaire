@@ -7,7 +7,7 @@ const paiementSchema = new mongoose.Schema({
     required: false,
     default: null,
   },
-  designation: String,
+  designation: [String],
   period: String,
   annee_scolaire: String,
   montant: String,

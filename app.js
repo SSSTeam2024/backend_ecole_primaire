@@ -10,8 +10,12 @@ const app = express();
 
 const server = http.createServer(app);
 
+const corsOptions = {
+  origin: "*",
+};
 app.use(compression());
-app.use(cors());
+
+app.use(cors(corsOptions));
 app.use(express.static("files"));
 const port = process.env.PORT || 3000;
 

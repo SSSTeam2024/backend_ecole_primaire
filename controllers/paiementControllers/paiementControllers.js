@@ -2,12 +2,21 @@ const paiementServices = require("../../services/paiementServices/paiementServic
 
 const createPaiement = async (req, res) => {
   try {
-    const { eleve, annee_scolaire, montant, date_paiement } = req.body;
+    const {
+      eleve,
+      annee_scolaire,
+      montant,
+      date_paiement,
+      period,
+      designation,
+    } = req.body;
     const newPaiement = await paiementServices.createPaiement({
       eleve,
       annee_scolaire,
       montant,
       date_paiement,
+      period,
+      designation,
     });
     res.status(201).json(newPaiement);
   } catch (error) {
@@ -43,13 +52,22 @@ const getPaiementByEleveId = async (req, res) => {
 const updatePaiement = async (req, res) => {
   try {
     const paiementId = req.params.id;
-    const { eleve, annee_scolaire, montant, date_paiement } = req.body;
+    const {
+      eleve,
+      annee_scolaire,
+      montant,
+      date_paiement,
+      period,
+      designation,
+    } = req.body;
 
     const updatePaiement = await paiementServices.updatePaiement(paiementId, {
       eleve,
       annee_scolaire,
       montant,
       date_paiement,
+      period,
+      designation,
     });
 
     if (!updatePaiement) {

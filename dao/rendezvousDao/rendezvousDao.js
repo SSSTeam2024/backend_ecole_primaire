@@ -1,7 +1,9 @@
 const Rendezvous = require("../../models/rendezvousModel/rendezvousModel");
 
 const createRendezvous = async (rendezvousData) => {
-  return await Rendezvous.create(rendezvousData);
+  return await Rendezvous.create(rendezvousData)
+    .populate("parents")
+    .populate("matiere");
 };
 
 const getRendezvous = async () => {

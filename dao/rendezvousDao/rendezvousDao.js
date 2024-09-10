@@ -1,7 +1,8 @@
 const Rendezvous = require("../../models/rendezvousModel/rendezvousModel");
 
 const createRendezvous = async (rendezvousData) => {
-  return await Rendezvous.create(rendezvousData)
+  const newRendezvous = await Rendezvous.create(rendezvousData);
+  return await Rendezvous.findById(newRendezvous._id)
     .populate("parents")
     .populate("matiere");
 };

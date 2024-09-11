@@ -8,6 +8,8 @@ const http = require("http");
 const AppRouter = require("./routes/appRouter");
 const app = express();
 
+const parentDao = require("./dao/parentDao/parentDao");
+
 const server = http.createServer(app);
 
 const corsOptions = {

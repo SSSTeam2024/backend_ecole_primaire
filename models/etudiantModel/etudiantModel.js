@@ -18,6 +18,7 @@ const etudiantSchema = new mongoose.Schema({
   },
   genre: String,
   avatar: String,
+  statusPaiement: String,
 });
 
 module.exports = mongoose.model("Etudiant", etudiantSchema);

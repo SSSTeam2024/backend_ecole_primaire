@@ -12,6 +12,7 @@ const createEtudiant = async (req, res) => {
       genre,
       avatar_base64_string,
       avatar_extension,
+      statusPaiement,
     } = req.body;
 
     const etudiantFilesPath = "files/etudiantFiles/";
@@ -39,6 +40,7 @@ const createEtudiant = async (req, res) => {
         parent,
         genre,
         avatar,
+        statusPaiement,
       },
       documents
     );
@@ -148,10 +150,25 @@ const getEtudiantsByClasseId = async (req, res) => {
   }
 };
 
+const updateStatusPaiment = async (req, res) => {
+  try {
+    const { _id, statusPaiement } = req.body;
+    const sentResult = await etudiantService.updateStatusPaiemnt({
+      etudiant_id: _id,
+      paiement: statusPaiement,
+    });
+    res.json({ success: sentResult });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send(error.message);
+  }
+};
+
 module.exports = {
   createEtudiant,
   deleteEtudiant,
   getEtudiants,
   updateEtudiant,
   getEtudiantsByClasseId,
+  updateStatusPaiment,
 };

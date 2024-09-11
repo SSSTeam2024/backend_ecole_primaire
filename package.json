@@ -13,6 +13,7 @@
   "dependencies": {
     "@googlemaps/google-maps-services-js": "^3.3.42",
     "@onesignal/node-onesignal": "^2.0.1-beta2",
+    "axios": "^1.7.7",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.20.2",
     "bull": "^4.12.9",
@@ -23,6 +24,7 @@
     "express": "^4.18.2",
     "googlemaps": "^1.12.0",
     "jsonwebtoken": "^9.0.2",
+    "moment-timezone": "^0.5.45",
     "mongoose": "^8.1.1",
     "node-cron": "^3.0.3",
     "node-localstorage": "^3.0.5",

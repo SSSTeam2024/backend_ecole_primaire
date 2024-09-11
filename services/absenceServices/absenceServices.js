@@ -1,10 +1,14 @@
 const absenceDao = require("../../dao/absenceDao/absenceDao");
+const parentDao = require("../../dao/parentDao/parentDao");
+const smsService = require("../smsServices/smsServices");
 
 const createAbsence = async (absenceData) => {
   return await absenceDao.createAbsence(absenceData);
 };
 
 const getAbsences = async () => {
+  let parents = await parentDao.getParents();
+  // smsService.sendSms(parents, "hello");
   return await absenceDao.getAbsences();
 };
 

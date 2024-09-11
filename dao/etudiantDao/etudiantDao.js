@@ -49,6 +49,17 @@ const getEtudiantsByClasseId = async (classeId) => {
   return await Etudiant.find(query).populate("classe");
 };
 
+const updateStatusPaiement = async (id, paiement) => {
+  return await Etudiant.findByIdAndUpdate(
+    { _id: id },
+    {
+      $set: {
+        statusPaiement: paiement,
+      },
+    }
+  );
+};
+
 module.exports = {
   createEtudiant,
   getEtudiantById,
@@ -57,4 +68,5 @@ module.exports = {
   updateEtudiant,
   updateEtudiantParentAssignment,
   getEtudiantsByClasseId,
+  updateStatusPaiement,
 };

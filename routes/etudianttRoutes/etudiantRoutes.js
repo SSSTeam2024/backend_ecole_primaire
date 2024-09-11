@@ -11,4 +11,6 @@ router.get(
   "/etudiants-classe-id/:id",
   etudiantController.getEtudiantsByClasseId
 );
+router.post("/updateStatusPaiment", etudiantController.updateStatusPaiment);
+
 module.exports = router;

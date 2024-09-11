@@ -31,6 +31,12 @@ const getEtudiantsByClasseId = async (classeId) => {
   return await etudiantDao.getEtudiantsByClasseId(classeId);
 };
 
+const updateStatusPaiemnt = async (etudiantData) => {
+  const { etudiant_id, paiement } = etudiantData;
+  await etudiantDao.updateStatusPaiement(etudiant_id, paiement);
+  return "Payment Status Up to date!!";
+};
+
 async function saveDocumentsToServer(documents) {
   let counter = 0;
   for (const file of documents) {
@@ -63,4 +69,5 @@ module.exports = {
   deleteEtudiant,
   updateEtudiant,
   getEtudiantsByClasseId,
+  updateStatusPaiemnt,
 };

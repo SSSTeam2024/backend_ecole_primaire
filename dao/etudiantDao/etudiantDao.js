@@ -46,7 +46,7 @@ const getEtudiantsByClasseId = async (classeId) => {
   const query = {
     classe: classeId,
   };
-  return await Etudiant.find(query).populate("classe");
+  return await Etudiant.find(query).populate("classe").populate("parent");
 };
 
 const updateStatusPaiement = async (id, paiement) => {

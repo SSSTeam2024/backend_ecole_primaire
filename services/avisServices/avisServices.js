@@ -1,10 +1,42 @@
 const avisDao = require("../../dao/avisDao/avisDao");
+const etudiantDao = require("../../dao/etudiantDao/etudiantDao");
 const globalFunctions = require("../../utils/globalFunctions");
 const fs = require("fs");
+const onesignalService = require("../oneSignalServices/oneSignalServices");
+const notificationService = require("../notificationServices/notificationService");
 
 const createAvis = async (avisData, documents) => {
   let saveResult = await saveDocumentsToServer(documents);
-  return await avisDao.createAvis(avisData);
+  const avis = await avisDao.createAvis(avisData);
+  let eleves = [];
+  for (const classe of avis.classes) {
+    let studentsByClass = await etudiantDao.getEtudiantsByClasseId(classe._id);
+    eleves.push(studentsByClass);
+  }
+
+  let parentsOneSignalKeys = [];
+  let studentIds = [];
+
+  for (const studentsByClass of eleves) {
+    for (const student of studentsByClass) {
+      parentsOneSignalKeys.push(student.parent.onesignal_api_key);
+      studentIds.push(student._id);
+    }
+  }
+
+  await onesignalService.sendNotification({
+    contents: avis.desc,
+    title: avis.titre,
+    key: "avis",
+    users: parentsOneSignalKeys,
+  });
+  await notificationService.createNotification({
+    eleve: studentIds, // contents: avis.desc,
+    lu: "0", // title: avis.titre,
+    titre: avis.titre,
+    description: avis.desc,
+  });
+  return avis;
 };
 
 const getAvis = async () => {

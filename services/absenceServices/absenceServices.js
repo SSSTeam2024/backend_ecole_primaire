@@ -1,6 +1,6 @@
 const absenceDao = require("../../dao/absenceDao/absenceDao");
 const parentDao = require("../../dao/parentDao/parentDao");
-const smsService = require("../smsServices/smsServices");
+// const smsService = require("../smsServices/smsServices");
 
 const createAbsence = async (absenceData) => {
   return await absenceDao.createAbsence(absenceData);

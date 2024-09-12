@@ -2,9 +2,10 @@ const classeService = require("../../services/classeServices/classeServices");
 
 const createClasse = async (req, res) => {
   try {
-    const { nom_classe } = req.body;
+    const { nom_classe, niveau } = req.body;
     const newClasse = await classeService.createClasse({
       nom_classe,
+      niveau,
     });
     res.status(201).json(newClasse);
   } catch (error) {
@@ -26,10 +27,11 @@ const getClasses = async (req, res) => {
 const updateClasse = async (req, res) => {
   try {
     const classeId = req.params.id;
-    const { nom_classe } = req.body;
+    const { nom_classe, niveau } = req.body;
 
     const updatedClasse = await classeService.updateClasse(classeId, {
       nom_classe,
+      niveau,
     });
 
     if (!updatedClasse) {

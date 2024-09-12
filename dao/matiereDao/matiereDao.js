@@ -5,7 +5,7 @@ const createMatiere = async (matiereData) => {
 };
 
 const getMatieres = async () => {
-  return await Matiere.find().populate("classe");
+  return await Matiere.find().populate("niveau");
 };
 
 const updateMatiere = async (id, updateData) => {

@@ -1,9 +1,9 @@
 const mongoose = require("mongoose");
 
 const notesSchema = new mongoose.Schema({
-  eleve: {
+  classe: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "Etudiant",
+    ref: "Classe",
     required: false,
     default: null,
   },
@@ -15,7 +15,17 @@ const notesSchema = new mongoose.Schema({
   },
   trimestre: String,
   type: String,
-  note: String,
+  notes: [
+    {
+      note: String,
+      eleve: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Etudiant",
+        required: false,
+        default: null,
+      },
+    },
+  ],
   date: String,
 });
 

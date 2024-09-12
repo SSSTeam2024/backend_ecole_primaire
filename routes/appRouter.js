@@ -28,6 +28,7 @@ const evaluationRoutes = require("./evaluationRoutes/evaluationsRoutes");
 const rendezvousRoutes = require("./rendezvousRoutes/rendezvousRoutes");
 const notificationRoutes = require("./notificationRoutes/notificationRoutes");
 const inscriptionRoutes = require("./inscriptionRoutes/inscriptionRoutes");
+const niveauRoutes = require("./niveauRoutes/niveauRoutes");
 
 router.use("/etudiants", etudiantRoutes);
 router.use("/classes", classeRoutes);
@@ -56,5 +57,6 @@ router.use("/evaluations", evaluationRoutes);
 router.use("/rendez-vous", rendezvousRoutes);
 router.use("/notifications", notificationRoutes);
 router.use("/inscriptions", inscriptionRoutes);
+router.use("/niveaux", niveauRoutes);
 
 module.exports = router;

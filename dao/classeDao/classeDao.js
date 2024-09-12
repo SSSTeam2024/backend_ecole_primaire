@@ -5,7 +5,7 @@ const createClasse = async (classeData) => {
 };
 
 const getClasses = async () => {
-  return await Classe.find();
+  return await Classe.find().populate("niveau");
 };
 
 const updateClasse = async (id, updateData) => {

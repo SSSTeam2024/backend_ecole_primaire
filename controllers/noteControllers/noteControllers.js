@@ -2,13 +2,13 @@ const noteService = require("../../services/notesServices/notesServices");
 
 const createNote = async (req, res) => {
   try {
-    const { eleve, matiere, trimestre, type, note, date } = req.body;
+    const { classe, matiere, trimestre, type, notes, date } = req.body;
     const newNote = await noteService.createNote({
-      eleve,
+      classe,
       matiere,
       trimestre,
       type,
-      note,
+      notes,
       date,
     });
     res.status(201).json(newNote);
@@ -42,14 +42,14 @@ const getNotesByEleveId = async (req, res) => {
 const updateNote = async (req, res) => {
   try {
     const noteId = req.params.id;
-    const { eleve, matiere, trimestre, type, note, date } = req.body;
+    const { classe, matiere, trimestre, type, notes, date } = req.body;
 
     const updateNote = await noteService.updateNote(noteId, {
-      eleve,
+      classe,
       matiere,
       trimestre,
       type,
-      note,
+      notes,
       date,
     });
 

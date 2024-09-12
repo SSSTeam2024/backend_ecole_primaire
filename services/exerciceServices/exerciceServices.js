@@ -1,10 +1,43 @@
 const exerciceDao = require("../../dao/exercicesDao/exercicesDao");
 const globalFunctions = require("../../utils/globalFunctions");
+const onesignalService = require("../oneSignalServices/oneSignalServices");
+const notificationService = require("../notificationServices/notificationService");
+const etudiantDao = require("../../dao/etudiantDao/etudiantDao");
 const fs = require("fs");
 
 const createExercice = async (exerciceData, documents) => {
   let saveResult = await saveDocumentsToServer(documents);
-  return await exerciceDao.createExercice(exerciceData);
+  const exercice = await exerciceDao.createExercice(exerciceData);
+  let eleves = [];
+  for (const classe of exercice.classes) {
+    let studentsByClass = await etudiantDao.getEtudiantsByClasseId(classe._id);
+    eleves.push(studentsByClass);
+  }
+
+  let parentsOneSignalKeys = [];
+  let studentIds = [];
+
+  for (const studentsByClass of eleves) {
+    for (const student of studentsByClass) {
+      parentsOneSignalKeys.push(student.parent.onesignal_api_key);
+      studentIds.push(student._id);
+    }
+  }
+
+  await onesignalService.sendNotification({
+    contents: `Pour ${exercice.badge_date} ${exercice.desc}`,
+    title: `Exercice : ${exercice.matiere.nom_matiere}`,
+    key: "exercices",
+    users: parentsOneSignalKeys,
+  });
+  await notificationService.createNotification({
+    eleve: studentIds,
+    lu: "0",
+    titre: `Exercice : ${exercice.matiere.nom_matiere}`,
+    description: `Pour ${exercice.badge_date} ${exercice.desc}`,
+  });
+
+  return exercice;
 };
 
 const getExercices = async () => {

@@ -1,10 +1,43 @@
 const emploiDao = require("../../dao/EmploiDao/emploiDao");
 const globalFunctions = require("../../utils/globalFunctions");
+const onesignalService = require("../oneSignalServices/oneSignalServices");
+const notificationService = require("../notificationServices/notificationService");
+const etudiantDao = require("../../dao/etudiantDao/etudiantDao");
 const fs = require("fs");
 
 const createEmploi = async (emploiData, documents) => {
   let saveResult = await saveDocumentsToServer(documents);
-  return await emploiDao.createEmploi(emploiData);
+
+  const emploi = await emploiDao.createEmploi(emploiData);
+  let eleves = [];
+
+  let studentsByClass = await etudiantDao.getEtudiantsByClasseId(emploi.classe);
+  eleves.push(studentsByClass);
+
+  let parentsOneSignalKeys = [];
+  let studentIds = [];
+
+  for (const studentsByClass of eleves) {
+    for (const student of studentsByClass) {
+      parentsOneSignalKeys.push(student.parent.onesignal_api_key);
+      studentIds.push(student._id);
+    }
+  }
+
+  await onesignalService.sendNotification({
+    contents: `Emploi Pour élèves de ${emploi.classe.nom_classe}`,
+    title: `Emploi : ${emploi.classe.nom_classe}`,
+    key: "emplois",
+    users: parentsOneSignalKeys,
+  });
+  await notificationService.createNotification({
+    eleve: studentIds,
+    lu: "0",
+    titre: `Emploi : ${emploi.classe.nom_classe}`,
+    description: `Emploi Pour élèves de ${emploi.classe.nom_classe}`,
+  });
+
+  return emploi;
 };
 
 const getEmplois = async () => {
@@ -18,11 +51,6 @@ const deleteEmploi = async (id) => {
 const getEmploisByClasseId = async (classeId) => {
   return await emploiDao.getEmploisByClasseId(classeId);
 };
-
-// const updateExercice = async (id, updateData, documents) => {
-//   let saveResult = await saveDocumentsToServer(documents);
-//   return await exerciceDao.updateExercice(id, updateData);
-// };
 
 async function saveDocumentsToServer(documents) {
   let counter = 0;

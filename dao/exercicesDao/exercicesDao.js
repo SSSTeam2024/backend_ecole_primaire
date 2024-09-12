@@ -1,7 +1,10 @@
 const Exercice = require("../../models/exerciceModel/exerciceModel");
 
 const createExercice = async (exerciceData) => {
-  return await Exercice.create(exerciceData);
+  const newExercice = await Exercice.create(exerciceData);
+  return await Exercice.findById(newExercice._id)
+    .populate("classes")
+    .populate("matiere");
 };
 
 const getExercices = async () => {

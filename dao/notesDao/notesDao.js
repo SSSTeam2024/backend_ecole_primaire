@@ -1,7 +1,8 @@
 const Note = require("../../models/notesModel/noteModel");
 
 const createNote = async (noteData) => {
-  return await Note.create(noteData);
+  const newNote = await Note.create(noteData);
+  return await Note.findById(newNote._id).populate("eleve").populate("matiere");
 };
 
 const getNotes = async () => {

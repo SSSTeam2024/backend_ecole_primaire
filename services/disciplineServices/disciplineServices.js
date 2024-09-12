@@ -1,10 +1,29 @@
 const disciplineDao = require("../../dao/disciplineDao/disciplineDao");
 const globalFunctions = require("../../utils/globalFunctions");
+const eleveDao = require("../../dao/etudiantDao/etudiantDao");
+const onesignalService = require("../oneSignalServices/oneSignalServices");
+const notificationService = require("../notificationServices/notificationService");
 const fs = require("fs");
 
 const createDiscipline = async (disciplineData, documents) => {
   let saveResult = await saveDocumentsToServer(documents);
-  return await disciplineDao.createDiscipline(disciplineData);
+  const discipline = await disciplineDao.createDiscipline(disciplineData);
+  const eleve = await eleveDao.getEtudiantById(discipline.eleve);
+
+  await onesignalService.sendNotification({
+    contents: discipline.texte,
+    title: `Discipline__${discipline.type} : ${eleve.prenom} ${eleve.nom}`,
+    key: "disciplines",
+    users: [eleve.parent.onesignal_api_key],
+  });
+  await notificationService.createNotification({
+    eleve: discipline.eleve,
+    lu: "0",
+    titre: `Discipline__${discipline.type} :${eleve.prenom} ${eleve.nom}`,
+    description: discipline.texte,
+  });
+
+  return discipline;
 };
 
 const getDisciplines = async () => {

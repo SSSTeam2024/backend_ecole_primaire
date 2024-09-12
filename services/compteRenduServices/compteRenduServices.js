@@ -1,10 +1,46 @@
 const compteRenduDao = require("../../dao/compteRenduDao/compteRenduDao");
 const globalFunctions = require("../../utils/globalFunctions");
+const onesignalService = require("../oneSignalServices/oneSignalServices");
+const notificationService = require("../notificationServices/notificationService");
+const etudiantDao = require("../../dao/etudiantDao/etudiantDao");
 const fs = require("fs");
 
 const createCompteRendu = async (compteRenduData, documents) => {
   let saveResult = await saveDocumentsToServer(documents);
-  return await compteRenduDao.createCompteRendu(compteRenduData);
+
+  const compteRendu = await compteRenduDao.createCompteRendu(compteRenduData);
+
+  let eleves = [];
+
+  let studentsByClass = await etudiantDao.getEtudiantsByClasseId(
+    compteRendu.classe
+  );
+  eleves.push(studentsByClass);
+
+  let parentsOneSignalKeys = [];
+  let studentIds = [];
+
+  for (const studentsByClass of eleves) {
+    for (const student of studentsByClass) {
+      parentsOneSignalKeys.push(student.parent.onesignal_api_key);
+      studentIds.push(student._id);
+    }
+  }
+
+  await onesignalService.sendNotification({
+    contents: compteRendu.desc,
+    title: `A faire : ${compteRendu.titre}`,
+    key: "comptes-rendus",
+    users: parentsOneSignalKeys,
+  });
+  await notificationService.createNotification({
+    eleve: studentIds,
+    lu: "0",
+    titre: `A faire : ${compteRendu.titre}`,
+    description: compteRendu.desc,
+  });
+
+  return compteRendu;
 };
 
 const getCompteRendus = async () => {

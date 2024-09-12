@@ -1,7 +1,10 @@
 const Evaluation = require("../../models/evaluationModel/evaluationModel");
 
 const createEvaluation = async (evaluationData) => {
-  return await Evaluation.create(evaluationData);
+  const newEvaluation = await Evaluation.create(evaluationData);
+  return await Evaluation.findById(newEvaluation._id)
+    .populate("eleve")
+    .populate("matiere");
 };
 
 const getEvaluations = async () => {

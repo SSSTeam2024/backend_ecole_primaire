@@ -10,7 +10,7 @@ const getEtudiants = async () => {
 };
 
 const getEtudiantById = async (id) => {
-  return await Etudiant.findById(id);
+  return await Etudiant.findById(id).populate("parent");
 };
 
 const deleteEtudiant = async (id) => {

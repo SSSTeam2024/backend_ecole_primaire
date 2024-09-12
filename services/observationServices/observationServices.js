@@ -1,10 +1,46 @@
 const observationDao = require("../../dao/observationDao/observationDao");
 const globalFunctions = require("../../utils/globalFunctions");
+const onesignalService = require("../oneSignalServices/oneSignalServices");
+const notificationService = require("../notificationServices/notificationService");
+const etudiantDao = require("../../dao/etudiantDao/etudiantDao");
 const fs = require("fs");
 
 const createObservation = async (observationData, documents) => {
   let saveResult = await saveDocumentsToServer(documents);
-  return await observationDao.createObservation(observationData);
+
+  const observation = await observationDao.createObservation(observationData);
+
+  let eleves = [];
+
+  let studentsByClass = await etudiantDao.getEtudiantsByClasseId(
+    observation.classe
+  );
+  eleves.push(studentsByClass);
+
+  let parentsOneSignalKeys = [];
+  let studentIds = [];
+
+  for (const studentsByClass of eleves) {
+    for (const student of studentsByClass) {
+      parentsOneSignalKeys.push(student.parent.onesignal_api_key);
+      studentIds.push(student._id);
+    }
+  }
+
+  await onesignalService.sendNotification({
+    contents: observation.description,
+    title: `Observation : ${observation.titre}`,
+    key: "observations",
+    users: parentsOneSignalKeys,
+  });
+  await notificationService.createNotification({
+    eleve: studentIds,
+    lu: "0",
+    titre: `Observation : ${observation.titre}`,
+    description: observation.description,
+  });
+
+  return observation;
 };
 
 const getObservations = async () => {

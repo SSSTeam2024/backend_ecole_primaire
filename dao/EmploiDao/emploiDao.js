@@ -1,7 +1,8 @@
 const Emploi = require("../../models/emploiModel/emploiModel");
 
-const createEmploi = async (disciplineData) => {
-  return await Emploi.create(disciplineData);
+const createEmploi = async (emploiData) => {
+  const newEmploi = await Emploi.create(emploiData);
+  return await Emploi.findById(newEmploi._id).populate("classe");
 };
 
 const getEmplois = async () => {

@@ -16,9 +16,19 @@ const deleteMatiere = async (id) => {
   return await matiereDao.deleteMatiere(id);
 };
 
+const getMatieresByClasseId = async (classeId) => {
+  return await matiereDao.getMatieresByClasseId(classeId);
+};
+
+const getMatieresByEtudiantId = async (etudiantId) => {
+  return await matiereDao.getMatieresByEtudiantId(etudiantId);
+};
+
 module.exports = {
   createMatiere,
   getMatieres,
   updateMatiere,
   deleteMatiere,
+  getMatieresByClasseId,
+  getMatieresByEtudiantId,
 };

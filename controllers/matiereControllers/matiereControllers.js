@@ -60,9 +60,33 @@ const deleteMatiere = async (req, res) => {
   }
 };
 
+const getMatieresByClasseId = async (req, res) => {
+  try {
+    const { classeId } = req.params;
+    const matieres = await matiereService.getMatieresByClasseId(classeId);
+    res.json(matieres);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send(error.message);
+  }
+};
+
+const getMatieresByEtudiantId = async (req, res) => {
+  try {
+    const { etudiantId } = req.params;
+    const matieres = await matiereService.getMatieresByEtudiantId(etudiantId);
+    res.json(matieres);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send(error.message);
+  }
+};
+
 module.exports = {
   createMatiere,
   getMatieres,
   updateMatiere,
   deleteMatiere,
+  getMatieresByClasseId,
+  getMatieresByEtudiantId,
 };

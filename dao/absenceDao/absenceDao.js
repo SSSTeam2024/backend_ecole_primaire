@@ -7,7 +7,7 @@ const createAbsence = async (noteData) => {
 const getAbsences = async () => {
   return await Absence.find()
     .populate("eleve")
-    .populate("matiere")
+    // .populate("matiere")
     .populate("enseignant");
 };
 

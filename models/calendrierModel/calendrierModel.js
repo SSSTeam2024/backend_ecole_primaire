@@ -11,12 +11,7 @@ const calendrierSchema = new mongoose.Schema({
   heure_debut: String,
   heure_fin: String,
   date: String,
-  matiere: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Matiere",
-    required: false,
-    default: null,
-  },
+  matiere: String,
   classe: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Classe",

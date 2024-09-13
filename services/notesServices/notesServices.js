@@ -9,7 +9,7 @@ const createNote = async (noteData) => {
 
   // let parentAPiKeys = []
   await onesignalService.sendNotification({
-    contents: `Note: ${note.matiere.nom_matiere} ${note.type} : ${note.note} en ${note.trimestre} `,
+    contents: `Note: ${note.matiere} ${note.type} : ${note.note} en ${note.trimestre} `,
     title: `${note.eleve.prenom} ${note.eleve.nom}`,
     key: "notes",
     users: [eleve.parent.onesignal_api_key],
@@ -19,7 +19,7 @@ const createNote = async (noteData) => {
     eleve: note.eleve,
     lu: "0",
     titre: `${note.eleve.prenom} ${note.eleve.nom}`,
-    description: `Note: ${note.matiere.nom_matiere} ${note.type} : ${note.note} en ${note.trimestre} `,
+    description: `Note: ${note.matiere} ${note.type} : ${note.note} en ${note.trimestre} `,
   });
 
   return note;

@@ -26,14 +26,14 @@ const createExercice = async (exerciceData, documents) => {
 
   await onesignalService.sendNotification({
     contents: `Pour ${exercice.badge_date} ${exercice.desc}`,
-    title: `Exercice : ${exercice.matiere.nom_matiere}`,
+    title: `Exercice : ${exercice.matiere}`,
     key: "exercices",
     users: parentsOneSignalKeys,
   });
   await notificationService.createNotification({
     eleve: studentIds,
     lu: "0",
-    titre: `Exercice : ${exercice.matiere.nom_matiere}`,
+    titre: `Exercice : ${exercice.matiere}`,
     description: `Pour ${exercice.badge_date} ${exercice.desc}`,
   });
 

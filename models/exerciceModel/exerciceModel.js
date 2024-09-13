@@ -9,12 +9,7 @@ const exerciceSchema = new mongoose.Schema({
       default: null,
     },
   ],
-  matiere: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Matiere",
-    required: false,
-    default: null,
-  },
+  matiere: String,
   desc: String,
   creation_date: String,
   badge_date: String,

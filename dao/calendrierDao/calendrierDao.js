@@ -7,7 +7,6 @@ const createCalendrier = async (calendrierData) => {
 const getCalendriers = async () => {
   return await Calendrier.find()
     .populate("classe")
-    .populate("matiere")
     .populate("enseignant")
     .populate("salle");
 };

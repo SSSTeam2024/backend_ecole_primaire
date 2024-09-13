@@ -7,12 +7,7 @@ const absencesSchema = new mongoose.Schema({
     required: false,
     default: null,
   },
-  matiere: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Matiere",
-    required: false,
-    default: null,
-  },
+  matiere: String,
   enseignant: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Enseignant",

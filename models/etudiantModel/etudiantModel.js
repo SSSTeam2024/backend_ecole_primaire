@@ -19,6 +19,18 @@ const etudiantSchema = new mongoose.Schema({
   genre: String,
   avatar: String,
   statusPaiement: String,
+  lieu_naissance: String,
+  adresse_eleve: String,
+  ville: String,
+  nationalite: String,
+  annee_scolaire: String,
+  etablissement_frequente: String,
+  moyenne_trimestre_1: String,
+  moyenne_trimestre_2: String,
+  moyenne_trimestre_3: String,
+  moyenne_annuelle: String,
+  moyenne_concours_6: String,
+  numero_convocation_concours: String,
 });
 
 module.exports = mongoose.model("Etudiant", etudiantSchema);

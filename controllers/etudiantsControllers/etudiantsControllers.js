@@ -13,6 +13,18 @@ const createEtudiant = async (req, res) => {
       avatar_base64_string,
       avatar_extension,
       statusPaiement,
+      lieu_naissance,
+      adresse_eleve,
+      ville,
+      nationalite,
+      annee_scolaire,
+      etablissement_frequente,
+      moyenne_trimestre_1,
+      moyenne_trimestre_2,
+      moyenne_trimestre_3,
+      moyenne_annuelle,
+      moyenne_concours_6,
+      numero_convocation_concours,
     } = req.body;
 
     const etudiantFilesPath = "files/etudiantFiles/";
@@ -41,6 +53,18 @@ const createEtudiant = async (req, res) => {
         genre,
         avatar,
         statusPaiement,
+        lieu_naissance,
+        adresse_eleve,
+        ville,
+        nationalite,
+        annee_scolaire,
+        etablissement_frequente,
+        moyenne_trimestre_1,
+        moyenne_trimestre_2,
+        moyenne_trimestre_3,
+        moyenne_annuelle,
+        moyenne_concours_6,
+        numero_convocation_concours,
       },
       documents
     );
@@ -89,6 +113,18 @@ const updateEtudiant = async (req, res) => {
       genre,
       avatar_base64_string,
       avatar_extension,
+      lieu_naissance,
+      adresse_eleve,
+      ville,
+      nationalite,
+      annee_scolaire,
+      etablissement_frequente,
+      moyenne_trimestre_1,
+      moyenne_trimestre_2,
+      moyenne_trimestre_3,
+      moyenne_annuelle,
+      moyenne_concours_6,
+      numero_convocation_concours,
     } = req.body;
 
     const etudiantFilesPath = "files/etudiantFiles/";
@@ -105,6 +141,18 @@ const updateEtudiant = async (req, res) => {
       classe,
       parent,
       genre,
+      lieu_naissance,
+      adresse_eleve,
+      ville,
+      nationalite,
+      annee_scolaire,
+      etablissement_frequente,
+      moyenne_trimestre_1,
+      moyenne_trimestre_2,
+      moyenne_trimestre_3,
+      moyenne_annuelle,
+      moyenne_concours_6,
+      numero_convocation_concours,
     };
 
     let documents = [];

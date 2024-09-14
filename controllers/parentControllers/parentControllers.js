@@ -2,8 +2,16 @@ const parentService = require("../../services/parentServices/parentServices");
 
 const createParent = async (req, res) => {
   try {
-    const { cin, nom_parent, prenom_parent, phone, username, password, fils } =
-      req.body;
+    const {
+      cin,
+      nom_parent,
+      prenom_parent,
+      phone,
+      username,
+      password,
+      fils,
+      profession,
+    } = req.body;
 
     const parent = await parentService.createParent({
       cin,
@@ -13,6 +21,7 @@ const createParent = async (req, res) => {
       username,
       password,
       fils,
+      profession,
     });
     res.json(parent);
   } catch (error) {
@@ -36,7 +45,15 @@ const login = async (req, res) => {
 const updateParent = async (req, res) => {
   try {
     const parentId = req.params.id;
-    const { cin, nom_parent, prenom_parent, phone, username, fils } = req.body;
+    const {
+      cin,
+      nom_parent,
+      prenom_parent,
+      phone,
+      username,
+      fils,
+      profession,
+    } = req.body;
 
     const updateParent = await parentService.updateParent(parentId, {
       cin,
@@ -45,6 +62,7 @@ const updateParent = async (req, res) => {
       phone,
       username,
       fils,
+      profession,
     });
 
     if (!updateParent) {

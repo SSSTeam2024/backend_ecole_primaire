@@ -11,6 +11,12 @@ const paiementSchema = new mongoose.Schema({
   period: String,
   annee_scolaire: String,
   montant: String,
+  classe: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Classe",
+    required: false,
+    default: null,
+  },
   date_paiement: String,
 });
 

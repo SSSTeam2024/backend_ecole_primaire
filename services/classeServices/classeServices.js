@@ -16,9 +16,14 @@ const deleteClasse = async (id) => {
   return await classeDao.deleteClasse(id);
 };
 
+const getClasseById = async (id) => {
+  return await classeDao.getClasseById(id);
+};
+
 module.exports = {
   createClasse,
   getClasses,
   deleteClasse,
   updateClasse,
+  getClasseById,
 };

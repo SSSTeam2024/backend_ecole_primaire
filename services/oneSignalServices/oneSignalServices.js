@@ -20,7 +20,11 @@ const sendNotification = async (notificationData) => {
       //included_segments: ["6bd69aa3-49ac-4b93-aae9-5da362a16107"], // Target audience (e.g., 'All', 'Active Users', 'Subscribed Users')
       include_player_ids: notificationData.users,
       //url: "https://example.com", // Optional: URL to open when notification is clicked
-      data: { key: notificationData.key }, // Optional: Custom data to send with the notification
+      data: {
+        key: notificationData.key,
+        notificationId: notificationData.notificationId,
+        studentId: notificationData.studentId,
+      }, // Optional: Custom data to send with the notification
       //ios_badgeType: "Increase", // Optional: Badge increment (only for iOS)
       //ios_badgeCount: 1, // Optional: Badge count (only for iOS)
       //android_accent_color: "#FF0000", // Optional: Accent color for Android

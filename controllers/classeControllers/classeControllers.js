@@ -60,9 +60,26 @@ const deleteClasse = async (req, res) => {
   }
 };
 
+const getClasseById = async (req, res) => {
+  try {
+    const classeId = req.params.id;
+
+    const getClasse = await classeService.getClasseById(classeId);
+
+    if (!getClasse) {
+      return res.status(404).send("Classe not found");
+    }
+    res.json(getClasse);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send(error.message);
+  }
+};
+
 module.exports = {
   createClasse,
   getClasses,
   deleteClasse,
   updateClasse,
+  getClasseById,
 };

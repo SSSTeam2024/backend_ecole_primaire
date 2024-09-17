@@ -16,9 +16,14 @@ const deleteClasse = async (id) => {
   return await Classe.findByIdAndDelete(id);
 };
 
+const getClasseById = async (id) => {
+  return await Classe.findById(id).populate("niveau");
+};
+
 module.exports = {
   createClasse,
   getClasses,
   deleteClasse,
   updateClasse,
+  getClasseById,
 };

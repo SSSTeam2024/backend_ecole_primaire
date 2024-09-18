@@ -4,7 +4,7 @@ const smsSchema = new mongoose.Schema({
   sender: String,
   receiver: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "Parent",
+    ref: "Enseignant",
     required: false,
     default: null,
   },
@@ -14,4 +14,4 @@ const smsSchema = new mongoose.Schema({
   sms_par_destinataire: String,
 });
 
-module.exports = mongoose.model("Sms", smsSchema);
+module.exports = mongoose.model("SmsEnseignant", smsSchema);

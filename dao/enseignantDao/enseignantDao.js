@@ -16,9 +16,14 @@ const deleteEnseignant = async (id) => {
   return await Enseignant.findByIdAndDelete(id);
 };
 
+const getEnseignantById = async (id) => {
+  return await Enseignant.findById(id);
+};
+
 module.exports = {
   createEnseignant,
   getEnseignants,
   deleteEnseignant,
   updateEnseignant,
+  getEnseignantById,
 };

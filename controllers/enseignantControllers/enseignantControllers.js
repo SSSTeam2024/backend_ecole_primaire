@@ -2,10 +2,12 @@ const enseignantService = require("../../services/enseignantServices/enseignantS
 
 const createEnseignant = async (req, res) => {
   try {
-    const { nom_enseignant, prenom_enseignant } = req.body;
+    const { nom_enseignant, prenom_enseignant, phone, matiere } = req.body;
     const newEnseignant = await enseignantService.createEnseignant({
       nom_enseignant,
       prenom_enseignant,
+      phone,
+      matiere,
     });
     res.status(201).json(newEnseignant);
   } catch (error) {
@@ -45,13 +47,15 @@ const deleteEnseignant = async (req, res) => {
 const updateEnseignant = async (req, res) => {
   try {
     const enseignantId = req.params.id;
-    const { nom_enseignant, prenom_enseignant } = req.body;
+    const { nom_enseignant, prenom_enseignant, phone, matiere } = req.body;
 
     const updateEnseignant = await enseignantService.updateEnseignant(
       enseignantId,
       {
         nom_enseignant,
         prenom_enseignant,
+        phone,
+        matiere,
       }
     );
 

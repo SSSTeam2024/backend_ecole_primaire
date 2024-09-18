@@ -30,6 +30,7 @@ const notificationRoutes = require("./notificationRoutes/notificationRoutes");
 const inscriptionRoutes = require("./inscriptionRoutes/inscriptionRoutes");
 const niveauRoutes = require("./niveauRoutes/niveauRoutes");
 const smsRoutes = require("./smsRoutes/smsRoutes");
+const smsEnseignantRoutes = require("./smsEnseignantRoutes/smsEnseignantRoutes");
 
 router.use("/etudiants", etudiantRoutes);
 router.use("/classes", classeRoutes);
@@ -60,5 +61,6 @@ router.use("/notifications", notificationRoutes);
 router.use("/inscriptions", inscriptionRoutes);
 router.use("/niveaux", niveauRoutes);
 router.use("/msgSms", smsRoutes);
+router.use("/sms-enseignant", smsEnseignantRoutes);
 
 module.exports = router;

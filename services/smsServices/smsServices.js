@@ -3,6 +3,7 @@ const axios = require("axios");
 const smsDao = require("../../dao/smsDao/smsDao");
 const parentDao = require("../../dao/parentDao/parentDao");
 const studentDao = require("../../dao/etudiantDao/etudiantDao");
+const enseignantDao = require("../../dao/enseignantDao/enseignantDao");
 
 const sendSms = async (users, msg) => {
   const timezone = "Africa/Tunis";
@@ -56,73 +57,226 @@ const generateNewMessageBody = (parent, msg) => {
     newMsg = newMsg.replace("[login]", parent.username);
   }
   if (msg.includes("[pass_parent]")) {
-    newMsg = newMsg.replace("[pass_parent]", "123456");
+    newMsg = newMsg.replace("[pass_parent]", parent.password);
   }
+  // if (msg.includes("[classe]")) {
+  //   newMsg = newMsg.replace("[classe]");
+  // }
   return newMsg;
 };
 
+// const createSms = async (smsData) => {
+//   console.log("receivers", smsData.receivers);
+//   console.log("specefic_students", smsData.specefic_students);
+//   console.log("specefic_enseignants", smsData.specefic_enseignants);
+//   if (smsData.receivers.length > 0 && smsData.specefic_students[0] === "") {
+//     console.log("inside first if");
+//     if (smsData.include_names === "0") {
+//       for (const receiver of smsData.receivers) {
+//         let parent = await parentDao.getParentById(receiver);
+//         let newBody = generateNewMessageBody(parent, smsData.msg);
+//         let sms = {
+//           sender: smsData.sender,
+//           receiver: receiver,
+//           msg: newBody,
+//           status: smsData.status,
+//           total_sms: smsData.total_sms,
+//           sms_par_destinataire: smsData.sms_par_destinataire,
+//         };
+//         await smsDao.createSms(sms);
+//       }
+//     } else {
+//       for (const receiver of smsData.receivers) {
+//         let parent = await parentDao.getParentById(receiver);
+//         for (const eleve of parent.fils) {
+//           let newBody = generateNewMessageBody(parent, smsData.msg);
+//           let body_with_eleve_name = `${eleve.prenom} ${eleve.nom} : ${eleve.classe.nom_classe} %0A ${newBody}`;
+//           let sms = {
+//             sender: smsData.sender,
+//             receiver: receiver,
+//             msg: body_with_eleve_name,
+//             status: smsData.status,
+//             total_sms: smsData.total_sms,
+//             sms_par_destinataire: smsData.sms_par_destinataire,
+//           };
+//           await smsDao.createSms(sms);
+//         }
+//       }
+//     }
+//   } else if (
+//     smsData.receivers[0] === "" &&
+//     smsData.specefic_students.length > 0
+//   ) {
+//     console.log("inside first else if");
+//     if (smsData.include_names === "0") {
+//       for (const student of smsData.specefic_students) {
+//         let etudiant = await studentDao.getEtudiantById(student);
+//         let newBody = generateNewMessageBody(etudiant.parent, smsData.msg);
+//         let sms = {
+//           sender: smsData.sender,
+//           receiver: etudiant.parent._id,
+//           msg: newBody,
+//           status: smsData.status,
+//           total_sms: smsData.total_sms,
+//           sms_par_destinataire: smsData.sms_par_destinataire,
+//         };
+//         await smsDao.createSms(sms);
+//       }
+//     } else {
+//       for (const student of smsData.specefic_students) {
+//         let etudiant = await studentDao.getEtudiantById(student);
+//         let newBody = generateNewMessageBody(etudiant.parent, smsData.msg);
+//         let body_with_eleve_name = `${etudiant.prenom} ${etudiant.nom} : ${etudiant.classe.nom_classe} %0A ${newBody}`;
+//         let sms = {
+//           sender: smsData.sender,
+//           receiver: etudiant.parent._id,
+//           msg: body_with_eleve_name,
+//           status: smsData.status,
+//           total_sms: smsData.total_sms,
+//           sms_par_destinataire: smsData.sms_par_destinataire,
+//         };
+//         await smsDao.createSms(sms);
+//       }
+//     }
+//   } else if (
+//     smsData.receivers[0] === "" &&
+//     smsData.specefic_students[0] === "" &&
+//     smsData.specefic_enseignants.length > 0
+//   ) {
+//     for (const receiver of smsData.specefic_enseignants) {
+//       console.log(receiver);
+//       let enseignant = await enseignantDao.getEnseignantById(receiver);
+//       let newBody = generateNewMessageBody(enseignant, smsData.msg);
+//       let sms = {
+//         sender: smsData.sender,
+//         receiver: receiver,
+//         msg: newBody,
+//         status: smsData.status,
+//         total_sms: smsData.total_sms,
+//         sms_par_destinataire: smsData.sms_par_destinataire,
+//       };
+//       console.log(sms);
+//       await smsDao.createSms(sms);
+//     }
+//     else {
+//       for (const receiver of smsData.specefic_enseignants) {
+//         let enseignant = await enseignantDao.getParentById(receiver);
+//         for (const eleve of parent.fils) {
+//           let newBody = generateNewMessageBody(parent, smsData.msg);
+//           let body_with_eleve_name = `${eleve.prenom} ${eleve.nom} : ${eleve.classe.nom_classe} %0A ${newBody}`;
+//           let sms = {
+//             sender: smsData.sender,
+//             receiver: receiver,
+//             msg: body_with_eleve_name,
+//             status: smsData.status,
+//             total_sms: smsData.total_sms,
+//             sms_par_destinataire: smsData.sms_par_destinataire,
+//           };
+//           await smsDao.createSms(sms);
+//         }
+//       }
+//     }
+//   }
+//   return "Sms saved with success";
+// };
+
 const createSms = async (smsData) => {
-  if (smsData.receivers.length > 0 && smsData.specefic_students[0] === "") {
+  if (
+    smsData.receivers.some((receiver) => receiver !== "") &&
+    smsData.specefic_students[0] === ""
+  ) {
     if (smsData.include_names === "0") {
       for (const receiver of smsData.receivers) {
-        let parent = await parentDao.getParentById(receiver);
-        let newBody = generateNewMessageBody(parent, smsData.msg);
-        let sms = {
-          sender: smsData.sender,
-          receiver: receiver,
-          msg: newBody,
-          status: smsData.status,
-        };
-        await smsDao.createSms(sms);
-      }
-    } else {
-      for (const receiver of smsData.receivers) {
-        let parent = await parentDao.getParentById(receiver);
-        for (const eleve of parent.fils) {
+        if (receiver !== "") {
+          let parent = await parentDao.getParentById(receiver);
           let newBody = generateNewMessageBody(parent, smsData.msg);
-          let body_with_eleve_name = `${eleve.prenom} ${eleve.nom} : ${eleve.classe.nom_classe} %0A ${newBody}`;
           let sms = {
             sender: smsData.sender,
             receiver: receiver,
+            msg: newBody,
+            status: smsData.status,
+            total_sms: smsData.total_sms,
+            sms_par_destinataire: smsData.sms_par_destinataire,
+          };
+          await smsDao.createSms(sms);
+        }
+      }
+    } else {
+      for (const receiver of smsData.receivers) {
+        if (receiver !== "") {
+          let parent = await parentDao.getParentById(receiver);
+          for (const eleve of parent.fils) {
+            let newBody = generateNewMessageBody(parent, smsData.msg);
+            let body_with_eleve_name = `${eleve.prenom} ${eleve.nom} : ${eleve.classe.nom_classe} %0A ${newBody}`;
+            let sms = {
+              sender: smsData.sender,
+              receiver: receiver,
+              msg: body_with_eleve_name,
+              status: smsData.status,
+              total_sms: smsData.total_sms,
+              sms_par_destinataire: smsData.sms_par_destinataire,
+            };
+            await smsDao.createSms(sms);
+          }
+        }
+      }
+    }
+  } else if (
+    smsData.receivers.every((receiver) => receiver === "") &&
+    smsData.specefic_students.some((student) => student !== "")
+  ) {
+    console.log("inside first else if");
+    if (smsData.include_names === "0") {
+      for (const student of smsData.specefic_students) {
+        if (student !== "") {
+          let etudiant = await studentDao.getEtudiantById(student);
+          let newBody = generateNewMessageBody(etudiant.parent, smsData.msg);
+          let sms = {
+            sender: smsData.sender,
+            receiver: etudiant.parent._id,
+            msg: newBody,
+            status: smsData.status,
+            total_sms: smsData.total_sms,
+            sms_par_destinataire: smsData.sms_par_destinataire,
+          };
+          await smsDao.createSms(sms);
+        }
+      }
+    } else {
+      for (const student of smsData.specefic_students) {
+        if (student !== "") {
+          let etudiant = await studentDao.getEtudiantById(student);
+          let newBody = generateNewMessageBody(etudiant.parent, smsData.msg);
+          let body_with_eleve_name = `${etudiant.prenom} ${etudiant.nom} : ${etudiant.classe.nom_classe} %0A ${newBody}`;
+          let sms = {
+            sender: smsData.sender,
+            receiver: etudiant.parent._id,
             msg: body_with_eleve_name,
             status: smsData.status,
+            total_sms: smsData.total_sms,
+            sms_par_destinataire: smsData.sms_par_destinataire,
           };
-          // console.log("sms", sms);
           await smsDao.createSms(sms);
         }
       }
     }
   } else if (
-    smsData.receivers[0] === "" &&
-    smsData.specefic_students.length > 0
+    smsData.receivers.every((receiver) => receiver === "") &&
+    smsData.specefic_students.every((student) => student === "") &&
+    smsData.specefic_enseignants.length > 0
   ) {
-    if (smsData.include_names === "0") {
-      for (const student of smsData.specefic_students) {
-        let etudiant = await studentDao.getEtudiantById(student);
-        let newBody = generateNewMessageBody(etudiant.parent, smsData.msg);
-        let sms = {
-          sender: smsData.sender,
-          receiver: etudiant.parent._id,
-          msg: newBody,
-          status: smsData.status,
-        };
-        await smsDao.createSms(sms);
-        console.log("sms", sms);
-      }
-    } else {
-      for (const student of smsData.specefic_students) {
-        let etudiant = await studentDao.getEtudiantById(student);
-        let newBody = generateNewMessageBody(etudiant.parent, smsData.msg);
-        let body_with_eleve_name = `${etudiant.prenom} ${etudiant.nom} : ${etudiant.classe.nom_classe} %0A ${newBody}`;
-        let sms = {
-          sender: smsData.sender,
-          receiver: etudiant.parent._id,
-          msg: body_with_eleve_name,
-          status: smsData.status,
-        };
-        await smsDao.createSms(sms);
-        console.log("sms", sms);
-      }
+    for (const receiver of smsData.specefic_enseignants) {
+      let enseignant = await enseignantDao.getEnseignantById(receiver);
+      let newBody = generateNewMessageBody(enseignant, smsData.msg);
+      let sms = {
+        sender: smsData.sender,
+        receiver: receiver,
+        msg: newBody,
+        status: smsData.status,
+        total_sms: smsData.total_sms,
+        sms_par_destinataire: smsData.sms_par_destinataire,
+      };
+      await smsDao.createSms(sms);
     }
   }
   return "Sms saved with success";

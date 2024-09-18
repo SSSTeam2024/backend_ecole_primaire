@@ -1,23 +1,21 @@
-const smsServices = require("../../services/smsServices/smsServices");
+const smsServices = require("../../services/smsEnseignantServices/smsEnseignantServices");
 
 const createSms = async (req, res) => {
   try {
     const {
       sender,
-      receivers,
       msg,
       status,
-      specefic_students,
+      specefic_enseignants,
       include_names,
       total_sms,
       sms_par_destinataire,
     } = req.body;
     const newSms = await smsServices.createSms({
       sender,
-      receivers,
       msg,
       status,
-      specefic_students,
+      specefic_enseignants,
       include_names,
       total_sms,
       sms_par_destinataire,

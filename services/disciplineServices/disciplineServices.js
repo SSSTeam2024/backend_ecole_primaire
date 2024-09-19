@@ -10,17 +10,19 @@ const createDiscipline = async (disciplineData, documents) => {
   const discipline = await disciplineDao.createDiscipline(disciplineData);
   const eleve = await eleveDao.getEtudiantById(discipline.eleve);
 
-  await onesignalService.sendNotification({
-    contents: discipline.texte,
-    title: `Discipline__${discipline.type} : ${eleve.prenom} ${eleve.nom}`,
-    key: "disciplines",
-    users: [eleve.parent.onesignal_api_key],
-  });
-  await notificationService.createNotification({
+  const notif = await notificationService.createNotification({
     eleve: discipline.eleve,
     lu: "0",
     titre: `Discipline__${discipline.type} :${eleve.prenom} ${eleve.nom}`,
     description: discipline.texte,
+  });
+
+  await onesignalService.sendNotification({
+    contents: discipline.texte,
+    title: `Discipline__${discipline.type} : ${eleve.prenom} ${eleve.nom}`,
+    key: "disciplines",
+    notificationId: notif._id,
+    users: [eleve.parent.onesignal_api_key],
   });
 
   return discipline;

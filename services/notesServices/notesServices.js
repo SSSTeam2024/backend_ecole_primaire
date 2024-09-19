@@ -5,22 +5,22 @@ const notificationService = require("../notificationServices/notificationService
 
 const createNote = async (noteData) => {
   const note = await noteDao.createNote(noteData);
-  const eleve = await eleveDao.getEtudiantById(note.eleve);
+  const eleve = await eleveDao.getEtudiantById(note._id);
 
-  // let parentAPiKeys = []
-  await onesignalService.sendNotification({
-    contents: `Note: ${note.matiere} ${note.type} : ${note.note} en ${note.trimestre} `,
-    title: `${note.eleve.prenom} ${note.eleve.nom}`,
-    key: "notes",
-    users: [eleve.parent.onesignal_api_key],
-  });
+  // const notif = await notificationService.createNotification({
+  //   eleve: eleve,
+  //   lu: "0",
+  //   titre: `${eleve.prenom} ${eleve.nom}`,
+  //   description: `Note: ${note.matiere} ${note.type} : ${note.note} en ${note.trimestre} `,
+  // });
 
-  await notificationService.createNotification({
-    eleve: note.eleve,
-    lu: "0",
-    titre: `${note.eleve.prenom} ${note.eleve.nom}`,
-    description: `Note: ${note.matiere} ${note.type} : ${note.note} en ${note.trimestre} `,
-  });
+  // await onesignalService.sendNotification({
+  //   contents: `Note: ${note.matiere} ${note.type} : ${note.note} en ${note.trimestre} `,
+  //   title: `${note.eleve.prenom} ${note.eleve.nom}`,
+  //   key: "notes",
+  //   notificationId: notif._id,
+  //   users: [eleve.parent.onesignal_api_key],
+  // });
 
   return note;
 };

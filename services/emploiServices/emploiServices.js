@@ -24,17 +24,19 @@ const createEmploi = async (emploiData, documents) => {
     }
   }
 
-  await onesignalService.sendNotification({
-    contents: `Emploi Pour élèves de ${emploi.classe.nom_classe}`,
-    title: `Emploi : ${emploi.classe.nom_classe}`,
-    key: "emplois",
-    users: parentsOneSignalKeys,
-  });
-  await notificationService.createNotification({
+  const notif = await notificationService.createNotification({
     eleve: studentIds,
     lu: "0",
     titre: `Emploi : ${emploi.classe.nom_classe}`,
     description: `Emploi Pour élèves de ${emploi.classe.nom_classe}`,
+  });
+
+  await onesignalService.sendNotification({
+    contents: `Emploi Pour élèves de ${emploi.classe.nom_classe}`,
+    title: `Emploi : ${emploi.classe.nom_classe}`,
+    key: "emplois",
+    notificationId: notif._id,
+    users: parentsOneSignalKeys,
   });
 
   return emploi;

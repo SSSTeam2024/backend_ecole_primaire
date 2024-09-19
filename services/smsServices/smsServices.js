@@ -56,8 +56,11 @@ const generateNewMessageBody = (parent, msg, etudiant) => {
   if (msg.includes("[login]")) {
     newMsg = newMsg.replace("[login]", parent.username);
   }
+  const lastSixDigits = parent.phone.slice(-6);
+  const reversedLastSixDigits = lastSixDigits.split("").reverse().join("");
+
   if (msg.includes("[pass_parent]")) {
-    newMsg = newMsg.replace("[pass_parent]", parent.password);
+    newMsg = newMsg.replace("[pass_parent]", reversedLastSixDigits);
   }
   if (msg.includes("[classe]")) {
     newMsg = newMsg.replace("[classe]", etudiant.classe.nom_classe);
@@ -66,10 +69,10 @@ const generateNewMessageBody = (parent, msg, etudiant) => {
     newMsg = newMsg.replace("[nom_eleve]", etudiant.prenom);
   }
   if (msg.includes("[lien_inscription]")) {
-    newMsg = newMsg.replace("[lien_inscription]", "sls.tn/inscription");
+    newMsg = newMsg.replace("[lien_inscription]", "https://sls.tn/inscription");
   }
   if (msg.includes("[lien_app]")) {
-    newMsg = newMsg.replace("[lien_app]", "lien app");
+    newMsg = newMsg.replace("[lien_app]", "https://sls.tn/app");
   }
   return newMsg;
 };

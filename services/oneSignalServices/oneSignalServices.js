@@ -23,7 +23,7 @@ const sendNotification = async (notificationData) => {
       data: {
         key: notificationData.key,
         notificationId: notificationData.notificationId,
-        studentId: notificationData.studentId,
+        // studentId: notificationData.studentId,
       }, // Optional: Custom data to send with the notification
       //ios_badgeType: "Increase", // Optional: Badge increment (only for iOS)
       //ios_badgeCount: 1, // Optional: Badge count (only for iOS)

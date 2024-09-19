@@ -24,18 +24,21 @@ const createAvis = async (avisData, documents) => {
     }
   }
 
-  await onesignalService.sendNotification({
-    contents: avis.desc,
-    title: avis.titre,
-    key: "avis",
-    users: parentsOneSignalKeys,
-  });
-  await notificationService.createNotification({
+  const notif = await notificationService.createNotification({
     eleve: studentIds, // contents: avis.desc,
     lu: "0", // title: avis.titre,
     titre: avis.titre,
     description: avis.desc,
   });
+
+  await onesignalService.sendNotification({
+    contents: avis.desc,
+    title: avis.titre,
+    key: "avis",
+    notificationId: notif._id,
+    users: parentsOneSignalKeys,
+  });
+
   return avis;
 };
 

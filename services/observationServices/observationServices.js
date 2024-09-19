@@ -27,17 +27,19 @@ const createObservation = async (observationData, documents) => {
     }
   }
 
-  await onesignalService.sendNotification({
-    contents: observation.description,
-    title: `Observation : ${observation.titre}`,
-    key: "observations",
-    users: parentsOneSignalKeys,
-  });
-  await notificationService.createNotification({
+  const notif = await notificationService.createNotification({
     eleve: studentIds,
     lu: "0",
     titre: `Observation : ${observation.titre}`,
     description: observation.description,
+  });
+
+  await onesignalService.sendNotification({
+    contents: observation.description,
+    title: `Observation : ${observation.titre}`,
+    key: "observations",
+    notificationId: notif._id,
+    users: parentsOneSignalKeys,
   });
 
   return observation;

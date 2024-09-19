@@ -5,7 +5,14 @@ const createSms = async (SmsData) => {
 };
 
 const getSms = async () => {
-  return await Sms.find().populate("receiver");
+  return await Sms.find()
+    .populate("receiver")
+    .populate({
+      path: "eleve",
+      populate: {
+        path: "classe",
+      },
+    });
 };
 
 const getPendingSmses = async () => {
@@ -13,6 +20,13 @@ const getPendingSmses = async () => {
     status: "Pending",
   };
   return await Sms.find(query).populate("receiver");
+};
+
+const deletePendingSmses = async () => {
+  const query = {
+    status: "Pending",
+  };
+  return await Sms.deleteMany(query);
 };
 
 const updateSmsStatus = async (id, status) => {
@@ -36,4 +50,5 @@ module.exports = {
   updateSmsStatus,
   deleteSms,
   getPendingSmses,
+  deletePendingSmses,
 };

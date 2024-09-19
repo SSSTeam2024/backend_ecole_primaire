@@ -28,17 +28,12 @@ const sendCustomeSms = async () => {
   return "Smses sent";
 };
 
-const generateNewMessageBody = (parent, msg) => {
+const generateNewMessageBody = (enseignant, msg) => {
   let newMsg = msg;
-  if (msg.includes("[parent]")) {
-    newMsg = newMsg.replace("[parent]", parent.prenom_parent);
+  if (msg.includes("[enseignant]")) {
+    newMsg = newMsg.replace("[enseignant]", enseignant.prenom_enseignant);
   }
-  if (msg.includes("[login]")) {
-    newMsg = newMsg.replace("[login]", parent.username);
-  }
-  if (msg.includes("[pass_parent]")) {
-    newMsg = newMsg.replace("[pass_parent]", "123456");
-  }
+
   return newMsg;
 };
 

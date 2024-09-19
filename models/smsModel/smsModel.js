@@ -12,6 +12,12 @@ const smsSchema = new mongoose.Schema({
   status: String,
   total_sms: String,
   sms_par_destinataire: String,
+  eleve: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Etudiant",
+    required: false,
+    default: null,
+  },
 });
 
 module.exports = mongoose.model("Sms", smsSchema);

@@ -5,7 +5,14 @@ const createCarnet = async (carnetData) => {
 };
 
 const getCarnets = async () => {
-  return await Carnet.find().populate("eleve");
+  return await Carnet.find()
+    .populate({
+      path: "eleves",
+      populate: {
+        path: "eleve",
+      },
+    })
+    .populate("classe");
 };
 
 // const updateCarnet = async (id, updateData) => {

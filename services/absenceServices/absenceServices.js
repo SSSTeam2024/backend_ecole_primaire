@@ -4,22 +4,22 @@ const parentDao = require("../../dao/parentDao/parentDao");
 
 const createAbsence = async (absenceData) => {
   const absence = await absenceDao.createAbsence(absenceData);
-  const eleve = await eleveDao.getEtudiantById(discipline.eleve);
+  // const eleve = await eleveDao.getEtudiantById(discipline.eleve);
 
-  const notif = await notificationService.createNotification({
-    eleve: discipline.eleve,
-    lu: "0",
-    titre: `Discipline__${discipline.type} :${eleve.prenom} ${eleve.nom}`,
-    description: discipline.texte,
-  });
+  // const notif = await notificationService.createNotification({
+  //   eleve: discipline.eleve,
+  //   lu: "0",
+  //   titre: `Discipline__${discipline.type} :${eleve.prenom} ${eleve.nom}`,
+  //   description: discipline.texte,
+  // });
 
-  await onesignalService.sendNotification({
-    contents: discipline.texte,
-    title: `Discipline__${discipline.type} : ${eleve.prenom} ${eleve.nom}`,
-    key: "disciplines",
-    notificationId: notif._id,
-    users: [eleve.parent.onesignal_api_key],
-  });
+  // await onesignalService.sendNotification({
+  //   contents: discipline.texte,
+  //   title: `Discipline__${discipline.type} : ${eleve.prenom} ${eleve.nom}`,
+  //   key: "disciplines",
+  //   notificationId: notif._id,
+  //   users: [eleve.parent.onesignal_api_key],
+  // });
   return absence;
 };
 

@@ -1,9 +1,9 @@
 const mongoose = require("mongoose");
 
 const absencesSchema = new mongoose.Schema({
-  eleve: {
+  classe: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "Etudiant",
+    ref: "Classe",
     required: false,
     default: null,
   },
@@ -14,9 +14,20 @@ const absencesSchema = new mongoose.Schema({
     required: false,
     default: null,
   },
-  type: String,
+  eleves: [
+    {
+      eleve: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Etudiant",
+        required: false,
+        default: null,
+      },
+      typeAbsent: String,
+    },
+  ],
   heure: String,
   date: String,
+  trimestre: String,
 });
 
 module.exports = mongoose.model("Absence", absencesSchema);

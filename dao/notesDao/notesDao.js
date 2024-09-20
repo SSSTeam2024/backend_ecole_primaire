@@ -13,7 +13,14 @@ const createNote = async (noteData) => {
 };
 
 const getNotes = async () => {
-  return await Note.find().populate("eleve").populate("matiere");
+  return await Note.find()
+    .populate({
+      path: "eleves",
+      populate: {
+        path: "eleve",
+      },
+    })
+    .populate("classe");
 };
 
 const updateNote = async (id, updateData) => {

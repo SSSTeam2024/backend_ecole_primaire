@@ -1,14 +1,19 @@
 const Absence = require("../../models/absenceModel/absenceModel");
 
-const createAbsence = async (noteData) => {
-  return await Absence.create(noteData);
+const createAbsence = async (absenceData) => {
+  return await Absence.create(absenceData);
 };
 
 const getAbsences = async () => {
   return await Absence.find()
-    .populate("eleve")
-    // .populate("matiere")
-    .populate("enseignant");
+    .populate("enseignant")
+    .populate({
+      path: "eleves",
+      populate: {
+        path: "eleve",
+      },
+    })
+    .populate("classe");
 };
 
 const updateAbsence = async (id, updateData) => {
@@ -20,10 +25,15 @@ const deleteAbsence = async (id) => {
 };
 
 const getAbsencesByEleveId = async (eleveId) => {
-  const query = {
-    eleve: eleveId,
-  };
-  return await Absence.find(query).populate("eleve").populate("matiere");
+  return await Absence.find({ "eleves.eleve": eleveId })
+    .populate({
+      path: "eleves",
+      populate: {
+        path: "eleve",
+      },
+    })
+    .populate("classe")
+    .populate("enseignant");
 };
 
 module.exports = {

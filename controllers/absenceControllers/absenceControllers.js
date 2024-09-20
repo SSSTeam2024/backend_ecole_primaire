@@ -2,14 +2,16 @@ const absenceService = require("../../services/absenceServices/absenceServices")
 
 const createAbsence = async (req, res) => {
   try {
-    const { eleve, matiere, enseignant, type, heure, date } = req.body;
+    const { classe, matiere, enseignant, eleves, heure, date, trimestre } =
+      req.body;
     const newAbsence = await absenceService.createAbsence({
-      eleve,
+      classe,
       matiere,
       enseignant,
-      type,
+      eleves,
       heure,
       date,
+      trimestre,
     });
     res.status(201).json(newAbsence);
   } catch (error) {

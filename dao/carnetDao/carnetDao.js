@@ -17,16 +17,19 @@ const deleteCarnet = async (id) => {
 };
 
 const getCarnetsByEleveId = async (eleveId) => {
-  const query = {
-    eleve: eleveId,
-  };
-  return await Carnet.find(query).populate("eleve");
+  return await Carnet.find({ "eleves.eleve": eleveId })
+    .populate({
+      path: "eleves",
+      populate: {
+        path: "eleve",
+      },
+    })
+    .populate("classe");
 };
 
 module.exports = {
   createCarnet,
   getCarnets,
-  //   updateCarnet,
   deleteCarnet,
   getCarnetsByEleveId,
 };

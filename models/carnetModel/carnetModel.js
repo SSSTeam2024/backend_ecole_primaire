@@ -1,16 +1,26 @@
 const mongoose = require("mongoose");
 
 const carnetSchema = new mongoose.Schema({
-  eleve: {
+  classe: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "Etudiant",
+    ref: "Classe",
     required: false,
     default: null,
   },
   trimestre: String,
-  note: String,
   date: String,
-  fichier: String,
+  eleves: [
+    {
+      eleve: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Etudiant",
+        required: false,
+        default: null,
+      },
+      note: String,
+      fichier: String,
+    },
+  ],
 });
 
 module.exports = mongoose.model("Carnet", carnetSchema);

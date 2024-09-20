@@ -3,38 +3,34 @@ const globalFunctions = require("../../utils/globalFunctions");
 
 const createCarnet = async (req, res) => {
   try {
-    const {
-      eleve,
-      trimestre,
-      note,
-      date,
-      fichier_base64_string,
-      fichier_extension,
-    } = req.body;
-
+    const { classe, trimestre, date, eleves } = req.body;
     const carnetFilesPath = "files/carnetFiles/";
-
-    let fichier = globalFunctions.generateUniqueFilename(
-      fichier_extension,
-      "Carnet"
-    );
-
-    let documents = [
-      {
+    let documents = [];
+    const elevesWithFiles = eleves.map((eleveData) => {
+      const { eleve, note, fichier_base64_string, fichier_extension } =
+        eleveData;
+      let fichier = globalFunctions.generateUniqueFilename(
+        fichier_extension,
+        "Bulletin"
+      );
+      documents.push({
         base64String: fichier_base64_string,
         extension: fichier_extension,
         name: fichier,
         path: carnetFilesPath,
-      },
-    ];
-
+      });
+      return {
+        eleve,
+        note,
+        fichier,
+      };
+    });
     const newCarnet = await carnetService.createCarnet(
       {
-        eleve,
+        classe,
         trimestre,
-        note,
         date,
-        fichier,
+        eleves: elevesWithFiles,
       },
       documents
     );

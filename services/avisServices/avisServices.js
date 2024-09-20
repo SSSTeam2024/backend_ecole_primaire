@@ -25,8 +25,8 @@ const createAvis = async (avisData, documents) => {
   }
 
   const notif = await notificationService.createNotification({
-    eleve: studentIds, // contents: avis.desc,
-    lu: "0", // title: avis.titre,
+    eleve: studentIds,
+    lu: "0",
     titre: avis.titre,
     description: avis.desc,
   });

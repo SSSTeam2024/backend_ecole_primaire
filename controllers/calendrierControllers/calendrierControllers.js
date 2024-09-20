@@ -11,6 +11,7 @@ const createCalendrier = async (req, res) => {
       matiere,
       classe,
       enseignant,
+      type,
     } = req.body;
     const newCalendrier = await calendrierServices.createCalendrier({
       salle,
@@ -21,6 +22,7 @@ const createCalendrier = async (req, res) => {
       matiere,
       classe,
       enseignant,
+      type,
     });
     res.status(201).json(newCalendrier);
   } catch (error) {

@@ -1,10 +1,24 @@
 const carnetDao = require("../../dao/carnetDao/carnetDao");
 const globalFunctions = require("../../utils/globalFunctions");
+const etudiantDao = require("../../dao/etudiantDao/etudiantDao");
 const fs = require("fs");
+const smsService = require("../smsServices/smsServices");
 
 const createCarnet = async (carnetData, documents) => {
   let saveResult = await saveDocumentsToServer(documents);
-  return await carnetDao.createCarnet(carnetData);
+  const bulletin = await carnetDao.createCarnet(carnetData);
+  let receivers = [];
+
+  for (const eleveID of carnetData.eleves) {
+    let etudiant = await etudiantDao.getEtudiantById(eleveID.eleve);
+    receivers.push({
+      phone: etudiant.parent.phone,
+      msg: `${etudiant.prenom} ${etudiant.nom} ${etudiant.classe.nom_classe}, %0A Votre enfant a obtenu une moyenne ${eleveID.note} sur 20 au cours du ${carnetData.trimestre}`,
+    });
+  }
+  await smsService.sendSms(receivers);
+
+  return bulletin;
 };
 
 const getCarnets = async () => {

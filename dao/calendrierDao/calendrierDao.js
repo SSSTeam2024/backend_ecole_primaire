@@ -1,6 +1,7 @@
 const Calendrier = require("../../models/calendrierModel/calendrierModel");
 
 const createCalendrier = async (calendrierData) => {
+  console.log(calendrierData);
   return await Calendrier.create(calendrierData);
 };
 

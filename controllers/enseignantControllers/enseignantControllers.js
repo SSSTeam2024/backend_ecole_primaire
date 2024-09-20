@@ -69,9 +69,28 @@ const updateEnseignant = async (req, res) => {
   }
 };
 
+const getEnseignantById = async (req, res) => {
+  try {
+    const enseignantId = req.params.id;
+
+    const getEnseignant = await enseignantService.getEnseignantById(
+      enseignantId
+    );
+
+    if (!getEnseignant) {
+      return res.status(404).send("Enseignant not found");
+    }
+    res.json(getEnseignant);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send(error.message);
+  }
+};
+
 module.exports = {
   createEnseignant,
   getEnseignants,
   deleteEnseignant,
   updateEnseignant,
+  getEnseignantById,
 };

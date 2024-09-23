@@ -26,8 +26,7 @@ const createAbsence = async (absenceData) => {
       }
     }
   }
-  await smsService.sendSms(receivers);
-
+  smsService.sendSms(receivers);
   return absence;
 };
 

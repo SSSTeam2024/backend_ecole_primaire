@@ -14,15 +14,9 @@ const rendezvousSchema = new mongoose.Schema(
       },
     ],
     heure: String,
-    matiere: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Matiere",
-      required: false,
-      default: null,
-    },
+    matiere: String,
     administration: String,
   },
-
   {
     timestamps: true,
   }

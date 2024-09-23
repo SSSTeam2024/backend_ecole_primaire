@@ -4,10 +4,12 @@ const globalFunctions = require("../../utils/globalFunctions");
 const fs = require("fs");
 const onesignalService = require("../oneSignalServices/oneSignalServices");
 const notificationService = require("../notificationServices/notificationService");
+const smsService = require("../smsServices/smsServices");
 
 const createAvis = async (avisData, documents) => {
   let saveResult = await saveDocumentsToServer(documents);
   const avis = await avisDao.createAvis(avisData);
+
   let eleves = [];
   for (const classe of avis.classes) {
     let studentsByClass = await etudiantDao.getEtudiantsByClasseId(classe._id);
@@ -24,20 +26,38 @@ const createAvis = async (avisData, documents) => {
     }
   }
 
-  const notif = await notificationService.createNotification({
-    eleve: studentIds,
-    lu: "0",
-    titre: avis.titre,
-    description: avis.desc,
-  });
+  smsService.sendSms(receivers);
 
-  await onesignalService.sendNotification({
-    contents: avis.desc,
-    title: avis.titre,
-    key: "avis",
-    notificationId: notif._id,
-    users: parentsOneSignalKeys,
-  });
+  // let eleves = [];
+  // for (const classe of avis.classes) {
+  //   let studentsByClass = await etudiantDao.getEtudiantsByClasseId(classe._id);
+  //   eleves.push(studentsByClass);
+  // }
+
+  // let parentsOneSignalKeys = [];
+  // let studentIds = [];
+
+  // for (const studentsByClass of eleves) {
+  //   for (const student of studentsByClass) {
+  //     parentsOneSignalKeys.push(student.parent.onesignal_api_key);
+  //     studentIds.push(student._id);
+  //   }
+  // }
+
+  // const notif = await notificationService.createNotification({
+  //   eleve: studentIds,
+  //   lu: "0",
+  //   titre: avis.titre,
+  //   description: avis.desc,
+  // });
+
+  // await onesignalService.sendNotification({
+  //   contents: avis.desc,
+  //   title: avis.titre,
+  //   key: "avis",
+  //   notificationId: notif._id,
+  //   users: parentsOneSignalKeys,
+  // });
 
   return avis;
 };

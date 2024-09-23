@@ -1,7 +1,19 @@
 const paiementDao = require("../../dao/paiementDao/paiementDao");
+const etudiantDao = require("../../dao/etudiantDao/etudiantDao");
+const smsService = require("../smsServices/smsServices");
 
 const createPaiement = async (paiementData) => {
-  return await paiementDao.createPaiement(paiementData);
+  let paiement = await paiementDao.createPaiement(paiementData);
+  const eleve = await etudiantDao.getEtudiantById(paiement.eleve);
+  let receivers = [
+    {
+      phone: eleve.parent.phone,
+      msg: `${eleve.prenom} ${eleve.nom} ${eleve.classe.nom_classe}, %0AVotre paiement a été effectué avec succès pour la désignation du ${paiement.period}`,
+    },
+  ];
+  // console.log(receivers);
+  smsService.sendSms(receivers);
+  return paiement;
 };
 
 const getPaiements = async () => {

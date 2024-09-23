@@ -1,10 +1,31 @@
 const documentDao = require("../../dao/documentsDao/documentsDao");
 const globalFunctions = require("../../utils/globalFunctions");
 const fs = require("fs");
+const smsService = require("../smsServices/smsServices");
+const etudiantDao = require("../../dao/etudiantDao/etudiantDao");
 
 const createDocument = async (documentData, documents) => {
   let saveResult = await saveDocumentsToServer(documents);
-  return await documentDao.createDocument(documentData);
+  let document = await documentDao.createDocument(documentData);
+  let eleves = [];
+  for (const classe of document.classes) {
+    let studentsByClass = await etudiantDao.getEtudiantsByClasseId(classe._id);
+    eleves.push(studentsByClass);
+  }
+
+  let parents = [];
+
+  for (const studentsByClass of eleves) {
+    for (const student of studentsByClass) {
+      parents.push({
+        phone: student.parent.phone,
+        msg: `Un nouveau document nommé ${document.titre} est maintenant disponible , voir plus de détails sur notre application`,
+      });
+    }
+  }
+  // console.log(parents);
+  smsService.sendSms(parents);
+  return document;
 };
 
 const getDocuments = async () => {

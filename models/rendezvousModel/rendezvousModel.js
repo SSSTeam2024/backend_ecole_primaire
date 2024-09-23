@@ -16,6 +16,7 @@ const rendezvousSchema = new mongoose.Schema(
     heure: String,
     matiere: String,
     administration: String,
+    createdBy: String,
   },
   {
     timestamps: true,

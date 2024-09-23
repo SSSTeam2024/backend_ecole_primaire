@@ -3,6 +3,7 @@ const globalFunctions = require("../../utils/globalFunctions");
 const onesignalService = require("../oneSignalServices/oneSignalServices");
 const notificationService = require("../notificationServices/notificationService");
 const etudiantDao = require("../../dao/etudiantDao/etudiantDao");
+const smsService = require("../smsServices/smsServices");
 const fs = require("fs");
 
 const createEmploi = async (emploiData, documents) => {
@@ -10,34 +11,49 @@ const createEmploi = async (emploiData, documents) => {
 
   const emploi = await emploiDao.createEmploi(emploiData);
   let eleves = [];
-
   let studentsByClass = await etudiantDao.getEtudiantsByClasseId(emploi.classe);
   eleves.push(studentsByClass);
-
-  let parentsOneSignalKeys = [];
-  let studentIds = [];
+  let parents = [];
 
   for (const studentsByClass of eleves) {
     for (const student of studentsByClass) {
-      parentsOneSignalKeys.push(student.parent.onesignal_api_key);
-      studentIds.push(student._id);
+      parents.push({
+        phone: student.parent.phone,
+        msg: `${student.prenom} ${student.nom} ${student.classe.nom_classe}, %0AVotre enfant a un nouveau emploi`,
+      });
     }
   }
+  // console.log(parents);
+  smsService.sendSms(parents);
+  // let eleves = [];
 
-  const notif = await notificationService.createNotification({
-    eleve: studentIds,
-    lu: "0",
-    titre: `Emploi : ${emploi.classe.nom_classe}`,
-    description: `Emploi Pour élèves de ${emploi.classe.nom_classe}`,
-  });
+  // let studentsByClass = await etudiantDao.getEtudiantsByClasseId(emploi.classe);
+  // eleves.push(studentsByClass);
 
-  await onesignalService.sendNotification({
-    contents: `Emploi Pour élèves de ${emploi.classe.nom_classe}`,
-    title: `Emploi : ${emploi.classe.nom_classe}`,
-    key: "emplois",
-    notificationId: notif._id,
-    users: parentsOneSignalKeys,
-  });
+  // let parentsOneSignalKeys = [];
+  // let studentIds = [];
+
+  // for (const studentsByClass of eleves) {
+  //   for (const student of studentsByClass) {
+  //     parentsOneSignalKeys.push(student.parent.onesignal_api_key);
+  //     studentIds.push(student._id);
+  //   }
+  // }
+
+  // const notif = await notificationService.createNotification({
+  //   eleve: studentIds,
+  //   lu: "0",
+  //   titre: `Emploi : ${emploi.classe.nom_classe}`,
+  //   description: `Emploi Pour élèves de ${emploi.classe.nom_classe}`,
+  // });
+
+  // await onesignalService.sendNotification({
+  //   contents: `Emploi Pour élèves de ${emploi.classe.nom_classe}`,
+  //   title: `Emploi : ${emploi.classe.nom_classe}`,
+  //   key: "emplois",
+  //   notificationId: notif._id,
+  //   users: parentsOneSignalKeys,
+  // });
 
   return emploi;
 };

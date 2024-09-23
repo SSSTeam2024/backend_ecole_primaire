@@ -16,17 +16,18 @@ const createAvis = async (avisData, documents) => {
     eleves.push(studentsByClass);
   }
 
-  let parentsOneSignalKeys = [];
-  let studentIds = [];
+  let parents = [];
 
   for (const studentsByClass of eleves) {
     for (const student of studentsByClass) {
-      parentsOneSignalKeys.push(student.parent.onesignal_api_key);
-      studentIds.push(student._id);
+      parents.push({
+        phone: student.parent.phone,
+        msg: "Un nouvel avis est disponible, consultez-le maintenant",
+      });
     }
   }
-
-  smsService.sendSms(receivers);
+  // console.log(parents);
+  smsService.sendSms(parents);
 
   // let eleves = [];
   // for (const classe of avis.classes) {

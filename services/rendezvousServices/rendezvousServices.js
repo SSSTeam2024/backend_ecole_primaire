@@ -1,7 +1,22 @@
 const rendezvousDao = require("../../dao/rendezvousDao/rendezvousDao");
+const smsService = require("../smsServices/smsServices");
+const parentDao = require("../../dao/parentDao/parentDao");
 
 const createRendezvous = async (rendezvousData) => {
-  return await rendezvousDao.createRendezvous(rendezvousData);
+  let rendezVous = await rendezvousDao.createRendezvous(rendezvousData);
+  let parents = [];
+  if (rendezvousData.createdBy === "administration") {
+    for (const parent of rendezVous.parents) {
+      let parentById = await parentDao.getParentById(parent);
+      parents.push({
+        phone: parent.phone,
+        msg: `Bonjour ${parentById.prenom_parent} ${parentById.nom_parent}, %0AVous avez un rendez-vous le ${rendezVous.date} à ${rendezVous.heure}`,
+      });
+    }
+  }
+  console.log(parents);
+  // smsService.sendSms(parents);
+  return rendezVous;
 };
 
 const getRendezvous = async () => {

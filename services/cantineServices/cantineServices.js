@@ -1,10 +1,26 @@
 const cantineDao = require("../../dao/cantineDao/cantineDao");
 const globalFunctions = require("../../utils/globalFunctions");
 const fs = require("fs");
+const smsService = require("../smsServices/smsServices");
+const parentDao = require("../../dao/parentDao/parentDao");
 
 const createCantine = async (cantineData, documents) => {
   let saveResult = await saveDocumentsToServer(documents);
-  return await cantineDao.createCantine(cantineData);
+  let cantine = await cantineDao.createCantine(cantineData);
+
+  // let receivers = [];
+
+  // let parents = await parentDao.getParents();
+
+  // for (const parent of parents) {
+  //   receivers.push({
+  //     phone: parent.phone,
+  //     msg: `${eleve.prenom} ${eleve.nom} ${eleve.classe.nom_classe}, %0A Votre enfant a un devoir de ${calendrierData.type} en ${calendrierData.matiere} le ${calendrierData.date} à ${calendrierData.heure_debut}`,
+  //   });
+  // }
+
+  // smsService.sendSms(receivers);
+  return cantine;
 };
 
 const getCantines = async () => {

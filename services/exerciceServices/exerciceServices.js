@@ -4,40 +4,55 @@ const onesignalService = require("../oneSignalServices/oneSignalServices");
 const notificationService = require("../notificationServices/notificationService");
 const etudiantDao = require("../../dao/etudiantDao/etudiantDao");
 const fs = require("fs");
+const smsService = require("../smsServices/smsServices");
 
 const createExercice = async (exerciceData, documents) => {
   let saveResult = await saveDocumentsToServer(documents);
   const exercice = await exerciceDao.createExercice(exerciceData);
-  let eleves = [];
-  for (const classe of exercice.classes) {
-    let studentsByClass = await etudiantDao.getEtudiantsByClasseId(classe._id);
-    eleves.push(studentsByClass);
+  let eleves = await etudiantDao.getEtudiantsByClasseId(exercice.classes);
+
+  let parents = [];
+
+  for (const student of eleves) {
+    parents.push({
+      phone: student.parent.phone,
+      msg: `${student.prenom} ${student.nom} ${student.classe.nom_classe}, %0AMatière: ${exerciceData.matiere}.%0AVotre enfant a un travail à la maison le ${exerciceData.creation_date} à rendre le ${exerciceData.badge_date}`,
+    });
   }
 
-  let parentsOneSignalKeys = [];
-  let studentIds = [];
+  // console.log(parents);
+  smsService.sendSms(parents);
 
-  for (const studentsByClass of eleves) {
-    for (const student of studentsByClass) {
-      parentsOneSignalKeys.push(student.parent.onesignal_api_key);
-      studentIds.push(student._id);
-    }
-  }
+  // let eleves = [];
+  // for (const classe of exercice.classes) {
+  //   let studentsByClass = await etudiantDao.getEtudiantsByClasseId(classe._id);
+  //   eleves.push(studentsByClass);
+  // }
 
-  const notif = await notificationService.createNotification({
-    eleve: studentIds,
-    lu: "0",
-    titre: `Exercice : ${exercice.matiere}`,
-    description: `Pour ${exercice.badge_date} ${exercice.desc}`,
-  });
+  // let parentsOneSignalKeys = [];
+  // let studentIds = [];
 
-  await onesignalService.sendNotification({
-    contents: `Pour ${exercice.badge_date} ${exercice.desc}`,
-    title: `Exercice : ${exercice.matiere}`,
-    key: "exercices",
-    notificationId: notif._id,
-    users: parentsOneSignalKeys,
-  });
+  // for (const studentsByClass of eleves) {
+  //   for (const student of studentsByClass) {
+  //     parentsOneSignalKeys.push(student.parent.onesignal_api_key);
+  //     studentIds.push(student._id);
+  //   }
+  // }
+
+  // const notif = await notificationService.createNotification({
+  //   eleve: studentIds,
+  //   lu: "0",
+  //   titre: `Exercice : ${exercice.matiere}`,
+  //   description: `Pour ${exercice.badge_date} ${exercice.desc}`,
+  // });
+
+  // await onesignalService.sendNotification({
+  //   contents: `Pour ${exercice.badge_date} ${exercice.desc}`,
+  //   title: `Exercice : ${exercice.matiere}`,
+  //   key: "exercices",
+  //   notificationId: notif._id,
+  //   users: parentsOneSignalKeys,
+  // });
 
   return exercice;
 };

@@ -10,6 +10,7 @@ const createRendezvous = async (req, res) => {
       heure,
       matiere,
       administration,
+      createdBy,
     } = req.body;
     const newRendezvous = await rendezvousServices.createRendezvous({
       titre,
@@ -19,6 +20,7 @@ const createRendezvous = async (req, res) => {
       heure,
       matiere,
       administration,
+      createdBy,
     });
     res.status(201).json(newRendezvous);
   } catch (error) {
@@ -66,6 +68,7 @@ const updateRendezvous = async (req, res) => {
       heure,
       matiere,
       administration,
+      createdBy,
     } = req.body;
 
     const updateRendezvous = await rendezvousServices.updateRendezvous(
@@ -78,6 +81,7 @@ const updateRendezvous = async (req, res) => {
         heure,
         matiere,
         administration,
+        createdBy,
       }
     );
 

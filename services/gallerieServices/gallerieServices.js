@@ -2,9 +2,32 @@ const gallerieDao = require("../../dao/gallerieDao/gallerieDao");
 const globalFunctions = require("../../utils/globalFunctions");
 const fs = require("fs");
 
+const etudiantDao = require("../../dao/etudiantDao/etudiantDao");
+const smsService = require("../smsServices/smsServices");
+
 const createGallerie = async (gallerieData, documents) => {
   let saveResult = await saveDocumentsToServer(documents);
-  return await gallerieDao.createGallerie(gallerieData);
+  let gallerie = await gallerieDao.createGallerie(gallerieData);
+
+  let eleves = [];
+  for (const classe of gallerie.classes) {
+    let studentsByClass = await etudiantDao.getEtudiantsByClasseId(classe._id);
+    eleves.push(studentsByClass);
+  }
+
+  let parents = [];
+
+  for (const studentsByClass of eleves) {
+    for (const student of studentsByClass) {
+      parents.push({
+        phone: student.parent.phone,
+        msg: `Une nouvelle galerie est désormais disponible, vous pouvez la consulter dès maintenant sur l'application SLS Sousse`,
+      });
+    }
+  }
+  // console.log(parents);
+  smsService.sendSms(parents);
+  return gallerie;
 };
 
 const getGalleries = async () => {

@@ -4,43 +4,61 @@ const onesignalService = require("../oneSignalServices/oneSignalServices");
 const notificationService = require("../notificationServices/notificationService");
 const etudiantDao = require("../../dao/etudiantDao/etudiantDao");
 const fs = require("fs");
+const smsService = require("../smsServices/smsServices");
 
 const createObservation = async (observationData, documents) => {
   let saveResult = await saveDocumentsToServer(documents);
 
   const observation = await observationDao.createObservation(observationData);
-
   let eleves = [];
+  for (const classe of observation.classe) {
+    let studentsByClass = await etudiantDao.getEtudiantsByClasseId(classe);
+    eleves.push(studentsByClass);
+  }
 
-  let studentsByClass = await etudiantDao.getEtudiantsByClasseId(
-    observation.classe
-  );
-  eleves.push(studentsByClass);
-
-  let parentsOneSignalKeys = [];
-  let studentIds = [];
+  let parents = [];
 
   for (const studentsByClass of eleves) {
     for (const student of studentsByClass) {
-      parentsOneSignalKeys.push(student.parent.onesignal_api_key);
-      studentIds.push(student._id);
+      parents.push({
+        phone: student.parent.phone,
+        msg: "Il ya une nouvelle observation, vous pouvez la consulter en visitant l'application SLS Sousse.",
+      });
     }
   }
+  // console.log(parents);
+  smsService.sendSms(parents);
+  // let eleves = [];
 
-  const notif = await notificationService.createNotification({
-    eleve: studentIds,
-    lu: "0",
-    titre: `Observation : ${observation.titre}`,
-    description: observation.description,
-  });
+  // let studentsByClass = await etudiantDao.getEtudiantsByClasseId(
+  //   observation.classe
+  // );
+  // eleves.push(studentsByClass);
 
-  await onesignalService.sendNotification({
-    contents: observation.description,
-    title: `Observation : ${observation.titre}`,
-    key: "observations",
-    notificationId: notif._id,
-    users: parentsOneSignalKeys,
-  });
+  // let parentsOneSignalKeys = [];
+  // let studentIds = [];
+
+  // for (const studentsByClass of eleves) {
+  //   for (const student of studentsByClass) {
+  //     parentsOneSignalKeys.push(student.parent.onesignal_api_key);
+  //     studentIds.push(student._id);
+  //   }
+  // }
+
+  // const notif = await notificationService.createNotification({
+  //   eleve: studentIds,
+  //   lu: "0",
+  //   titre: `Observation : ${observation.titre}`,
+  //   description: observation.description,
+  // });
+
+  // await onesignalService.sendNotification({
+  //   contents: observation.description,
+  //   title: `Observation : ${observation.titre}`,
+  //   key: "observations",
+  //   notificationId: notif._id,
+  //   users: parentsOneSignalKeys,
+  // });
 
   return observation;
 };

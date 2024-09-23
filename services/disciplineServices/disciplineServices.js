@@ -3,6 +3,7 @@ const globalFunctions = require("../../utils/globalFunctions");
 const eleveDao = require("../../dao/etudiantDao/etudiantDao");
 const onesignalService = require("../oneSignalServices/oneSignalServices");
 const notificationService = require("../notificationServices/notificationService");
+const smsService = require("../smsServices/smsServices");
 const fs = require("fs");
 
 const createDiscipline = async (disciplineData, documents) => {
@@ -10,20 +11,29 @@ const createDiscipline = async (disciplineData, documents) => {
   const discipline = await disciplineDao.createDiscipline(disciplineData);
   const eleve = await eleveDao.getEtudiantById(discipline.eleve);
 
-  const notif = await notificationService.createNotification({
-    eleve: discipline.eleve,
-    lu: "0",
-    titre: `Discipline__${discipline.type} :${eleve.prenom} ${eleve.nom}`,
-    description: discipline.texte,
-  });
+  let receivers = [
+    {
+      phone: eleve.parent.phone,
+      msg: `${eleve.prenom} ${eleve.nom} ${eleve.classe.nom_classe}, %0A Votre enfant a un ${discipline.type} le ${discipline.date} car ${discipline.texte}`,
+    },
+  ];
+  // console.log(receivers);
+  smsService.sendSms(receivers);
 
-  await onesignalService.sendNotification({
-    contents: discipline.texte,
-    title: `Discipline__${discipline.type} : ${eleve.prenom} ${eleve.nom}`,
-    key: "disciplines",
-    notificationId: notif._id,
-    users: [eleve.parent.onesignal_api_key],
-  });
+  // const notif = await notificationService.createNotification({
+  //   eleve: discipline.eleve,
+  //   lu: "0",
+  //   titre: `Discipline__${discipline.type} :${eleve.prenom} ${eleve.nom}`,
+  //   description: discipline.texte,
+  // });
+
+  // await onesignalService.sendNotification({
+  //   contents: discipline.texte,
+  //   title: `Discipline__${discipline.type} : ${eleve.prenom} ${eleve.nom}`,
+  //   key: "disciplines",
+  //   notificationId: notif._id,
+  //   users: [eleve.parent.onesignal_api_key],
+  // });
 
   return discipline;
 };

@@ -30,23 +30,24 @@ const createExercice = async (exerciceData, documents) => {
   }
   let students = [];
   let onesignal_notifications = [];
-  for (const exercice of exerciceData.eleves) {
+  for (const exercice of eleves) {
     students.push({
-      id: exercice.eleve,
+      id: exercice._id,
       notif_status: "0",
     });
   }
   const notif = await notificationService.createNotification({
     eleve: students,
-    titre: `Exercice: ${note.matiere}`,
-    description: `exercice: ${note.matiere} ${note.type} en ${note.trimestre}`,
+    titre: `Exercice: ${exercice.matiere}`,
+    description: `Exercice: ${exercice.matiere} le ${exercice.creation_date} à rendre le ${exercice.badge_date}`,
     key: "exercices",
   });
-  for (const eleve of students) {
-    let etudiant = await eleveDao.getEtudiantById(eleve.id);
+
+  for (const eleve of eleves) {
+    let etudiant = await etudiantDao.getEtudiantById(eleve._id);
     let notificationBody = {
-      contents: `Note: ${note.matiere} ${note.type} en ${note.trimestre}`,
-      title: `${etudiant.prenom} ${etudiant.nom}, Classe: ${note.classe.nom_classe}`,
+      contents: `Exercice: ${exercice.matiere}`,
+      title: `${etudiant.prenom} ${etudiant.nom}, Classe: ${etudiant.classe.nom_classe}`,
       key: "exercices",
       notificationId: notif._id,
       users: [etudiant.parent.onesignal_api_key],

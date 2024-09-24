@@ -22,11 +22,11 @@ const getNotificationsByEleveId = async (eleveId) => {
 
 const updateNotificationStatus = async (notificationData) => {
   const { notification_id, statusNotification } = notificationData;
-  await notificationDao.updateNotificationStatus(
+  let updated = await notificationDao.updateNotificationStatus(
     notification_id,
     statusNotification
   );
-  return "Notification Status Up to date!!";
+  return updated;
 };
 
 module.exports = {

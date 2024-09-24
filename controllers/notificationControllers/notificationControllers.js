@@ -94,6 +94,24 @@ const updateNotificationStatus = async (req, res) => {
   }
 };
 
+const getNoticiationById = async (req, res) => {
+  try {
+    const notification = req.params.id;
+
+    const getNoticiation = await notificationService.getNotificationById(
+      notification
+    );
+
+    if (!getNoticiation) {
+      return res.status(404).send("Noticiation not found");
+    }
+    res.json(getNoticiation);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send(error.message);
+  }
+};
+
 module.exports = {
   createNotification,
   getNotifications,
@@ -101,4 +119,5 @@ module.exports = {
   deleteNotification,
   getNotificationsByEleveId,
   updateNotificationStatus,
+  getNoticiationById,
 };

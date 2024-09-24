@@ -31,6 +31,10 @@ const updateNotificationStatus = async (id, statusNotification) => {
   ).populate("eleve.id");
 };
 
+const getNotificationById = async (id) => {
+  return await Notification.findById(id).populate("eleve.id");
+};
+
 module.exports = {
   createNotification,
   getNotifications,
@@ -38,4 +42,5 @@ module.exports = {
   deleteNotification,
   getNotificationsByEleveId,
   updateNotificationStatus,
+  getNotificationById,
 };

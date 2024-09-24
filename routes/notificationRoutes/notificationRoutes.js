@@ -23,5 +23,8 @@ router.post(
   "/updateNotificationStatus",
   notificationController.updateNotificationStatus
 );
-
+router.get(
+  "/getNotificationById/:id",
+  notificationController.getNoticiationById
+);
 module.exports = router;

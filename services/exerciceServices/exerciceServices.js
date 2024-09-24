@@ -28,6 +28,33 @@ const createExercice = async (exerciceData, documents) => {
     // console.log(parents);
     smsService.sendSms(parents);
   }
+  let students = [];
+  let onesignal_notifications = [];
+  for (const exercice of exerciceData.eleves) {
+    students.push({
+      id: exercice.eleve,
+      notif_status: "0",
+    });
+  }
+  const notif = await notificationService.createNotification({
+    eleve: students,
+    titre: `Exercice: ${note.matiere}`,
+    description: `exercice: ${note.matiere} ${note.type} en ${note.trimestre}`,
+    key: "exercices",
+  });
+  for (const eleve of students) {
+    let etudiant = await eleveDao.getEtudiantById(eleve.id);
+    let notificationBody = {
+      contents: `Note: ${note.matiere} ${note.type} en ${note.trimestre}`,
+      title: `${etudiant.prenom} ${etudiant.nom}, Classe: ${note.classe.nom_classe}`,
+      key: "exercices",
+      notificationId: notif._id,
+      users: [etudiant.parent.onesignal_api_key],
+    };
+    onesignal_notifications.push(notificationBody);
+  }
+
+  onesignalService.sendNotification(onesignal_notifications);
   // let eleves = [];
   // for (const classe of exercice.classes) {
   //   let studentsByClass = await etudiantDao.getEtudiantsByClasseId(classe._id);

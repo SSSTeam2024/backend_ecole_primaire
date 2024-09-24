@@ -42,7 +42,7 @@ const createNote = async (noteData) => {
     key: "notes",
   });
   for (const eleve of students) {
-    let etudiant = await eleveDao.getEtudiantById(eleve);
+    let etudiant = await eleveDao.getEtudiantById(eleve.id);
     let notificationBody = {
       contents: `Note: ${note.matiere} ${note.type} en ${note.trimestre}`,
       title: `${etudiant.prenom} ${etudiant.nom}, Classe: ${note.classe.nom_classe}`,

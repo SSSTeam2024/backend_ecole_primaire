@@ -4,6 +4,8 @@ const etudiantDao = require("../../dao/etudiantDao/etudiantDao");
 const fs = require("fs");
 const smsService = require("../smsServices/smsServices");
 const smsSettingsDao = require("../../dao/smsSettingDao/smsSettingDao");
+const onesignalService = require("../oneSignalServices/oneSignalServices");
+const notificationService = require("../notificationServices/notificationService");
 
 const createCarnet = async (carnetData, documents) => {
   let saveResult = await saveDocumentsToServer(documents);
@@ -19,11 +21,40 @@ const createCarnet = async (carnetData, documents) => {
       let etudiant = await etudiantDao.getEtudiantById(eleveID.eleve);
       receivers.push({
         phone: etudiant.parent.phone,
-        msg: `${etudiant.prenom} ${etudiant.nom} ${etudiant.classe.nom_classe}, %0A Votre enfant a obtenu une moyenne ${eleveID.note} sur 20 au cours du ${carnetData.trimestre}`,
+        msg: `${etudiant.prenom} ${etudiant.nom} ${etudiant.classe.nom_classe}, %0AVotre enfant a obtenu une moyenne ${eleveID.note} sur 20 au cours du ${carnetData.trimestre}`,
       });
     }
     await smsService.sendSms(receivers);
   }
+
+  let students = [];
+  let onesignal_notifications = [];
+  for (const carnet of carnetData.eleves) {
+    students.push({
+      id: carnet.eleve,
+      notif_status: "0",
+    });
+  }
+  const notif = await notificationService.createNotification({
+    eleve: students,
+    titre: `Bulletin`,
+    description: `Bulletin du ${bulletin.trimestre}`,
+    key: "carnets",
+  });
+  for (const eleve of carnetData.eleves) {
+    let etudiant = await etudiantDao.getEtudiantById(eleve.eleve);
+    let notificationBody = {
+      contents: `Votre enfant a obtenu une moyenne ${eleve.note} sur 20 au cours du ${carnetData.trimestre}`,
+      title: `${etudiant.prenom} ${etudiant.nom}, Classe: ${etudiant.classe.nom_classe}`,
+      key: "carnets",
+      notificationId: notif._id,
+      users: [etudiant.parent.onesignal_api_key],
+    };
+    onesignal_notifications.push(notificationBody);
+  }
+
+  onesignalService.sendNotification(onesignal_notifications);
+
   return bulletin;
 };
 

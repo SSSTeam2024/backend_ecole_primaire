@@ -29,6 +29,10 @@ const updateNotificationStatus = async (notificationData) => {
   return updated;
 };
 
+const getNotificationById = async (id) => {
+  return await notificationDao.getNotificationById(id);
+};
+
 module.exports = {
   createNotification,
   getNotifications,
@@ -36,6 +40,7 @@ module.exports = {
   deleteNotification,
   getNotificationsByEleveId,
   updateNotificationStatus,
+  getNotificationById,
 };
 
 // const OneSignal = require("@onesignal/node-onesignal");

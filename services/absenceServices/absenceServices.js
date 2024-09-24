@@ -3,6 +3,8 @@ const parentDao = require("../../dao/parentDao/parentDao");
 const smsService = require("../smsServices/smsServices");
 const etudiantDao = require("../../dao/etudiantDao/etudiantDao");
 const smsSettingsDao = require("../../dao/smsSettingDao/smsSettingDao");
+const onesignalService = require("../oneSignalServices/oneSignalServices");
+const notificationService = require("../notificationServices/notificationService");
 
 const createAbsence = async (absenceData) => {
   const absence = await absenceDao.createAbsence(absenceData);
@@ -34,6 +36,33 @@ const createAbsence = async (absenceData) => {
     // console.log(receivers);
     smsService.sendSms(receivers);
   }
+
+  // Notification
+  let students = [];
+  let onesignal_notifications = [];
+  for (const student of absenceData.eleves) {
+    students.push(student.eleve);
+  }
+  const notif = await notificationService.createNotification({
+    eleve: students,
+    lu: "0",
+    titre: `Note: ${note.matiere}`,
+    description: `Note: ${note.matiere} ${note.type} en ${note.trimestre}`,
+    key: "notes",
+  });
+  for (const eleve of students) {
+    let etudiant = await eleveDao.getEtudiantById(eleve);
+    let notificationBody = {
+      contents: `Note: ${note.matiere} ${note.type} en ${note.trimestre}`,
+      title: `${etudiant.prenom} ${etudiant.nom}, Classe: ${note.classe.nom_classe}`,
+      key: "notes",
+      notificationId: notif._id,
+      users: [etudiant.parent.onesignal_api_key],
+    };
+    onesignal_notifications.push(notificationBody);
+  }
+
+  onesignalService.sendNotification(onesignal_notifications);
 
   return absence;
 };

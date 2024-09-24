@@ -7,7 +7,8 @@ const smsSettingsDao = require("../../dao/smsSettingDao/smsSettingDao");
 
 const createNote = async (noteData) => {
   const note = await noteDao.createNote(noteData);
-  // const eleve = await eleveDao.getEtudiantById(note._id);
+
+  //SMS
   let settings = await smsSettingsDao.getSmsSettings();
   let note_sms_service = settings.filter(
     (service) => service.service_name === "Notes"
@@ -25,21 +26,32 @@ const createNote = async (noteData) => {
 
     smsService.sendSms(receivers);
   }
-  // const notif = await notificationService.createNotification({
-  //   eleve: eleve,
-  //   lu: "0",
-  //   titre: `${eleve.prenom} ${eleve.nom}`,
-  //   description: `Note: ${note.matiere} ${note.type} : ${note.note} en ${note.trimestre} `,
-  // });
+  // Notification
+  let students = [];
+  let onesignal_notifications = [];
+  for (const note of noteData.eleves) {
+    students.push(note.eleve);
+  }
+  const notif = await notificationService.createNotification({
+    eleve: students,
+    lu: "0",
+    titre: `Note: ${note.matiere}`,
+    description: `Note: ${note.matiere} ${note.type} en ${note.trimestre}`,
+    key: "notes",
+  });
+  for (const eleve of students) {
+    let etudiant = await eleveDao.getEtudiantById(eleve);
+    let notificationBody = {
+      contents: `Note: ${note.matiere} ${note.type} en ${note.trimestre}`,
+      title: `${etudiant.prenom} ${etudiant.nom}, Classe: ${note.classe.nom_classe}`,
+      key: "notes",
+      notificationId: notif._id,
+      users: [etudiant.parent.onesignal_api_key],
+    };
+    onesignal_notifications.push(notificationBody);
+  }
 
-  // await onesignalService.sendNotification({
-  //   contents: `Note: ${note.matiere} ${note.type} : ${note.note} en ${note.trimestre} `,
-  //   title: `${note.eleve.prenom} ${note.eleve.nom}`,
-  //   key: "notes",
-  //   notificationId: notif._id,
-  //   users: [eleve.parent.onesignal_api_key],
-  // });
-
+  onesignalService.sendNotification(onesignal_notifications);
   return note;
 };
 

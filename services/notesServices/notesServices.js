@@ -30,11 +30,13 @@ const createNote = async (noteData) => {
   let students = [];
   let onesignal_notifications = [];
   for (const note of noteData.eleves) {
-    students.push(note.eleve);
+    students.push({
+      id: note.eleve,
+      notif_status: "0",
+    });
   }
   const notif = await notificationService.createNotification({
     eleve: students,
-    lu: "0",
     titre: `Note: ${note.matiere}`,
     description: `Note: ${note.matiere} ${note.type} en ${note.trimestre}`,
     key: "notes",

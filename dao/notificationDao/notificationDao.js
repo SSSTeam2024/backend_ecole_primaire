@@ -18,20 +18,17 @@ const deleteNotification = async (id) => {
 
 const getNotificationsByEleveId = async (eleveId) => {
   const query = {
-    eleve: eleveId,
+    "eleve.id": eleveId,
   };
-  return await Notification.find(query).populate("eleve");
+  return await Notification.find(query).populate("eleve.id");
 };
 
 const updateNotificationStatus = async (id, statusNotification) => {
-  return await Notification.findByIdAndUpdate(
-    { _id: id },
-    {
-      $set: {
-        lu: statusNotification,
-      },
-    }
-  );
+  return await Notification.findOneAndUpdate(
+    { "eleve.id": id },
+    { $set: { "eleve.$.notif_status": statusNotification } },
+    { new: true }
+  ).populate("eleve.id");
 };
 
 module.exports = {

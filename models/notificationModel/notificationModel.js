@@ -4,15 +4,17 @@ const notificationSchema = new mongoose.Schema(
   {
     eleve: [
       {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Etudiant",
-        required: false,
-        default: null,
+        id: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "Etudiant",
+          required: false,
+          default: null,
+        },
+        notif_status: String,
       },
     ],
     titre: String,
     description: String,
-    lu: String,
     key: String,
   },
   {

@@ -5,29 +5,36 @@ const notificationService = require("../notificationServices/notificationService
 const etudiantDao = require("../../dao/etudiantDao/etudiantDao");
 const fs = require("fs");
 const smsService = require("../smsServices/smsServices");
+const smsSettingsDao = require("../../dao/smsSettingDao/smsSettingDao");
 
 const createObservation = async (observationData, documents) => {
   let saveResult = await saveDocumentsToServer(documents);
 
   const observation = await observationDao.createObservation(observationData);
-  let eleves = [];
-  for (const classe of observation.classe) {
-    let studentsByClass = await etudiantDao.getEtudiantsByClasseId(classe);
-    eleves.push(studentsByClass);
-  }
-
-  let parents = [];
-
-  for (const studentsByClass of eleves) {
-    for (const student of studentsByClass) {
-      parents.push({
-        phone: student.parent.phone,
-        msg: "Il ya une nouvelle observation, vous pouvez la consulter en visitant l'application SLS Sousse.",
-      });
+  let settings = await smsSettingsDao.getSmsSettings();
+  let observation_sms_service = settings.filter(
+    (service) => service.service_name === "Observations"
+  );
+  if (observation_sms_service[0].sms_status === "1") {
+    let eleves = [];
+    for (const classe of observation.classe) {
+      let studentsByClass = await etudiantDao.getEtudiantsByClasseId(classe);
+      eleves.push(studentsByClass);
     }
+
+    let parents = [];
+
+    for (const studentsByClass of eleves) {
+      for (const student of studentsByClass) {
+        parents.push({
+          phone: student.parent.phone,
+          msg: "Il ya une nouvelle observation, vous pouvez la consulter en visitant l'application SLS Sousse.",
+        });
+      }
+    }
+    // console.log(parents);
+    smsService.sendSms(parents);
   }
-  // console.log(parents);
-  smsService.sendSms(parents);
   // let eleves = [];
 
   // let studentsByClass = await etudiantDao.getEtudiantsByClasseId(

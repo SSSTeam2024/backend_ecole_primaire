@@ -3,21 +3,27 @@ const globalFunctions = require("../../utils/globalFunctions");
 const etudiantDao = require("../../dao/etudiantDao/etudiantDao");
 const fs = require("fs");
 const smsService = require("../smsServices/smsServices");
+const smsSettingsDao = require("../../dao/smsSettingDao/smsSettingDao");
 
 const createCarnet = async (carnetData, documents) => {
   let saveResult = await saveDocumentsToServer(documents);
   const bulletin = await carnetDao.createCarnet(carnetData);
-  let receivers = [];
+  let settings = await smsSettingsDao.getSmsSettings();
+  let carnet_sms_service = settings.filter(
+    (service) => service.service_name === "Bulletins"
+  );
+  if (carnet_sms_service[0].sms_status === "1") {
+    let receivers = [];
 
-  for (const eleveID of carnetData.eleves) {
-    let etudiant = await etudiantDao.getEtudiantById(eleveID.eleve);
-    receivers.push({
-      phone: etudiant.parent.phone,
-      msg: `${etudiant.prenom} ${etudiant.nom} ${etudiant.classe.nom_classe}, %0A Votre enfant a obtenu une moyenne ${eleveID.note} sur 20 au cours du ${carnetData.trimestre}`,
-    });
+    for (const eleveID of carnetData.eleves) {
+      let etudiant = await etudiantDao.getEtudiantById(eleveID.eleve);
+      receivers.push({
+        phone: etudiant.parent.phone,
+        msg: `${etudiant.prenom} ${etudiant.nom} ${etudiant.classe.nom_classe}, %0A Votre enfant a obtenu une moyenne ${eleveID.note} sur 20 au cours du ${carnetData.trimestre}`,
+      });
+    }
+    await smsService.sendSms(receivers);
   }
-  await smsService.sendSms(receivers);
-
   return bulletin;
 };
 

@@ -3,22 +3,28 @@ const eleveDao = require("../../dao/etudiantDao/etudiantDao");
 const onesignalService = require("../oneSignalServices/oneSignalServices");
 const notificationService = require("../notificationServices/notificationService");
 const smsService = require("../smsServices/smsServices");
+const smsSettingsDao = require("../../dao/smsSettingDao/smsSettingDao");
 
 const createNote = async (noteData) => {
   const note = await noteDao.createNote(noteData);
   // const eleve = await eleveDao.getEtudiantById(note._id);
-  let receivers = [];
+  let settings = await smsSettingsDao.getSmsSettings();
+  let note_sms_service = settings.filter(
+    (service) => service.service_name === "Notes"
+  );
+  if (note_sms_service[0].sms_status === "1") {
+    let receivers = [];
 
-  for (const eleveID of noteData.eleves) {
-    let etudiant = await eleveDao.getEtudiantById(eleveID.eleve);
-    receivers.push({
-      phone: etudiant.parent.phone,
-      msg: `${etudiant.prenom} ${etudiant.nom} ${etudiant.classe.nom_classe}, %0AMatière: ${noteData.matiere} .%0ADevoir de ${noteData.type} .%0AVotre enfant a obtenu une note ${eleveID.note}.`,
-    });
+    for (const eleveID of noteData.eleves) {
+      let etudiant = await eleveDao.getEtudiantById(eleveID.eleve);
+      receivers.push({
+        phone: etudiant.parent.phone,
+        msg: `${etudiant.prenom} ${etudiant.nom} ${etudiant.classe.nom_classe}, %0AMatière: ${noteData.matiere} .%0ADevoir de ${noteData.type} .%0AVotre enfant a obtenu une note ${eleveID.note}.`,
+      });
+    }
+
+    smsService.sendSms(receivers);
   }
-
-  smsService.sendSms(receivers);
-
   // const notif = await notificationService.createNotification({
   //   eleve: eleve,
   //   lu: "0",

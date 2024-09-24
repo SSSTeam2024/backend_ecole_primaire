@@ -5,21 +5,26 @@ const onesignalService = require("../oneSignalServices/oneSignalServices");
 const notificationService = require("../notificationServices/notificationService");
 const smsService = require("../smsServices/smsServices");
 const fs = require("fs");
+const smsSettingsDao = require("../../dao/smsSettingDao/smsSettingDao");
 
 const createDiscipline = async (disciplineData, documents) => {
   let saveResult = await saveDocumentsToServer(documents);
   const discipline = await disciplineDao.createDiscipline(disciplineData);
   const eleve = await eleveDao.getEtudiantById(discipline.eleve);
-
-  let receivers = [
-    {
-      phone: eleve.parent.phone,
-      msg: `${eleve.prenom} ${eleve.nom} ${eleve.classe.nom_classe}, %0A Votre enfant a un ${discipline.type} le ${discipline.date} car ${discipline.texte}`,
-    },
-  ];
-  // console.log(receivers);
-  smsService.sendSms(receivers);
-
+  let settings = await smsSettingsDao.getSmsSettings();
+  let discipline_sms_service = settings.filter(
+    (service) => service.service_name === "Disciplines"
+  );
+  if (discipline_sms_service[0].sms_status === "1") {
+    let receivers = [
+      {
+        phone: eleve.parent.phone,
+        msg: `${eleve.prenom} ${eleve.nom} ${eleve.classe.nom_classe}, %0A Votre enfant a un ${discipline.type} le ${discipline.date} car ${discipline.texte}`,
+      },
+    ];
+    // console.log(receivers);
+    smsService.sendSms(receivers);
+  }
   // const notif = await notificationService.createNotification({
   //   eleve: discipline.eleve,
   //   lu: "0",

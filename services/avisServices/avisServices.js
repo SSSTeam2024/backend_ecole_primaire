@@ -5,30 +5,39 @@ const fs = require("fs");
 const onesignalService = require("../oneSignalServices/oneSignalServices");
 const notificationService = require("../notificationServices/notificationService");
 const smsService = require("../smsServices/smsServices");
+const smsSettingsDao = require("../../dao/smsSettingDao/smsSettingDao");
 
 const createAvis = async (avisData, documents) => {
   let saveResult = await saveDocumentsToServer(documents);
   const avis = await avisDao.createAvis(avisData);
 
-  let eleves = [];
-  for (const classe of avis.classes) {
-    let studentsByClass = await etudiantDao.getEtudiantsByClasseId(classe._id);
-    eleves.push(studentsByClass);
-  }
+  let settings = await smsSettingsDao.getSmsSettings();
+  let avis_sms_service = settings.filter(
+    (service) => service.service_name === "Avis"
+  );
 
-  let parents = [];
-
-  for (const studentsByClass of eleves) {
-    for (const student of studentsByClass) {
-      parents.push({
-        phone: student.parent.phone,
-        msg: "Un nouvel avis est disponible, consultez-le maintenant",
-      });
+  if (avis_sms_service[0].sms_status === "1") {
+    let eleves = [];
+    for (const classe of avis.classes) {
+      let studentsByClass = await etudiantDao.getEtudiantsByClasseId(
+        classe._id
+      );
+      eleves.push(studentsByClass);
     }
-  }
-  // console.log(parents);
-  smsService.sendSms(parents);
 
+    let parents = [];
+
+    for (const studentsByClass of eleves) {
+      for (const student of studentsByClass) {
+        parents.push({
+          phone: student.parent.phone,
+          msg: "Un nouvel avis est disponible, consultez-le maintenant",
+        });
+      }
+    }
+    // console.log(parents);
+    smsService.sendSms(parents);
+  }
   // let eleves = [];
   // for (const classe of avis.classes) {
   //   let studentsByClass = await etudiantDao.getEtudiantsByClasseId(classe._id);

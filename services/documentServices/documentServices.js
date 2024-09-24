@@ -3,28 +3,37 @@ const globalFunctions = require("../../utils/globalFunctions");
 const fs = require("fs");
 const smsService = require("../smsServices/smsServices");
 const etudiantDao = require("../../dao/etudiantDao/etudiantDao");
+const smsSettingsDao = require("../../dao/smsSettingDao/smsSettingDao");
 
 const createDocument = async (documentData, documents) => {
   let saveResult = await saveDocumentsToServer(documents);
   let document = await documentDao.createDocument(documentData);
-  let eleves = [];
-  for (const classe of document.classes) {
-    let studentsByClass = await etudiantDao.getEtudiantsByClasseId(classe._id);
-    eleves.push(studentsByClass);
-  }
-
-  let parents = [];
-
-  for (const studentsByClass of eleves) {
-    for (const student of studentsByClass) {
-      parents.push({
-        phone: student.parent.phone,
-        msg: `Un nouveau document nommé ${document.titre} est maintenant disponible , voir plus de détails sur notre application`,
-      });
+  let settings = await smsSettingsDao.getSmsSettings();
+  let document_sms_service = settings.filter(
+    (service) => service.service_name === "Documents"
+  );
+  if (document_sms_service[0].sms_status === "1") {
+    let eleves = [];
+    for (const classe of document.classes) {
+      let studentsByClass = await etudiantDao.getEtudiantsByClasseId(
+        classe._id
+      );
+      eleves.push(studentsByClass);
     }
+
+    let parents = [];
+
+    for (const studentsByClass of eleves) {
+      for (const student of studentsByClass) {
+        parents.push({
+          phone: student.parent.phone,
+          msg: `Un nouveau document nommé ${document.titre} est maintenant disponible , voir plus de détails sur notre application`,
+        });
+      }
+    }
+    // console.log(parents);
+    smsService.sendSms(parents);
   }
-  // console.log(parents);
-  smsService.sendSms(parents);
   return document;
 };
 

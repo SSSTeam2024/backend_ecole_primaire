@@ -5,26 +5,35 @@ const notificationService = require("../notificationServices/notificationService
 const etudiantDao = require("../../dao/etudiantDao/etudiantDao");
 const smsService = require("../smsServices/smsServices");
 const fs = require("fs");
+const smsSettingsDao = require("../../dao/smsSettingDao/smsSettingDao");
 
 const createEmploi = async (emploiData, documents) => {
   let saveResult = await saveDocumentsToServer(documents);
 
   const emploi = await emploiDao.createEmploi(emploiData);
-  let eleves = [];
-  let studentsByClass = await etudiantDao.getEtudiantsByClasseId(emploi.classe);
-  eleves.push(studentsByClass);
-  let parents = [];
+  let settings = await smsSettingsDao.getSmsSettings();
+  let emplois_sms_service = settings.filter(
+    (service) => service.service_name === "Emplois"
+  );
+  if (emplois_sms_service[0].sms_status === "1") {
+    let eleves = [];
+    let studentsByClass = await etudiantDao.getEtudiantsByClasseId(
+      emploi.classe
+    );
+    eleves.push(studentsByClass);
+    let parents = [];
 
-  for (const studentsByClass of eleves) {
-    for (const student of studentsByClass) {
-      parents.push({
-        phone: student.parent.phone,
-        msg: `${student.prenom} ${student.nom} ${student.classe.nom_classe}, %0AVotre enfant a un nouveau emploi`,
-      });
+    for (const studentsByClass of eleves) {
+      for (const student of studentsByClass) {
+        parents.push({
+          phone: student.parent.phone,
+          msg: `${student.prenom} ${student.nom} ${student.classe.nom_classe}, %0AVotre enfant a un nouveau emploi`,
+        });
+      }
     }
+    // console.log(parents);
+    smsService.sendSms(parents);
   }
-  // console.log(parents);
-  smsService.sendSms(parents);
   // let eleves = [];
 
   // let studentsByClass = await etudiantDao.getEtudiantsByClasseId(emploi.classe);

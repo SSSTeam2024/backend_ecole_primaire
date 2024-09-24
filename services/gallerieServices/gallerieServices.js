@@ -4,29 +4,37 @@ const fs = require("fs");
 
 const etudiantDao = require("../../dao/etudiantDao/etudiantDao");
 const smsService = require("../smsServices/smsServices");
+const smsSettingsDao = require("../../dao/smsSettingDao/smsSettingDao");
 
 const createGallerie = async (gallerieData, documents) => {
   let saveResult = await saveDocumentsToServer(documents);
   let gallerie = await gallerieDao.createGallerie(gallerieData);
-
-  let eleves = [];
-  for (const classe of gallerie.classes) {
-    let studentsByClass = await etudiantDao.getEtudiantsByClasseId(classe._id);
-    eleves.push(studentsByClass);
-  }
-
-  let parents = [];
-
-  for (const studentsByClass of eleves) {
-    for (const student of studentsByClass) {
-      parents.push({
-        phone: student.parent.phone,
-        msg: `Une nouvelle galerie est désormais disponible, vous pouvez la consulter dès maintenant sur l'application SLS Sousse`,
-      });
+  let settings = await smsSettingsDao.getSmsSettings();
+  let galerie_sms_service = settings.filter(
+    (service) => service.service_name === "Galeries"
+  );
+  if (galerie_sms_service[0].sms_status === "1") {
+    let eleves = [];
+    for (const classe of gallerie.classes) {
+      let studentsByClass = await etudiantDao.getEtudiantsByClasseId(
+        classe._id
+      );
+      eleves.push(studentsByClass);
     }
+
+    let parents = [];
+
+    for (const studentsByClass of eleves) {
+      for (const student of studentsByClass) {
+        parents.push({
+          phone: student.parent.phone,
+          msg: `Une nouvelle galerie est désormais disponible, vous pouvez la consulter dès maintenant sur l'application SLS Sousse`,
+        });
+      }
+    }
+    // console.log(parents);
+    smsService.sendSms(parents);
   }
-  // console.log(parents);
-  smsService.sendSms(parents);
   return gallerie;
 };
 

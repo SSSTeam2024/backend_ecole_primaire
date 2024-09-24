@@ -3,29 +3,37 @@ const globalFunctions = require("../../utils/globalFunctions");
 const fs = require("fs");
 const etudiantDao = require("../../dao/etudiantDao/etudiantDao");
 const smsService = require("../smsServices/smsServices");
+const smsSettingsDao = require("../../dao/smsSettingDao/smsSettingDao");
 
 const createEvenement = async (evenementData, documents) => {
   let saveResult = await saveDocumentsToServer(documents);
   let evenement = await evenementDao.createEvenement(evenementData);
-
-  let eleves = [];
-  for (const classe of evenement.classes) {
-    let studentsByClass = await etudiantDao.getEtudiantsByClasseId(classe._id);
-    eleves.push(studentsByClass);
-  }
-
-  let parents = [];
-
-  for (const studentsByClass of eleves) {
-    for (const student of studentsByClass) {
-      parents.push({
-        phone: student.parent.phone,
-        msg: `Un nouvel événement de type ${evenement.type} est désormais disponible`,
-      });
+  let settings = await smsSettingsDao.getSmsSettings();
+  let evenement_sms_service = settings.filter(
+    (service) => service.service_name === "Evènements"
+  );
+  if (evenement_sms_service[0].sms_status === "1") {
+    let eleves = [];
+    for (const classe of evenement.classes) {
+      let studentsByClass = await etudiantDao.getEtudiantsByClasseId(
+        classe._id
+      );
+      eleves.push(studentsByClass);
     }
+
+    let parents = [];
+
+    for (const studentsByClass of eleves) {
+      for (const student of studentsByClass) {
+        parents.push({
+          phone: student.parent.phone,
+          msg: `Un nouvel événement de type ${evenement.type} est désormais disponible`,
+        });
+      }
+    }
+    // console.log(parents);
+    smsService.sendSms(parents);
   }
-  // console.log(parents);
-  smsService.sendSms(parents);
   return evenement;
 };
 

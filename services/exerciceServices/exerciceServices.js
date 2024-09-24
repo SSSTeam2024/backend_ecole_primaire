@@ -5,24 +5,29 @@ const notificationService = require("../notificationServices/notificationService
 const etudiantDao = require("../../dao/etudiantDao/etudiantDao");
 const fs = require("fs");
 const smsService = require("../smsServices/smsServices");
+const smsSettingsDao = require("../../dao/smsSettingDao/smsSettingDao");
 
 const createExercice = async (exerciceData, documents) => {
   let saveResult = await saveDocumentsToServer(documents);
   const exercice = await exerciceDao.createExercice(exerciceData);
   let eleves = await etudiantDao.getEtudiantsByClasseId(exercice.classes);
+  let settings = await smsSettingsDao.getSmsSettings();
+  let exercice_sms_service = settings.filter(
+    (service) => service.service_name === "Travail à la maison"
+  );
+  if (exercice_sms_service[0].sms_status === "1") {
+    let parents = [];
 
-  let parents = [];
+    for (const student of eleves) {
+      parents.push({
+        phone: student.parent.phone,
+        msg: `${student.prenom} ${student.nom} ${student.classe.nom_classe}, %0AMatière: ${exerciceData.matiere}.%0AVotre enfant a un travail à la maison le ${exerciceData.creation_date} à rendre le ${exerciceData.badge_date}`,
+      });
+    }
 
-  for (const student of eleves) {
-    parents.push({
-      phone: student.parent.phone,
-      msg: `${student.prenom} ${student.nom} ${student.classe.nom_classe}, %0AMatière: ${exerciceData.matiere}.%0AVotre enfant a un travail à la maison le ${exerciceData.creation_date} à rendre le ${exerciceData.badge_date}`,
-    });
+    // console.log(parents);
+    smsService.sendSms(parents);
   }
-
-  // console.log(parents);
-  smsService.sendSms(parents);
-
   // let eleves = [];
   // for (const classe of exercice.classes) {
   //   let studentsByClass = await etudiantDao.getEtudiantsByClasseId(classe._id);

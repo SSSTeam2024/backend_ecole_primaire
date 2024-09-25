@@ -73,7 +73,7 @@ const generateNewMessageBody = (parent, msg, etudiant) => {
     newMsg = newMsg.replace("[lien_inscription]", "https://sls.tn/inscription");
   }
   if (msg.includes("[lien_app]")) {
-    newMsg = newMsg.replace("[lien_app]", "https://sls.tn/app");
+    newMsg = newMsg.replace("[lien_app]", "https://sls.tn/");
   }
   return newMsg;
 };

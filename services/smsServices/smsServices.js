@@ -52,10 +52,10 @@ const sendCustomeSms = async () => {
 const generateNewMessageBody = (parent, msg, etudiant) => {
   let newMsg = msg;
   if (msg.includes("[parent]")) {
-    newMsg = newMsg.replace("[parent]", parent.prenom_parent);
+    newMsg = newMsg.replace("[parent]", parent.prenom_parent + "%0A");
   }
   if (msg.includes("[login]")) {
-    newMsg = newMsg.replace("[login]", parent.username);
+    newMsg = newMsg.replace("[login]", parent.username + "%0A");
   }
   const lastSixDigits = parent.phone.slice(-6);
   const reversedLastSixDigits = lastSixDigits.split("").reverse().join("");
@@ -64,16 +64,19 @@ const generateNewMessageBody = (parent, msg, etudiant) => {
     newMsg = newMsg.replace("[pass_parent]", reversedLastSixDigits + "%0A");
   }
   if (msg.includes("[classe]")) {
-    newMsg = newMsg.replace("[classe]", etudiant.classe.nom_classe);
+    newMsg = newMsg.replace("[classe]", etudiant.classe.nom_classe + "%0A");
   }
   if (msg.includes("[nom_eleve]")) {
-    newMsg = newMsg.replace("[nom_eleve]", etudiant.prenom);
+    newMsg = newMsg.replace("[nom_eleve]", etudiant.prenom + "%0A");
   }
   if (msg.includes("[lien_inscription]")) {
-    newMsg = newMsg.replace("[lien_inscription]", "https://sls.tn/inscription");
+    newMsg = newMsg.replace(
+      "[lien_inscription]",
+      "https://sls.tn/inscription" + "%0A"
+    );
   }
   if (msg.includes("[lien_app]")) {
-    newMsg = newMsg.replace("[lien_app]", "https://sls.tn/");
+    newMsg = newMsg.replace("[lien_app]", "https://sls.tn/" + "%0A");
   }
   return newMsg;
 };

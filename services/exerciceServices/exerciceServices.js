@@ -56,36 +56,6 @@ const createExercice = async (exerciceData, documents) => {
   }
 
   onesignalService.sendNotification(onesignal_notifications);
-  // let eleves = [];
-  // for (const classe of exercice.classes) {
-  //   let studentsByClass = await etudiantDao.getEtudiantsByClasseId(classe._id);
-  //   eleves.push(studentsByClass);
-  // }
-
-  // let parentsOneSignalKeys = [];
-  // let studentIds = [];
-
-  // for (const studentsByClass of eleves) {
-  //   for (const student of studentsByClass) {
-  //     parentsOneSignalKeys.push(student.parent.onesignal_api_key);
-  //     studentIds.push(student._id);
-  //   }
-  // }
-
-  // const notif = await notificationService.createNotification({
-  //   eleve: studentIds,
-  //   lu: "0",
-  //   titre: `Exercice : ${exercice.matiere}`,
-  //   description: `Pour ${exercice.badge_date} ${exercice.desc}`,
-  // });
-
-  // await onesignalService.sendNotification({
-  //   contents: `Pour ${exercice.badge_date} ${exercice.desc}`,
-  //   title: `Exercice : ${exercice.matiere}`,
-  //   key: "exercices",
-  //   notificationId: notif._id,
-  //   users: parentsOneSignalKeys,
-  // });
 
   return exercice;
 };

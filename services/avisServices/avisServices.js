@@ -38,36 +38,43 @@ const createAvis = async (avisData, documents) => {
     // console.log(parents);
     smsService.sendSms(parents);
   }
-  // let eleves = [];
-  // for (const classe of avis.classes) {
-  //   let studentsByClass = await etudiantDao.getEtudiantsByClasseId(classe._id);
-  //   eleves.push(studentsByClass);
-  // }
 
-  // let parentsOneSignalKeys = [];
-  // let studentIds = [];
-
-  // for (const studentsByClass of eleves) {
-  //   for (const student of studentsByClass) {
-  //     parentsOneSignalKeys.push(student.parent.onesignal_api_key);
-  //     studentIds.push(student._id);
-  //   }
-  // }
-
+  // Notification
+  let students = [];
+  let eleves = [];
+  let onesignal_notifications = [];
+  for (const classe of avis.classes) {
+    let studentsByClass = await etudiantDao.getEtudiantsByClasseId(classe._id);
+    eleves.push(studentsByClass);
+  }
+  for (const studentsByClass of eleves) {
+    for (const eleve of studentsByClass) {
+      students.push({
+        id: eleve._id,
+        notif_status: "0",
+      });
+    }
+  }
   // const notif = await notificationService.createNotification({
-  //   eleve: studentIds,
-  //   lu: "0",
-  //   titre: avis.titre,
-  //   description: avis.desc,
+  //   eleve: students,
+  //   titre: `Note: ${note.matiere}`,
+  //   description: `Note: ${note.matiere} ${note.type} en ${note.trimestre}`,
+  //   key: "notes",
   // });
+  console.log(students);
+  // for (const eleve of students) {
+  //   let etudiant = await eleveDao.getEtudiantById(eleve.id);
+  //   let notificationBody = {
+  //     contents: `Note: ${note.matiere} ${note.type} en ${note.trimestre}`,
+  //     title: `${etudiant.prenom} ${etudiant.nom}, Classe: ${note.classe.nom_classe}`,
+  //     key: "notes",
+  //     notificationId: notif._id,
+  //     users: [etudiant.parent.onesignal_api_key],
+  //   };
+  //   onesignal_notifications.push(notificationBody);
+  // }
 
-  // await onesignalService.sendNotification({
-  //   contents: avis.desc,
-  //   title: avis.titre,
-  //   key: "avis",
-  //   notificationId: notif._id,
-  //   users: parentsOneSignalKeys,
-  // });
+  // onesignalService.sendNotification(onesignal_notifications);
 
   return avis;
 };

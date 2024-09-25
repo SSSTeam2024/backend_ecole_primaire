@@ -82,6 +82,7 @@ const getNotificationsByEleveId = async (req, res) => {
 
 const updateNotificationStatus = async (req, res) => {
   try {
+    // const { id_eleve, lu, id_notif } = req.body;
     const { id, lu } = req.body;
     const sentResult = await notificationService.updateNotificationStatus({
       notification_id: id,

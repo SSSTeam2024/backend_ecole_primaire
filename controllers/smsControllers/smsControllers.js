@@ -75,13 +75,18 @@ const updateSms = async (req, res) => {
 
 const deleteSms = async (req, res) => {
   try {
-    const smsId = req.params.id;
+    const smsIds = req.body.ids; // Expect the IDs in the request body as an array
 
-    const deleteSms = await smsServices.deleteSms(smsId);
-
-    if (!deleteSms) {
-      return res.status(404).send("Sms not found");
+    if (!smsIds || smsIds.length === 0) {
+      return res.status(400).send("No IDs provided");
     }
+
+    const deleteSmsResult = await smsServices.deleteSms(smsIds);
+
+    if (deleteSmsResult.deletedCount === 0) {
+      return res.status(404).send("No SMS found with provided IDs");
+    }
+
     res.sendStatus(200);
   } catch (error) {
     console.error(error);

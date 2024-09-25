@@ -40,8 +40,11 @@ const updateSmsStatus = async (id, status) => {
   );
 };
 
-const deleteSms = async (id) => {
-  return await Sms.findByIdAndDelete(id);
+const deleteSms = async (ids) => {
+  const query = {
+    _id: { $in: ids }, // Use the `$in` operator to match multiple IDs
+  };
+  return await Sms.deleteMany(query); // Use `deleteMany` to delete multiple documents
 };
 
 module.exports = {

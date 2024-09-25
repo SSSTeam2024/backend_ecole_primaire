@@ -55,26 +55,26 @@ const createAvis = async (avisData, documents) => {
       });
     }
   }
-  // const notif = await notificationService.createNotification({
-  //   eleve: students,
-  //   titre: `Note: ${note.matiere}`,
-  //   description: `Note: ${note.matiere} ${note.type} en ${note.trimestre}`,
-  //   key: "notes",
-  // });
-  console.log(students);
-  // for (const eleve of students) {
-  //   let etudiant = await eleveDao.getEtudiantById(eleve.id);
-  //   let notificationBody = {
-  //     contents: `Note: ${note.matiere} ${note.type} en ${note.trimestre}`,
-  //     title: `${etudiant.prenom} ${etudiant.nom}, Classe: ${note.classe.nom_classe}`,
-  //     key: "notes",
-  //     notificationId: notif._id,
-  //     users: [etudiant.parent.onesignal_api_key],
-  //   };
-  //   onesignal_notifications.push(notificationBody);
-  // }
+  const notif = await notificationService.createNotification({
+    eleve: students,
+    titre: `Avis`,
+    description: `Avis: ${avis.titre}`,
+    key: "avis",
+  });
+  for (const eleve of students) {
+    let etudiant = await etudiantDao.getEtudiantById(eleve.id);
+    let notificationBody = {
+      contents: `Avis: ${avis.titre}`,
+      title: `Un Nouvel Avis`,
+      key: "avis",
+      notificationId: notif._id,
+      users: [etudiant.parent.onesignal_api_key],
+    };
 
-  // onesignalService.sendNotification(onesignal_notifications);
+    onesignal_notifications.push(notificationBody);
+  }
+
+  onesignalService.sendNotification(onesignal_notifications);
 
   return avis;
 };

@@ -51,8 +51,13 @@ const sendCustomeSms = async () => {
 
 const generateNewMessageBody = (parent, msg, etudiant) => {
   let newMsg = msg;
+
   if (msg.includes("[parent]")) {
-    newMsg = newMsg.replace("[parent]", parent.prenom_parent + "%0A");
+    if (parent.prenom_parent !== null && parent.prenom_parent !== undefined) {
+      newMsg = newMsg.replace("[parent]", parent.prenom_parent + "%0A");
+    } else {
+      newMsg = newMsg.replace("[parent]", "" + "%0A");
+    }
   }
   if (msg.includes("[login]")) {
     newMsg = newMsg.replace("[login]", parent.username + "%0A");
@@ -360,10 +365,8 @@ const createSms = async (smsData) => {
           eleve: student,
         };
         await smsDao.createSms(sms);
-        console.log("sms", sms);
       }
     } else {
-      console.log("inside else of else if");
       for (const student of smsData.specefic_students) {
         let etudiant = await studentDao.getEtudiantById(student);
         console.log("etudiant", etudiant);
@@ -397,8 +400,8 @@ const updateSms = async (id, updateData) => {
   return await smsDao.updateSms(id, updateData);
 };
 
-const deleteSms = async (id) => {
-  return await smsDao.deleteSms(id);
+const deleteSms = async (ids) => {
+  return await smsDao.deleteSms(ids); // Pass the array of IDs
 };
 
 const deletePendingSms = async () => {

@@ -38,58 +38,62 @@ const createAbsence = async (absenceData) => {
   }
 
   // Notification
-  if (absence.typeAbsent !== "P") {
-    let students = [];
-    let onesignal_notifications = [];
-    let notif;
-    for (const absence of absenceData.eleves) {
+
+  let students = [];
+  let onesignal_notifications = [];
+  let notif;
+  let notifBody;
+  for (const absence of absenceData.eleves) {
+    if (absence.typeAbsent !== "P") {
       students.push({
         id: absence.eleve,
         notif_status: "0",
       });
-    }
-    if (absence.typeAbsent === "A") {
-      notif = await notificationService.createNotification({
-        eleve: students,
-        titre: `Absence: ${absence.matiere}`,
-        description: `Absence: ${absence.matiere} le ${absence.date} à ${absence.heure}`,
-        key: "absences",
-      });
-    }
-    if (absence.typeAbsent === "R") {
-      notif = await notificationService.createNotification({
-        eleve: students,
-        titre: `Retard: ${absence.matiere}`,
-        description: `Retard: ${absence.matiere} le ${absence.date} à ${absence.heure}`,
-        key: "absences",
-      });
-    }
-    for (const eleve of students) {
-      let etudiant = await etudiantDao.getEtudiantById(eleve.id);
-      if (absence.typeAbsent === "R") {
-        let notificationBody = {
-          contents: `Retard: ${absence.matiere} le ${absence.date} à ${absence.heure}`,
-          title: `${etudiant.prenom} ${etudiant.nom}, Classe: ${absence.classe.nom_classe}`,
-          key: "absences",
-          notificationId: notif._id,
-          users: [etudiant.parent.onesignal_api_key],
-        };
-        onesignal_notifications.push(notificationBody);
-      }
       if (absence.typeAbsent === "A") {
-        let notificationBody = {
-          contents: `Absence: ${absence.matiere} le ${absence.date} à ${absence.heure}`,
-          title: `${etudiant.prenom} ${etudiant.nom}, Classe: ${absence.classe.nom_classe}`,
+        notifBody = {
+          eleve: students,
+          titre: `Absence: ${absenceData.matiere}`,
+          description: `Absence: ${absenceData.matiere} le ${absenceData.date} à ${absenceData.heure}`,
           key: "absences",
-          notificationId: notif._id,
-          users: [etudiant.parent.onesignal_api_key],
         };
-        onesignal_notifications.push(notificationBody);
+      }
+      if (absence.typeAbsent === "R") {
+        notifBody = {
+          eleve: students,
+          titre: `Retard: ${absenceData.matiere}`,
+          description: `Retard: ${absenceData.matiere} le ${absenceData.date} à ${absenceData.heure}`,
+          key: "absences",
+        };
+      }
+      notif = notificationService.createNotification(notifBody);
+      for (const eleve of students) {
+        let etudiant = await etudiantDao.getEtudiantById(eleve.id);
+        if (absence.typeAbsent === "R") {
+          let notificationBody = {
+            contents: `Retard: ${absenceData.matiere} le ${absenceData.date} à ${absenceData.heure}`,
+            title: `${etudiant.prenom} ${etudiant.nom}, Classe: ${etudiant.classe.nom_classe}`,
+            key: "absences",
+            notificationId: notif._id,
+            users: [etudiant.parent.onesignal_api_key],
+          };
+          onesignal_notifications.push(notificationBody);
+        }
+        if (absence.typeAbsent === "A") {
+          let notificationBody = {
+            contents: `Absence: ${absenceData.matiere} le ${absenceData.date} à ${absenceData.heure}`,
+            title: `${etudiant.prenom} ${etudiant.nom}, Classe: ${etudiant.classe.nom_classe}`,
+            key: "absences",
+            notificationId: notif._id,
+            users: [etudiant.parent.onesignal_api_key],
+          };
+          onesignal_notifications.push(notificationBody);
+        }
       }
     }
-
-    onesignalService.sendNotification(onesignal_notifications);
   }
+
+  onesignalService.sendNotification(onesignal_notifications);
+
   return absence;
 };
 

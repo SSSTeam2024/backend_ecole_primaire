@@ -61,7 +61,7 @@ const generateNewMessageBody = (parent, msg, etudiant) => {
   const reversedLastSixDigits = lastSixDigits.split("").reverse().join("");
 
   if (msg.includes("[pass_parent]")) {
-    newMsg = newMsg.replace("[pass_parent]", "%0A" + reversedLastSixDigits);
+    newMsg = newMsg.replace("[pass_parent]", reversedLastSixDigits + "%0A");
   }
   if (msg.includes("[classe]")) {
     newMsg = newMsg.replace("[classe]", etudiant.classe.nom_classe);

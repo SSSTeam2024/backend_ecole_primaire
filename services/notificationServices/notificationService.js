@@ -21,10 +21,11 @@ const getNotificationsByEleveId = async (eleveId) => {
 };
 
 const updateNotificationStatus = async (notificationData) => {
-  const { notification_id, statusNotification } = notificationData;
+  const { student_id, statusNotification, notification_id } = notificationData;
   let updated = await notificationDao.updateNotificationStatus(
-    notification_id,
-    statusNotification
+    student_id,
+    statusNotification,
+    notification_id
   );
   return updated;
 };

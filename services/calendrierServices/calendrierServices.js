@@ -47,25 +47,15 @@ const createCalendrier = async (calendrierData) => {
     key: "exams-calendar",
   });
   for (const eleve of studentsByClass) {
-    //  let etudiant = await etudiantDao.getEtudiantById(eleve.id);
     let notificationBody = {
       contents: `Devoir de ${calendrier.type} le ${calendrier.date} à ${calendrier.heure_debut}`,
-      title: `${eleve.prenom} ${eleve.nom} \nDevoir de ${calendrier.type}`,
+      title: `${eleve.prenom} ${eleve.nom} \nDevoir de ${calendrier.matiere}`,
       key: "exams-calendar",
       notificationId: notif._id,
-      users: [etudiant.parent.onesignal_api_key],
+      users: [eleve.parent.onesignal_api_key],
     };
-    if (
-      etudiant.parent.onesignal_api_key !==
-        "7d372bf2-4ac7-4573-ab03-dfe84f56656e" &&
-      etudiant.parent.onesignal_api_key !==
-        "322ad1c0-7ecf-412a-8df8-e607286f0e60" &&
-      etudiant.parent.onesignal_api_key !==
-        "0def8e50-e289-4cee-a197-8e23e681fcb9"
-    ) {
-      onesignal_notifications.push(notificationBody);
-    }
-    // onesignal_notifications.push(notificationBody);
+
+    onesignal_notifications.push(notificationBody);
   }
 
   onesignalService.sendNotification(onesignal_notifications);

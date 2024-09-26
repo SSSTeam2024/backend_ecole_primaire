@@ -300,6 +300,7 @@ const generateNewMessageBody = (parent, msg, etudiant) => {
 // };
 
 const createSms = async (smsData) => {
+  console.log("smsData.specefic_students", smsData.specefic_students.length);
   if (smsData.receivers.length > 0 && smsData.specefic_students[0] === "") {
     console.log("inside first if");
     if (smsData.include_names === "0") {
@@ -316,7 +317,7 @@ const createSms = async (smsData) => {
             sms_par_destinataire: smsData.sms_par_destinataire,
             eleve: eleve._id,
           };
-          console.log("sms", sms);
+
           await smsDao.createSms(sms);
         }
       }
@@ -336,7 +337,7 @@ const createSms = async (smsData) => {
             sms_par_destinataire: smsData.sms_par_destinataire,
             eleve: eleve._id,
           };
-          console.log("sms", sms);
+
           await smsDao.createSms(sms);
         }
       }
@@ -386,7 +387,6 @@ const createSms = async (smsData) => {
           eleve: student,
         };
         await smsDao.createSms(sms);
-        console.log("sms", sms);
       }
     }
   }

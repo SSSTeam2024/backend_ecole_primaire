@@ -75,7 +75,7 @@ const updateSms = async (req, res) => {
 
 const deleteSms = async (req, res) => {
   try {
-    const smsIds = req.body.ids; // Expect the IDs in the request body as an array
+    const smsIds = req.body.ids;
 
     if (!smsIds || smsIds.length === 0) {
       return res.status(400).send("No IDs provided");

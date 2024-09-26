@@ -25,20 +25,34 @@ const createDiscipline = async (disciplineData, documents) => {
     // console.log(receivers);
     smsService.sendSms(receivers);
   }
-  // const notif = await notificationService.createNotification({
-  //   eleve: discipline.eleve,
-  //   lu: "0",
-  //   titre: `Discipline__${discipline.type} :${eleve.prenom} ${eleve.nom}`,
-  //   description: discipline.texte,
-  // });
 
-  // await onesignalService.sendNotification({
-  //   contents: discipline.texte,
-  //   title: `Discipline__${discipline.type} : ${eleve.prenom} ${eleve.nom}`,
-  //   key: "disciplines",
-  //   notificationId: notif._id,
-  //   users: [eleve.parent.onesignal_api_key],
-  // });
+  // Notification
+
+  let students = [
+    {
+      id: eleve._id,
+      notif_status: "0",
+    },
+  ];
+
+  const notif = await notificationService.createNotification({
+    eleve: students,
+    titre: `Discipline`,
+    description: `Discipline: ${discipline.type} le ${discipline.date}`,
+    key: "disciplines",
+  });
+
+  let onesignal_notifications = [
+    {
+      contents: `Discipline: ${discipline.type} le ${discipline.date}`,
+      title: `${eleve.prenom} ${eleve.nom} ${eleve.classe.nom_classe}, a un ${discipline.type}`,
+      key: "disciplines",
+      notificationId: notif._id,
+      users: [eleve.parent.onesignal_api_key],
+    },
+  ];
+
+  onesignalService.sendNotification(onesignal_notifications);
 
   return discipline;
 };

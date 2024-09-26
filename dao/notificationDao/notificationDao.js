@@ -23,9 +23,13 @@ const getNotificationsByEleveId = async (eleveId) => {
   return await Notification.find(query).populate("eleve.id");
 };
 
-const updateNotificationStatus = async (id, statusNotification) => {
+const updateNotificationStatus = async (
+  student_id,
+  statusNotification,
+  notification_id
+) => {
   return await Notification.findOneAndUpdate(
-    { "eleve.id": id },
+    { "eleve.id": student_id, _id: notification_id },
     { $set: { "eleve.$.notif_status": statusNotification } },
     { new: true }
   ).populate("eleve.id");

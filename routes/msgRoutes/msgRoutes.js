@@ -7,5 +7,9 @@ router.post("/newMessagerie", messagerieControllers.createMessagerie);
 router.get("/getMessageries", messagerieControllers.getMessageries);
 // router.patch("/updateMatiere/:id", messagerieControllers.updateMatiere);
 router.delete("/deleteMessagerie/:id", messagerieControllers.deleteMessagerie);
+router.get(
+  "/messagesByParent/:id",
+  messagerieControllers.getMessageriesByParentId
+);
 
 module.exports = router;

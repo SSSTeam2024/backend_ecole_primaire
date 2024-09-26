@@ -45,9 +45,14 @@ async function saveFile(base64String, fileName, file_path) {
   }
 }
 
+const getMessageriesByParentId = async (id) => {
+  return await messagerieDao.getMessageriesByParentId(id);
+};
+
 module.exports = {
   createMessagerie,
   getMessageries,
   deleteMessagerie,
   updateMessagerie,
+  getMessageriesByParentId,
 };

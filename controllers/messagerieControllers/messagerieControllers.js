@@ -129,9 +129,28 @@ const deleteMessagerie = async (req, res) => {
 //   }
 // };
 
+const getMessageriesByParentId = async (req, res) => {
+  try {
+    const parentId = req.params.id;
+    const messages = await messagerieServices.getMessageriesByParentId(
+      parentId
+    );
+
+    if (!messages) {
+      return res.status(404).send("This parents does not have any message!!");
+    }
+
+    res.json(messages);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send(error.message);
+  }
+};
+
 module.exports = {
   createMessagerie,
   getMessageries,
   deleteMessagerie,
   //   updateMessagerie,
+  getMessageriesByParentId,
 };

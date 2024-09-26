@@ -16,9 +16,17 @@ const deleteMessagerie = async (id) => {
   return await Messagerie.findByIdAndDelete(id);
 };
 
+const getMessageriesByParentId = async (id) => {
+  const query = {
+    $or: [{ sender: id }, { receiver: id }],
+  };
+  return await Messagerie.find(query);
+};
+
 module.exports = {
   createMessagerie,
   getMessageries,
   updateMessagerie,
   deleteMessagerie,
+  getMessageriesByParentId,
 };

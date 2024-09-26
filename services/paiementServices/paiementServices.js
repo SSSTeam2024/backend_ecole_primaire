@@ -20,7 +20,6 @@ const createPaiement = async (paiementData) => {
       msg: `${eleve.prenom} ${eleve.nom} ${eleve.classe.nom_classe}, %0AVotre paiement a été effectué avec succès pour la désignation du ${paiement.period}`,
     });
 
-    // console.log(receivers);
     smsService.sendSms(receivers);
   }
 

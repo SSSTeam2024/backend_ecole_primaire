@@ -16,6 +16,14 @@ const deleteNotification = async (id) => {
   return await Notification.findByIdAndDelete(id);
 };
 
+const deleteEleveFromNotification = async (notificationId, eleveId) => {
+  return await Notification.findByIdAndUpdate(
+    notificationId, // The ID of the Notification document
+    { $pull: { eleve: { id: eleveId } } }, // Removes the eleve with matching id from the array
+    { new: true } // Return the updated document after deletion
+  ).populate("eleve.id"); // Populate the remaining eleve.id references
+};
+
 const getNotificationsByEleveId = async (eleveId) => {
   const query = {
     "eleve.id": eleveId,
@@ -47,4 +55,5 @@ module.exports = {
   getNotificationsByEleveId,
   updateNotificationStatus,
   getNotificationById,
+  deleteEleveFromNotification,
 };

@@ -67,6 +67,26 @@ const deleteNotification = async (req, res) => {
   }
 };
 
+const deleteEleveFromNotification = async (req, res) => {
+  try {
+    const { notificationId, eleveId } = req.body;
+
+    const deletedNotification =
+      await notificationService.deleteEleveFromNotification(
+        notificationId,
+        eleveId
+      );
+
+    if (!deletedNotification) {
+      return res.status(404).send("Notification not found");
+    }
+    res.json({ message: "Notification deleted" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send(error.message);
+  }
+};
+
 const getNotificationsByEleveId = async (req, res) => {
   try {
     const { id: eleveId } = req.params;
@@ -121,4 +141,5 @@ module.exports = {
   getNotificationsByEleveId,
   updateNotificationStatus,
   getNoticiationById,
+  deleteEleveFromNotification,
 };

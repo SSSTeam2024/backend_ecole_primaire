@@ -31,38 +31,41 @@ const createEmploi = async (emploiData, documents) => {
         });
       }
     }
-    // console.log(parents);
+
     smsService.sendSms(parents);
   }
-  // let eleves = [];
 
-  // let studentsByClass = await etudiantDao.getEtudiantsByClasseId(emploi.classe);
-  // eleves.push(studentsByClass);
+  // Notification
+  let students = [];
+  let onesignal_notifications = [];
+  let eleves = await etudiantDao.getEtudiantsByClasseId(emploi.classe);
+  for (const eleve of eleves) {
+    students.push({
+      id: eleve._id,
+      notif_status: "0",
+    });
+  }
+  const notif = await notificationService.createNotification({
+    eleve: students,
+    titre: `Emploi`,
+    description: `Emploi: ${emploi.classe.nom_classe}`,
+    key: "emplois",
+  });
+  for (const eleve of students) {
+    let etudiant = await etudiantDao.getEtudiantById(eleve.id);
+    let notificationBody = {
+      contents: `Emploi: ${emploi.classe.nom_classe}`,
+      title: `Un Nouveau Emploi de temps`,
+      key: "emplois",
+      notificationId: notif._id,
+      users: [etudiant.parent.onesignal_api_key],
+      // users: ["b0d09a32-652a-4c73-95b7-e41fed538d0b"],
+    };
 
-  // let parentsOneSignalKeys = [];
-  // let studentIds = [];
+    onesignal_notifications.push(notificationBody);
+  }
 
-  // for (const studentsByClass of eleves) {
-  //   for (const student of studentsByClass) {
-  //     parentsOneSignalKeys.push(student.parent.onesignal_api_key);
-  //     studentIds.push(student._id);
-  //   }
-  // }
-
-  // const notif = await notificationService.createNotification({
-  //   eleve: studentIds,
-  //   lu: "0",
-  //   titre: `Emploi : ${emploi.classe.nom_classe}`,
-  //   description: `Emploi Pour élèves de ${emploi.classe.nom_classe}`,
-  // });
-
-  // await onesignalService.sendNotification({
-  //   contents: `Emploi Pour élèves de ${emploi.classe.nom_classe}`,
-  //   title: `Emploi : ${emploi.classe.nom_classe}`,
-  //   key: "emplois",
-  //   notificationId: notif._id,
-  //   users: parentsOneSignalKeys,
-  // });
+  onesignalService.sendNotification(onesignal_notifications);
 
   return emploi;
 };

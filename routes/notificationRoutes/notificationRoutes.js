@@ -27,4 +27,10 @@ router.get(
   "/getNotificationById/:id",
   notificationController.getNoticiationById
 );
+
+router.post(
+  "/deleteEleveFromNotification",
+  notificationController.deleteEleveFromNotification
+);
+
 module.exports = router;

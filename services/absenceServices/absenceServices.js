@@ -77,16 +77,8 @@ const createAbsence = async (absenceData) => {
             notificationId: notif._id,
             users: [etudiant.parent.onesignal_api_key],
           };
-          if (
-            etudiant.parent.onesignal_api_key !==
-              "7d372bf2-4ac7-4573-ab03-dfe84f56656e" &&
-            etudiant.parent.onesignal_api_key !==
-              "322ad1c0-7ecf-412a-8df8-e607286f0e60" &&
-            etudiant.parent.onesignal_api_key !==
-              "0def8e50-e289-4cee-a197-8e23e681fcb9"
-          ) {
-            onesignal_notifications.push(notificationBody);
-          }
+
+          onesignal_notifications.push(notificationBody);
         }
         if (absence.typeAbsent === "A") {
           let notificationBody = {
@@ -96,16 +88,8 @@ const createAbsence = async (absenceData) => {
             notificationId: notif._id,
             users: [etudiant.parent.onesignal_api_key],
           };
-          if (
-            etudiant.parent.onesignal_api_key !==
-              "7d372bf2-4ac7-4573-ab03-dfe84f56656e" &&
-            etudiant.parent.onesignal_api_key !==
-              "322ad1c0-7ecf-412a-8df8-e607286f0e60" &&
-            etudiant.parent.onesignal_api_key !==
-              "0def8e50-e289-4cee-a197-8e23e681fcb9"
-          ) {
-            onesignal_notifications.push(notificationBody);
-          }
+
+          onesignal_notifications.push(notificationBody);
         }
       }
     }

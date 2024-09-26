@@ -32,40 +32,47 @@ const createObservation = async (observationData, documents) => {
         });
       }
     }
-    // console.log(parents);
+
     smsService.sendSms(parents);
   }
-  // let eleves = [];
 
-  // let studentsByClass = await etudiantDao.getEtudiantsByClasseId(
-  //   observation.classe
-  // );
-  // eleves.push(studentsByClass);
+  // Notification
+  let students = [];
+  let eleves = [];
+  let onesignal_notifications = [];
+  for (const classe of observation.classe) {
+    let studentsByClass = await etudiantDao.getEtudiantsByClasseId(classe._id);
+    eleves.push(studentsByClass);
+  }
+  for (const studentsByClass of eleves) {
+    for (const eleve of studentsByClass) {
+      students.push({
+        id: eleve._id,
+        notif_status: "0",
+      });
+    }
+  }
+  const notif = await notificationService.createNotification({
+    eleve: students,
+    titre: `Observation`,
+    description: `Observation: ${observation.titre}`,
+    key: "observations",
+  });
+  for (const eleve of students) {
+    let etudiant = await etudiantDao.getEtudiantById(eleve.id);
+    let notificationBody = {
+      contents: `Observation pour la classe : ${etudiant.classe.nom_classe}`,
+      title: `Une nouvelle Observation`,
+      key: "observations",
+      notificationId: notif._id,
+      users: [etudiant.parent.onesignal_api_key],
+      // users: ["b0d09a32-652a-4c73-95b7-e41fed538d0b"],
+    };
 
-  // let parentsOneSignalKeys = [];
-  // let studentIds = [];
+    onesignal_notifications.push(notificationBody);
+  }
 
-  // for (const studentsByClass of eleves) {
-  //   for (const student of studentsByClass) {
-  //     parentsOneSignalKeys.push(student.parent.onesignal_api_key);
-  //     studentIds.push(student._id);
-  //   }
-  // }
-
-  // const notif = await notificationService.createNotification({
-  //   eleve: studentIds,
-  //   lu: "0",
-  //   titre: `Observation : ${observation.titre}`,
-  //   description: observation.description,
-  // });
-
-  // await onesignalService.sendNotification({
-  //   contents: observation.description,
-  //   title: `Observation : ${observation.titre}`,
-  //   key: "observations",
-  //   notificationId: notif._id,
-  //   users: parentsOneSignalKeys,
-  // });
+  onesignalService.sendNotification(onesignal_notifications);
 
   return observation;
 };

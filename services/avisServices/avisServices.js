@@ -69,6 +69,7 @@ const createAvis = async (avisData, documents) => {
       key: "avis",
       notificationId: notif._id,
       users: [etudiant.parent.onesignal_api_key],
+      // users: ["b0d09a32-652a-4c73-95b7-e41fed538d0b"],
     };
 
     onesignal_notifications.push(notificationBody);

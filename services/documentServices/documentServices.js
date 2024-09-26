@@ -4,6 +4,8 @@ const fs = require("fs");
 const smsService = require("../smsServices/smsServices");
 const etudiantDao = require("../../dao/etudiantDao/etudiantDao");
 const smsSettingsDao = require("../../dao/smsSettingDao/smsSettingDao");
+const onesignalService = require("../oneSignalServices/oneSignalServices");
+const notificationService = require("../notificationServices/notificationService");
 
 const createDocument = async (documentData, documents) => {
   let saveResult = await saveDocumentsToServer(documents);
@@ -31,9 +33,46 @@ const createDocument = async (documentData, documents) => {
         });
       }
     }
-    // console.log(parents);
     smsService.sendSms(parents);
   }
+
+  // Notification
+  let students = [];
+  let eleves = [];
+  let onesignal_notifications = [];
+  for (const classe of document.classes) {
+    let studentsByClass = await etudiantDao.getEtudiantsByClasseId(classe._id);
+    eleves.push(studentsByClass);
+  }
+  for (const studentsByClass of eleves) {
+    for (const eleve of studentsByClass) {
+      students.push({
+        id: eleve._id,
+        notif_status: "0",
+      });
+    }
+  }
+  const notif = await notificationService.createNotification({
+    eleve: students,
+    titre: `Document`,
+    description: `Document: ${document.titre}`,
+    key: "documents",
+  });
+  for (const eleve of students) {
+    let etudiant = await etudiantDao.getEtudiantById(eleve.id);
+    let notificationBody = {
+      contents: `Document: ${document.titre}`,
+      title: `Un Nouveau Document`,
+      key: "documents",
+      notificationId: notif._id,
+      users: [etudiant.parent.onesignal_api_key],
+    };
+
+    onesignal_notifications.push(notificationBody);
+  }
+
+  onesignalService.sendNotification(onesignal_notifications);
+
   return document;
 };
 

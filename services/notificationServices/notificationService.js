@@ -16,6 +16,13 @@ const deleteNotification = async (id) => {
   return await notificationDao.deleteNotification(id);
 };
 
+const deleteEleveFromNotification = async (notificationId, eleveId) => {
+  return await notificationDao.deleteEleveFromNotification(
+    notificationId,
+    eleveId
+  );
+};
+
 const getNotificationsByEleveId = async (eleveId) => {
   return await notificationDao.getNotificationsByEleveId(eleveId);
 };
@@ -42,6 +49,7 @@ module.exports = {
   getNotificationsByEleveId,
   updateNotificationStatus,
   getNotificationById,
+  deleteEleveFromNotification,
 };
 
 // const OneSignal = require("@onesignal/node-onesignal");

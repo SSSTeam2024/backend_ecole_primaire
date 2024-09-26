@@ -2,7 +2,7 @@ const rendezvousDao = require("../../dao/rendezvousDao/rendezvousDao");
 const smsService = require("../smsServices/smsServices");
 const parentDao = require("../../dao/parentDao/parentDao");
 const smsSettingsDao = require("../../dao/smsSettingDao/smsSettingDao");
-
+const etudiantDao = require("../../dao/etudiantDao/etudiantDao");
 const onesignalService = require("../oneSignalServices/oneSignalServices");
 const notificationService = require("../notificationServices/notificationService");
 
@@ -28,38 +28,44 @@ const createRendezvous = async (rendezvousData) => {
   }
 
   // Notification
-  let students = [];
+  if (rendezvousData.createdBy === "administration") {
+    let students = [];
 
-  let onesignal_notifications = [];
+    let onesignal_notifications = [];
 
-  for (const eleve of rendezVous.parents.fils) {
-    students.push({
-      id: eleve._id,
-      notif_status: "0",
+    for (const parent of rendezVous.parents) {
+      for (const eleve of parent.fils) {
+        students.push({
+          id: eleve._id,
+          notif_status: "0",
+        });
+      }
+    }
+
+    const notif = await notificationService.createNotification({
+      eleve: students,
+      titre: `Rendez-vous`,
+      description: `Rendez-vous: ${rendezVous.titre} le ${rendezVous.date} à ${rendezVous.heure}`,
+      key: "rendez-vous",
     });
+
+    for (const eleve of students) {
+      let etudiant = await etudiantDao.getEtudiantById(eleve.id);
+      let notificationBody = {
+        contents: `Rendez-vous: ${rendezVous.titre} le ${rendezVous.date} à ${rendezVous.heure}`,
+        title: `Un nouveau Rendez-vous`,
+        key: "rendez-vous",
+        notificationId: notif._id,
+        users: [etudiant.parent.onesignal_api_key],
+        // users: ["b0d09a32-652a-4c73-95b7-e41fed538d0b"],
+      };
+
+      onesignal_notifications.push(notificationBody);
+    }
+
+    onesignalService.sendNotification(onesignal_notifications);
   }
-  console.log(students);
-  // const notif = await notificationService.createNotification({
-  //   eleve: students,
-  //   titre: `Observation`,
-  //   description: `Observation: ${observation.titre}`,
-  //   key: "observations",
-  // });
-  // for (const eleve of students) {
-  //   let etudiant = await etudiantDao.getEtudiantById(eleve.id);
-  //   let notificationBody = {
-  //     contents: `Observation pour la classe : ${etudiant.classe.nom_classe}`,
-  //     title: `Une nouvelle Observation`,
-  //     key: "observations",
-  //     notificationId: notif._id,
-  //     // users: [etudiant.parent.onesignal_api_key],
-  //     users: ["b0d09a32-652a-4c73-95b7-e41fed538d0b"],
-  //   };
 
-  //   onesignal_notifications.push(notificationBody);
-  // }
-
-  // onesignalService.sendNotification(onesignal_notifications);
   return rendezVous;
 };
 

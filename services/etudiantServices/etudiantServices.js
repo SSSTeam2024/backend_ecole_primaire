@@ -37,6 +37,12 @@ const updateStatusPaiemnt = async (etudiantData) => {
   return "Payment Status Up to date!!";
 };
 
+const updateEtudiantClasse = async (etudiantData) => {
+  const { eleve_id, groupeId } = etudiantData;
+  await etudiantDao.updateEtudiantClasse(eleve_id, groupeId);
+  return "Etudiant Classe Up to date!!";
+};
+
 async function saveDocumentsToServer(documents) {
   let counter = 0;
   for (const file of documents) {
@@ -70,4 +76,5 @@ module.exports = {
   updateEtudiant,
   getEtudiantsByClasseId,
   updateStatusPaiemnt,
+  updateEtudiantClasse,
 };

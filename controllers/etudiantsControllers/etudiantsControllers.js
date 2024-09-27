@@ -212,6 +212,20 @@ const updateStatusPaiment = async (req, res) => {
   }
 };
 
+const updateEleveClasse = async (req, res) => {
+  try {
+    const { _id, classe } = req.body;
+    const sentResult = await etudiantService.updateEtudiantClasse({
+      eleve_id: _id,
+      groupeId: classe,
+    });
+    res.json({ success: sentResult });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send(error.message);
+  }
+};
+
 module.exports = {
   createEtudiant,
   deleteEtudiant,
@@ -219,4 +233,5 @@ module.exports = {
   updateEtudiant,
   getEtudiantsByClasseId,
   updateStatusPaiment,
+  updateEleveClasse,
 };

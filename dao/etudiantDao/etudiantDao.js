@@ -60,6 +60,17 @@ const updateStatusPaiement = async (id, paiement) => {
   );
 };
 
+const updateEtudiantClasse = async (id, groupeId) => {
+  return await Etudiant.findByIdAndUpdate(
+    { _id: id },
+    {
+      $set: {
+        classe: groupeId,
+      },
+    }
+  );
+};
+
 module.exports = {
   createEtudiant,
   getEtudiantById,
@@ -69,4 +80,5 @@ module.exports = {
   updateEtudiantParentAssignment,
   getEtudiantsByClasseId,
   updateStatusPaiement,
+  updateEtudiantClasse,
 };

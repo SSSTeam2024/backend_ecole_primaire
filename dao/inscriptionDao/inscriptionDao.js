@@ -1,7 +1,6 @@
 const Inscription = require("../../models/inscriptionModel/inscriptionModel");
 
 const createInscription = async (inscriptionData) => {
-  console.log("dao", inscriptionData);
   return await Inscription.create(inscriptionData);
 };
 

@@ -12,5 +12,5 @@ router.get(
   etudiantController.getEtudiantsByClasseId
 );
 router.post("/updateStatusPaiment", etudiantController.updateStatusPaiment);
-
+router.post("/updateEleveClasse", etudiantController.updateEleveClasse);
 module.exports = router;

@@ -89,7 +89,7 @@ const updatePassword = async (id, password) => {
         password: password,
       },
     }
-  );
+  ).populate("fils");
 };
 
 module.exports = {

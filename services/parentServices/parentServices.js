@@ -1,6 +1,7 @@
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const parentDao = require("../../dao/parentDao/parentDao");
+const smsService = require("../smsServices/smsServices");
 
 const createParent = async (parentData) => {
   const hashedPassword = await bcrypt.hash(parentData.password, 10);
@@ -55,7 +56,19 @@ const getParentById = async (id) => {
 
 const updatePassword = async (id, password) => {
   const hashedPassword = await bcrypt.hash(password.password, 10);
-  return await parentDao.updatePassword(id, hashedPassword);
+  console.log(password);
+  let parents = [];
+
+  let parentById = await parentDao.getParentById(id);
+  parents.push({
+    phone: parentById.phone,
+    msg: `Bonjour ${parentById.prenom_parent} ${parentById.nom_parent}, %0AVotre mot de passe a été mis à jour avec succès. Votre nouveau mot de passe : %0A ${password.password}`,
+  });
+
+  const parent = await parentDao.updatePassword(id, hashedPassword);
+
+  await smsService.sendSms(parents);
+  return parent;
 };
 
 const updateParent = async (id, updateData) => {

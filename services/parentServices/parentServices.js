@@ -45,8 +45,17 @@ const getParentByToken = async (token) => {
   return await parentDao.findParentByToken(token);
 };
 
+const getParentByUsername = async (username) => {
+  return await parentDao.findParentByUsername(username);
+};
+
 const getParentById = async (id) => {
   return await parentDao.getParentById(id);
+};
+
+const updatePassword = async (id, password) => {
+  const hashedPassword = await bcrypt.hash(password.password, 10);
+  return await parentDao.updatePassword(id, hashedPassword);
 };
 
 const updateParent = async (id, updateData) => {
@@ -101,4 +110,6 @@ module.exports = {
   deleteParent,
   updateParent,
   updateApiKey,
+  getParentByUsername,
+  updatePassword,
 };

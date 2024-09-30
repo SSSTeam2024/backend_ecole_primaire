@@ -7,10 +7,12 @@ router.post("/newParent", parentController.createParent);
 router.post("/login", parentController.login);
 router.post("/logout/:id", parentController.logout);
 router.post("/getParentByToken", parentController.getParentByJwtToken);
+router.post("/getParentByUsername", parentController.getParentByUsername);
 router.get("/getParent/:id", parentController.getParentById);
 router.get("/getAllParents", parentController.getParents);
 router.delete("/deleteParent/:id", parentController.deleteParent);
 router.patch("/updateParent/:id", parentController.updateParent);
 router.post("/updateApiKey", parentController.updateAPIKey);
+router.put("/updateParentPassword/:id", parentController.updatePassword);
 
 module.exports = router;

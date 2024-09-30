@@ -81,6 +81,17 @@ const updateApiKey = async (id, key) => {
   );
 };
 
+const updatePassword = async (id, password) => {
+  return await Parent.findByIdAndUpdate(
+    { _id: id },
+    {
+      $set: {
+        password: password,
+      },
+    }
+  );
+};
+
 module.exports = {
   createParent,
   getParents,
@@ -93,4 +104,5 @@ module.exports = {
   deleteParent,
   updateParent,
   updateApiKey,
+  updatePassword,
 };

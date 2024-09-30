@@ -98,6 +98,22 @@ const getParentByJwtToken = async (req, res) => {
   }
 };
 
+const getParentByUsername = async (req, res) => {
+  try {
+    const username = req.body.username;
+
+    const getParent = await parentService.getParentByUsername(username);
+
+    if (!getParent) {
+      return res.status(404).send("Parent not found");
+    }
+    res.json(getParent);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send(error.message);
+  }
+};
+
 const getParentById = async (req, res) => {
   try {
     const parentId = req.params.id;
@@ -151,6 +167,25 @@ const updateAPIKey = async (req, res) => {
   }
 };
 
+const updatePassword = async (req, res) => {
+  try {
+    const parentId = req.params.id;
+    const { password } = req.body;
+
+    const updateParent = await parentService.updatePassword(parentId, {
+      password,
+    });
+
+    if (!updateParent) {
+      return res.status(404).send("Parent not found!");
+    }
+    res.json(updateParent);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send(error.message);
+  }
+};
+
 module.exports = {
   createParent,
   login,
@@ -161,4 +196,6 @@ module.exports = {
   deleteParent,
   updateParent,
   updateAPIKey,
+  getParentByUsername,
+  updatePassword,
 };

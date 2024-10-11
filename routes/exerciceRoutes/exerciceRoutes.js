@@ -5,7 +5,7 @@ const router = express.Router();
 
 router.post("/newExercice", exerciceController.createExercice);
 router.get("/getExercices", exerciceController.getExercices);
-// router.patch("/updateEtudiant/:id", etudiantController.updateEtudiant);
+router.patch("/updateExercice/:id", exerciceController.updateExercice);
 router.delete("/deleteExercice/:id", exerciceController.deleteExercice);
 router.get(
   "/exercice-classe-id/:id",

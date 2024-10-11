@@ -46,6 +46,58 @@ const createMessagerie = async (req, res) => {
   }
 };
 
+const createMessagerieCollectif = async (req, res) => {
+  try {
+    const {
+      msg,
+      sender,
+      receivers, // Now accepting multiple receivers as an array
+      date,
+      heure,
+      fichier_base64_string = [],
+      fichier_extension = [],
+    } = req.body;
+
+    const msgFilesPath = "files/msgFiles/";
+
+    const fichiers = fichier_extension.map((ext, index) =>
+      globalFunctions.generateUniqueFilename(ext, `Message${index}`)
+    );
+
+    let documents = [
+      ...fichier_base64_string.map((base64String, index) => ({
+        base64String: base64String,
+        extension: fichier_extension[index],
+        name: fichiers[index],
+        path: msgFilesPath,
+      })),
+    ];
+
+    // Iterate over each receiver to create a message
+    const messages = await Promise.all(
+      receivers.map(async (receiver) => {
+        return messagerieServices.createMessagerie(
+          {
+            msg,
+            sender,
+            receiver, // For each individual receiver
+            date,
+            heure,
+            fichiers,
+          },
+          documents
+        );
+      })
+    );
+
+    // Return all created messages
+    res.status(201).json(messages);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send(error.message);
+  }
+};
+
 const getMessageries = async (req, res) => {
   try {
     const messages = await messagerieServices.getMessageries();
@@ -153,4 +205,5 @@ module.exports = {
   deleteMessagerie,
   //   updateMessagerie,
   getMessageriesByParentId,
+  createMessagerieCollectif,
 };

@@ -86,67 +86,69 @@ const getExercicesByClasseId = async (req, res) => {
   }
 };
 
-// const updateExercice = async (req, res) => {
-//   try {
-//     const etudiantId = req.params.id;
-//     const {
-//       nom,
-//       prenom,
-//       date_de_naissance,
-//       classe,
-//       parent,
-//       genre,
-//       avatar_base64_string,
-//       avatar_extension,
-//     } = req.body;
+const updateExercice = async (req, res) => {
+  try {
+    const exerciceId = req.params.id;
+    const {
+      classes,
+      matiere,
+      desc,
+      creation_date,
+      badge_date,
+      enseignant,
+      fichier_base64_string,
+      fichier_extension,
+    } = req.body;
 
-//     const etudiantFilesPath = "files/etudiantFiles/";
+    const exerciceFilesPath = "files/exerciceFiles/";
 
-//     let avatar = globalFunctions.generateUniqueFilename(
-//       avatar_extension,
-//       "Avatar"
-//     );
+    let fichier = globalFunctions.generateUniqueFilename(
+      fichier_extension,
+      "Exercice"
+    );
 
-//     let etudiantBody = {
-//       nom,
-//       prenom,
-//       date_de_naissance,
-//       classe,
-//       parent,
-//       genre,
-//     };
+    let exerciceBody = {
+      classes,
+      matiere,
+      desc,
+      creation_date,
+      badge_date,
+      enseignant,
+      fichier_base64_string,
+      fichier_extension,
+    };
 
-//     let documents = [];
+    let documents = [];
 
-//     if (avatar_base64_string) {
-//       documents.push({
-//         base64String: avatar_base64_string,
-//         extension: avatar_extension,
-//         name: avatar,
-//         path: etudiantFilesPath,
-//       });
-//     }
+    if (fichier_base64_string) {
+      documents.push({
+        base64String: fichier_base64_string,
+        extension: fichier_extension,
+        name: fichier,
+        path: exerciceFilesPath,
+      });
+    }
 
-//     if (avatar_base64_string) {
-//       etudiantBody.avatar = avatar;
-//     }
-//     const etudiant = await etudiantService.updateEtudiant(
-//       etudiantId,
-//       etudiantBody,
-//       documents
-//     );
+    if (fichier_base64_string) {
+      exerciceBody.fichier = fichier;
+    }
+    const exercice = await exerciceService.updateExercice(
+      exerciceId,
+      exerciceBody,
+      documents
+    );
 
-//     res.status(200).json(etudiant);
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).send(error.message);
-//   }
-// };
+    res.status(200).json(exercice);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send(error.message);
+  }
+};
 
 module.exports = {
   createExercice,
   deleteExercice,
   getExercices,
   getExercicesByClasseId,
-  //   updateExercice,
+  updateExercice,
 };

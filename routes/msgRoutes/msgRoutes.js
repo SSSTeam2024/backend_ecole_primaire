@@ -4,6 +4,10 @@ const messagerieControllers = require("../../controllers/messagerieControllers/m
 const router = express.Router();
 
 router.post("/newMessagerie", messagerieControllers.createMessagerie);
+router.post(
+  "/newMessagerieCollectif",
+  messagerieControllers.createMessagerieCollectif
+);
 router.get("/getMessageries", messagerieControllers.getMessageries);
 // router.patch("/updateMatiere/:id", messagerieControllers.updateMatiere);
 router.delete("/deleteMessagerie/:id", messagerieControllers.deleteMessagerie);

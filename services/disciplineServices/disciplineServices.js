@@ -10,30 +10,37 @@ const smsSettingsDao = require("../../dao/smsSettingDao/smsSettingDao");
 const createDiscipline = async (disciplineData, documents) => {
   let saveResult = await saveDocumentsToServer(documents);
   const discipline = await disciplineDao.createDiscipline(disciplineData);
-  const eleve = await eleveDao.getEtudiantById(discipline.eleve);
+  let eleves = [];
+  let receivers = [];
+  for (const etudiant of disciplineData.eleve) {
+    const student = await eleveDao.getEtudiantById(etudiant);
+    eleves.push(student);
+  }
   let settings = await smsSettingsDao.getSmsSettings();
   let discipline_sms_service = settings.filter(
     (service) => service.service_name === "Disciplines"
   );
   if (discipline_sms_service[0].sms_status === "1") {
-    let receivers = [
-      {
+    for (const eleve of eleves) {
+      receivers.push({
         phone: eleve.parent.phone,
         msg: `${eleve.prenom} ${eleve.nom} ${eleve.classe.nom_classe}, %0A Votre enfant a un ${discipline.type} le ${discipline.date} car ${discipline.texte}`,
-      },
-    ];
+      });
+    }
+
     // console.log(receivers);
     smsService.sendSms(receivers);
   }
 
   // Notification
-
-  let students = [
-    {
+  let students = [];
+  let onesignal_notifications = [];
+  for (const eleve of eleves) {
+    students.push({
       id: eleve._id,
       notif_status: "0",
-    },
-  ];
+    });
+  }
 
   const notif = await notificationService.createNotification({
     eleve: students,
@@ -42,16 +49,15 @@ const createDiscipline = async (disciplineData, documents) => {
     key: "disciplines",
   });
 
-  let onesignal_notifications = [
-    {
+  for (const eleve of eleves) {
+    onesignal_notifications.push({
       contents: `Discipline: ${discipline.type} le ${discipline.date}`,
       title: `${eleve.prenom} ${eleve.nom} ${eleve.classe.nom_classe}, a un ${discipline.type}`,
       key: "disciplines",
       notificationId: notif._id,
       users: [eleve.parent.onesignal_api_key],
-    },
-  ];
-
+    });
+  }
   onesignalService.sendNotification(onesignal_notifications);
 
   return discipline;
@@ -69,10 +75,10 @@ const getDisciplineByEleveId = async (eleveId) => {
   return await disciplineDao.getDisciplinesByEleveId(eleveId);
 };
 
-// const updateExercice = async (id, updateData, documents) => {
-//   let saveResult = await saveDocumentsToServer(documents);
-//   return await exerciceDao.updateExercice(id, updateData);
-// };
+const updateDiscipline = async (id, updateData, documents) => {
+  let saveResult = await saveDocumentsToServer(documents);
+  return await disciplineDao.updateDiscipline(id, updateData);
+};
 
 async function saveDocumentsToServer(documents) {
   let counter = 0;
@@ -104,5 +110,5 @@ module.exports = {
   getDisciplines,
   deleteDiscipline,
   getDisciplineByEleveId,
-  //   updateExercice,
+  updateDiscipline,
 };

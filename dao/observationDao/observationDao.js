@@ -19,9 +19,14 @@ const getObservationsByClasseId = async (classeId) => {
   return await Observation.find(query).populate("classe");
 };
 
+const updateObservation = async (id, updateData) => {
+  return await Observation.findByIdAndUpdate(id, updateData, { new: true });
+};
+
 module.exports = {
   createObservation,
   getObservations,
   deleteObservation,
   getObservationsByClasseId,
+  updateObservation,
 };

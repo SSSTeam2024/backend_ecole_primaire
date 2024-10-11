@@ -13,4 +13,5 @@ router.get(
   "/observations-classe-id/:id",
   observationController.getObservationByClasseId
 );
+router.patch("/updateObservation/:id", observationController.updateObservation);
 module.exports = router;

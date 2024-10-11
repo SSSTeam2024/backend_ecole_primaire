@@ -82,6 +82,11 @@ const getEmploisByClasseId = async (classeId) => {
   return await emploiDao.getEmploisByClasseId(classeId);
 };
 
+const updateEmploi = async (id, updateData, documents) => {
+  let saveResult = await saveDocumentsToServer(documents);
+  return await emploiDao.updateEmploi(id, updateData);
+};
+
 async function saveDocumentsToServer(documents) {
   let counter = 0;
   for (const file of documents) {
@@ -112,5 +117,5 @@ module.exports = {
   getEmplois,
   deleteEmploi,
   getEmploisByClasseId,
-  //   updateExercice,
+  updateEmploi,
 };

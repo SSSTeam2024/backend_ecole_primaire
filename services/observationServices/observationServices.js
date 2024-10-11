@@ -114,9 +114,14 @@ const getObservationsByClasseId = async (classeId) => {
   return await observationDao.getObservationsByClasseId(classeId);
 };
 
+const updateObservation = async (id, updateData) => {
+  return await observationDao.updateObservation(id, updateData);
+};
+
 module.exports = {
   createObservation,
   getObservations,
   deleteObservation,
   getObservationsByClasseId,
+  updateObservation,
 };

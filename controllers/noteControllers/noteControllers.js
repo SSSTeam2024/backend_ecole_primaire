@@ -41,22 +41,25 @@ const getNotesByEleveId = async (req, res) => {
 
 const updateNote = async (req, res) => {
   try {
-    const noteId = req.params.id;
-    const { eleve, matiere, trimestre, type, note, date } = req.body;
+    const { id } = req.params;
+    const { updateData, eleves } = req.body;
 
-    const updateNote = await noteService.updateNote(noteId, {
-      eleve,
-      matiere,
-      trimestre,
-      type,
-      note,
-      date,
+    const elevesWithNotes = eleves.map((eleveData) => {
+      const { eleve, note } = eleveData;
+      return {
+        eleve,
+        note,
+      };
     });
 
-    if (!updateNote) {
+    updateData.eleves = elevesWithNotes;
+
+    const updatedNote = await noteService.updateNote(id, updateData);
+
+    if (!updatedNote) {
       return res.status(404).send("Note not found");
     }
-    res.json(updateNote);
+    res.json(updatedNote);
   } catch (error) {
     console.error(error);
     res.status(500).send(error.message);

@@ -7,5 +7,6 @@ router.post("/newEmploi", emploiController.createEmploi);
 router.get("/getEmplois", emploiController.getEmplois);
 router.delete("/deleteEmploi/:id", emploiController.deleteEmploi);
 router.get("/emploi-classe-id/:id", emploiController.getEmploisByClasseId);
+router.patch("/updateEmploi/:id", emploiController.updateEmploi);
 
 module.exports = router;

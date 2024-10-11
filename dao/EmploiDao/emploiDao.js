@@ -9,9 +9,9 @@ const getEmplois = async () => {
   return await Emploi.find().populate("classe");
 };
 
-// const updateExercice = async (id, updateData) => {
-//   return await Exercice.findByIdAndUpdate(id, updateData, { new: true });
-// };
+const updateEmploi = async (id, updateData) => {
+  return await Emploi.findByIdAndUpdate(id, updateData, { new: true });
+};
 
 const deleteEmploi = async (id) => {
   return await Emploi.findByIdAndDelete(id);
@@ -27,7 +27,7 @@ const getEmploisByClasseId = async (classeId) => {
 module.exports = {
   createEmploi,
   getEmplois,
-  //   updateExercice,
+  updateEmploi,
   deleteEmploi,
   getEmploisByClasseId,
 };

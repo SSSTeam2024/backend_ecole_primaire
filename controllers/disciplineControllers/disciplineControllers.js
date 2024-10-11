@@ -4,6 +4,7 @@ const globalFunctions = require("../../utils/globalFunctions");
 const createDiscipline = async (req, res) => {
   try {
     const {
+      classe,
       eleve,
       type,
       texte,
@@ -31,6 +32,7 @@ const createDiscipline = async (req, res) => {
 
     const newDiscipline = await disciplineService.createDiscipline(
       {
+        classe,
         eleve,
         type,
         texte,
@@ -86,67 +88,67 @@ const getDisciplinesByEleveId = async (req, res) => {
   }
 };
 
-// const updateExercice = async (req, res) => {
-//   try {
-//     const etudiantId = req.params.id;
-//     const {
-//       nom,
-//       prenom,
-//       date_de_naissance,
-//       classe,
-//       parent,
-//       genre,
-//       avatar_base64_string,
-//       avatar_extension,
-//     } = req.body;
+const updateDiscipline = async (req, res) => {
+  try {
+    const disciplineId = req.params.id;
+    const {
+      classe,
+      eleve,
+      type,
+      texte,
+      editeur,
+      date,
+      fichier_base64_string,
+      fichier_extension,
+    } = req.body;
 
-//     const etudiantFilesPath = "files/etudiantFiles/";
+    const disciplineFilesPath = "files/disciplineFiles/";
 
-//     let avatar = globalFunctions.generateUniqueFilename(
-//       avatar_extension,
-//       "Avatar"
-//     );
+    let fichier = globalFunctions.generateUniqueFilename(
+      fichier_extension,
+      "Discipline"
+    );
 
-//     let etudiantBody = {
-//       nom,
-//       prenom,
-//       date_de_naissance,
-//       classe,
-//       parent,
-//       genre,
-//     };
+    let disciplineBody = {
+      classe,
+      eleve,
+      type,
+      texte,
+      editeur,
+      date,
+    };
 
-//     let documents = [];
+    let documents = [];
 
-//     if (avatar_base64_string) {
-//       documents.push({
-//         base64String: avatar_base64_string,
-//         extension: avatar_extension,
-//         name: avatar,
-//         path: etudiantFilesPath,
-//       });
-//     }
+    if (fichier_base64_string) {
+      documents.push({
+        base64String: fichier_base64_string,
+        extension: fichier_extension,
+        name: fichier,
+        path: disciplineFilesPath,
+      });
+    }
 
-//     if (avatar_base64_string) {
-//       etudiantBody.avatar = avatar;
-//     }
-//     const etudiant = await etudiantService.updateEtudiant(
-//       etudiantId,
-//       etudiantBody,
-//       documents
-//     );
+    if (fichier_base64_string) {
+      disciplineBody.fichier = fichier;
+    }
+    const discipline = await disciplineService.updateDiscipline(
+      disciplineId,
+      disciplineBody,
+      documents
+    );
 
-//     res.status(200).json(etudiant);
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).send(error.message);
-//   }
-// };
+    res.status(200).json(discipline);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send(error.message);
+  }
+};
 
 module.exports = {
   createDiscipline,
   deleteDiscipline,
   getDisciplines,
   getDisciplinesByEleveId,
-  //   updateExercice,
+  updateDiscipline,
 };

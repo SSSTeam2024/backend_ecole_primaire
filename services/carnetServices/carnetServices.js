@@ -70,6 +70,11 @@ const getCarnetsByEleveId = async (eleveId) => {
   return await carnetDao.getCarnetsByEleveId(eleveId);
 };
 
+const updateCarnet = async (id, updateData, documents) => {
+  let saveResult = await saveDocumentsToServer(documents);
+  return await carnetDao.updateCarnet(id, updateData);
+};
+
 async function saveDocumentsToServer(documents) {
   let counter = 0;
   for (const file of documents) {
@@ -100,4 +105,5 @@ module.exports = {
   getCarnets,
   deleteCarnet,
   getCarnetsByEleveId,
+  updateCarnet,
 };

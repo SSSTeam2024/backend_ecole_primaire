@@ -15,9 +15,9 @@ const getCarnets = async () => {
     .populate("classe");
 };
 
-// const updateCarnet = async (id, updateData) => {
-//   return await Carnet.findByIdAndUpdate(id, updateData, { new: true });
-// };
+const updateCarnet = async (id, updateData) => {
+  return await Carnet.findByIdAndUpdate(id, updateData, { new: true });
+};
 
 const deleteCarnet = async (id) => {
   return await Carnet.findByIdAndDelete(id);
@@ -39,4 +39,5 @@ module.exports = {
   getCarnets,
   deleteCarnet,
   getCarnetsByEleveId,
+  updateCarnet,
 };

@@ -88,9 +88,65 @@ const getObservationByClasseId = async (req, res) => {
   }
 };
 
+const updateObservation = async (req, res) => {
+  try {
+    const observationId = req.params.id;
+    const {
+      titre,
+      date,
+      description,
+      classe,
+      fichier_base64_string,
+      fichier_extension,
+      par,
+    } = req.body;
+
+    const observationFilesPath = "files/observationFiles/";
+
+    let fichier = globalFunctions.generateUniqueFilename(
+      fichier_extension,
+      "fichierObservation"
+    );
+
+    let observationBody = {
+      titre,
+      date,
+      description,
+      classe,
+      par,
+    };
+
+    let documents = [];
+
+    if (fichier_base64_string) {
+      documents.push({
+        base64String: fichier_base64_string,
+        extension: image_extension,
+        name: fichier,
+        path: observationFilesPath,
+      });
+    }
+
+    if (fichier_base64_string) {
+      observationBody.fichier = fichier;
+    }
+    const observation = await observationService.updateObservation(
+      observationId,
+      observationBody,
+      documents
+    );
+
+    res.status(200).json(observation);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send(error.message);
+  }
+};
+
 module.exports = {
   createObservation,
   getObservations,
   deleteObservation,
   getObservationByClasseId,
+  updateObservation,
 };

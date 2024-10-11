@@ -75,67 +75,56 @@ const getEmploisByClasseId = async (req, res) => {
   }
 };
 
-// const updateExercice = async (req, res) => {
-//   try {
-//     const etudiantId = req.params.id;
-//     const {
-//       nom,
-//       prenom,
-//       date_de_naissance,
-//       classe,
-//       parent,
-//       genre,
-//       avatar_base64_string,
-//       avatar_extension,
-//     } = req.body;
+const updateEmploi = async (req, res) => {
+  try {
+    const emploiId = req.params.id;
+    const { titre, classe, date, image_base64_string, image_extension } =
+      req.body;
 
-//     const etudiantFilesPath = "files/etudiantFiles/";
+    const emploiFilesPath = "files/emploiFiles/";
 
-//     let avatar = globalFunctions.generateUniqueFilename(
-//       avatar_extension,
-//       "Avatar"
-//     );
+    let image = globalFunctions.generateUniqueFilename(
+      image_extension,
+      "Emploi"
+    );
 
-//     let etudiantBody = {
-//       nom,
-//       prenom,
-//       date_de_naissance,
-//       classe,
-//       parent,
-//       genre,
-//     };
+    let emploiBody = {
+      titre,
+      classe,
+      date,
+    };
 
-//     let documents = [];
+    let documents = [];
 
-//     if (avatar_base64_string) {
-//       documents.push({
-//         base64String: avatar_base64_string,
-//         extension: avatar_extension,
-//         name: avatar,
-//         path: etudiantFilesPath,
-//       });
-//     }
+    if (image_base64_string) {
+      documents.push({
+        base64String: image_base64_string,
+        extension: image_extension,
+        name: image,
+        path: emploiFilesPath,
+      });
+    }
 
-//     if (avatar_base64_string) {
-//       etudiantBody.avatar = avatar;
-//     }
-//     const etudiant = await etudiantService.updateEtudiant(
-//       etudiantId,
-//       etudiantBody,
-//       documents
-//     );
+    if (image_base64_string) {
+      emploiBody.image = image;
+    }
+    const emploi = await emploiService.updateEmploi(
+      emploiId,
+      emploiBody,
+      documents
+    );
 
-//     res.status(200).json(etudiant);
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).send(error.message);
-//   }
-// };
+    res.status(200).json(emploi);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send(error.message);
+  }
+};
 
 module.exports = {
   createEmploi,
   deleteEmploi,
   getEmplois,
   getEmploisByClasseId,
-  //   updateExercice,
+  updateEmploi,
 };

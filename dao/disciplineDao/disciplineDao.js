@@ -8,9 +8,9 @@ const getDisciplines = async () => {
   return await Discipline.find().populate("eleve");
 };
 
-// const updateExercice = async (id, updateData) => {
-//   return await Exercice.findByIdAndUpdate(id, updateData, { new: true });
-// };
+const updateDiscipline = async (id, updateData) => {
+  return await Discipline.findByIdAndUpdate(id, updateData, { new: true });
+};
 
 const deleteDiscipline = async (id) => {
   return await Discipline.findByIdAndDelete(id);
@@ -26,7 +26,7 @@ const getDisciplinesByEleveId = async (eleveId) => {
 module.exports = {
   createDiscipline,
   getDisciplines,
-  //   updateExercice,
+  updateDiscipline,
   deleteDiscipline,
   getDisciplinesByEleveId,
 };

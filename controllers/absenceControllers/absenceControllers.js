@@ -32,22 +32,25 @@ const getAbsences = async (req, res) => {
 
 const updateAbsence = async (req, res) => {
   try {
-    const absenceId = req.params.id;
-    const { eleve, matiere, enseignant, type, heure, date } = req.body;
+    const { id } = req.params;
+    const { updateData, eleves } = req.body;
 
-    const updateAbsence = await absenceService.updateAbsence(absenceId, {
-      eleve,
-      matiere,
-      enseignant,
-      type,
-      heure,
-      date,
+    const elevesWithAbsence = eleves.map((eleveData) => {
+      const { eleve, typeAbsent } = eleveData;
+      return {
+        eleve,
+        typeAbsent,
+      };
     });
 
-    if (!updateAbsence) {
+    updateData.eleves = elevesWithAbsence;
+
+    const updatedAbsence = await absenceService.updateAbsence(id, updateData);
+
+    if (!updatedAbsence) {
       return res.status(404).send("Absence not found");
     }
-    res.json(updateAbsence);
+    res.json(updatedAbsence);
   } catch (error) {
     console.error(error);
     res.status(500).send(error.message);

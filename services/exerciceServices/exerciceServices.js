@@ -25,7 +25,6 @@ const createExercice = async (exerciceData, documents) => {
       });
     }
 
-    // console.log(parents);
     smsService.sendSms(parents);
   }
   let students = [];

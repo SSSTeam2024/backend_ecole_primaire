@@ -84,27 +84,34 @@ const updateCarnet = async (req, res) => {
     const { updateData, eleves } = req.body;
     const carnetFilesPath = "files/carnetFiles/";
     let documents = [];
-
     const elevesWithFiles = eleves.map((eleveData) => {
       const { eleve, note, fichier_base64_string, fichier_extension } =
         eleveData;
-      let fichier = globalFunctions.generateUniqueFilename(
-        fichier_extension,
-        "Bulletin"
-      );
-      documents.push({
-        base64String: fichier_base64_string,
-        extension: fichier_extension,
-        name: fichier,
-        path: carnetFilesPath,
-      });
+
+      let fichier =
+        fichier_base64_string && fichier_extension
+          ? globalFunctions.generateUniqueFilename(
+              fichier_extension,
+              "Bulletin"
+            )
+          : eleveData.fichier;
+
+      if (fichier_base64_string && fichier_extension) {
+        documents.push({
+          base64String: fichier_base64_string,
+          extension: fichier_extension,
+          name: fichier,
+          path: carnetFilesPath,
+        });
+      }
+
       return {
         eleve,
         note,
         fichier,
       };
     });
-
+    updateData.eleves = elevesWithFiles;
     const updatedCarnet = await carnetService.updateCarnet(
       id,
       updateData,

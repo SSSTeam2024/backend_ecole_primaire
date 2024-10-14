@@ -15,20 +15,21 @@ const createExercice = async (req, res) => {
     } = req.body;
 
     const exerciceFilesPath = "files/exerciceFiles/";
+    let fichier = "";
+    let documents = [];
 
-    let fichier = globalFunctions.generateUniqueFilename(
-      fichier_extension,
-      "Exercice"
-    );
-
-    let documents = [
-      {
+    if (fichier_base64_string !== "") {
+      fichier = globalFunctions.generateUniqueFilename(
+        fichier_extension,
+        "Exercice"
+      );
+      documents.push({
         base64String: fichier_base64_string,
         extension: fichier_extension,
         name: fichier,
         path: exerciceFilesPath,
-      },
-    ];
+      });
+    }
 
     const newExercice = await exerciceService.createExercice(
       {

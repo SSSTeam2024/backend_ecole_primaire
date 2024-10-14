@@ -15,19 +15,21 @@ const createObservation = async (req, res) => {
 
     const observationFilesPath = "files/observationFiles/";
 
-    let fichier = globalFunctions.generateUniqueFilename(
-      fichier_extension,
-      "fichierObservation"
-    );
+    let fichier = "";
+    let documents = [];
 
-    let documents = [
-      {
+    if (fichier_base64_string !== "") {
+      fichier = globalFunctions.generateUniqueFilename(
+        fichier_extension,
+        "fichierObservation"
+      );
+      documents.push({
         base64String: fichier_base64_string,
         extension: fichier_extension,
         name: fichier,
         path: observationFilesPath,
-      },
-    ];
+      });
+    }
 
     const newObservation = await observationService.createObservation(
       {

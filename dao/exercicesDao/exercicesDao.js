@@ -1,4 +1,6 @@
 const Exercice = require("../../models/exerciceModel/exerciceModel");
+const Observation = require("../../models/observationModel/observationModel");
+const Discipline = require("../../models/disciplineModel/disciplineModel");
 
 const createExercice = async (exerciceData) => {
   const newExercice = await Exercice.create(exerciceData);
@@ -24,10 +26,27 @@ const getExercicesByClasseId = async (classeId) => {
   return await Exercice.find(query).populate("classes").populate("matiere");
 };
 
+const updateExercicesWithEmptyFichier = async () => {
+  const exercices = await Discipline.find({
+    fichier: { $regex: /\.$/ },
+  });
+
+  const updatedExercices = await Promise.all(
+    exercices.map(async (exercice) => {
+      exercice.fichier = "";
+      await exercice.save();
+      return exercice;
+    })
+  );
+
+  return updatedExercices;
+};
+
 module.exports = {
   createExercice,
   getExercices,
   updateExercice,
   deleteExercice,
   getExercicesByClasseId,
+  updateExercicesWithEmptyFichier,
 };

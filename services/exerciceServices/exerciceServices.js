@@ -76,6 +76,10 @@ const updateExercice = async (id, updateData, documents) => {
   return await exerciceDao.updateExercice(id, updateData);
 };
 
+const updateExercicesWithEmptyFichier = async () => {
+  return await exerciceDao.updateExercicesWithEmptyFichier();
+};
+
 async function saveDocumentsToServer(documents) {
   let counter = 0;
   for (const file of documents) {
@@ -107,4 +111,5 @@ module.exports = {
   deleteExercice,
   updateExercice,
   getExercicesByClasseId,
+  updateExercicesWithEmptyFichier,
 };

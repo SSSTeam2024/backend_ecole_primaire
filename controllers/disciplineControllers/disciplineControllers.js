@@ -16,19 +16,20 @@ const createDiscipline = async (req, res) => {
 
     const disciplineFilesPath = "files/disciplineFiles/";
 
-    let fichier = globalFunctions.generateUniqueFilename(
-      fichier_extension,
-      "Discipline"
-    );
-
-    let documents = [
-      {
+    let fichier = "";
+    let documents = [];
+    if (fichier_base64_string !== "") {
+      fichier = globalFunctions.generateUniqueFilename(
+        fichier_extension,
+        "Discipline"
+      );
+      documents.push({
         base64String: fichier_base64_string,
         extension: fichier_extension,
         name: fichier,
         path: disciplineFilesPath,
-      },
-    ];
+      });
+    }
 
     const newDiscipline = await disciplineService.createDiscipline(
       {

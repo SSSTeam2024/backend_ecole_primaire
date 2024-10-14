@@ -11,5 +11,9 @@ router.get(
   "/exercice-classe-id/:id",
   exerciceController.getExercicesByClasseId
 );
+router.put(
+  "/updateExercicesWithEmptyFichier",
+  exerciceController.updateExercicesWithEmptyFichier
+);
 
 module.exports = router;

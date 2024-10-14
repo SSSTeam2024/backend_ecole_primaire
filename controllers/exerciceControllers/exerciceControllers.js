@@ -146,10 +146,22 @@ const updateExercice = async (req, res) => {
   }
 };
 
+const updateExercicesWithEmptyFichier = async (req, res) => {
+  try {
+    const updatedExercices =
+      await exerciceService.updateExercicesWithEmptyFichier();
+    res.json({ message: "Exercices updated successfully", updatedExercices });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send(error.message);
+  }
+};
+
 module.exports = {
   createExercice,
   deleteExercice,
   getExercices,
   getExercicesByClasseId,
   updateExercice,
+  updateExercicesWithEmptyFichier,
 };

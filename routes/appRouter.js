@@ -34,6 +34,9 @@ const smsEnseignantRoutes = require("./smsEnseignantRoutes/smsEnseignantRoutes")
 const smsSettingRoutes = require("./smsSettingRoutes/smsSettingRoutes");
 const filesRoutes = require("./filesRoutes/filesRoutes");
 const abonnementRoutes = require("./abonnementRoutes/abonnementRoutes");
+const surveillantRoutes = require("./surveillantRoutes/surveillantRoutes");
+const retardRoutes = require("./retardRoutes/retardRoutes");
+const sortiesRoutes = require("./sortiesRoutes/sortiesRoutes");
 
 router.use("/etudiants", etudiantRoutes);
 router.use("/classes", classeRoutes);
@@ -68,5 +71,8 @@ router.use("/sms-enseignant", smsEnseignantRoutes);
 router.use("/sms-settings", smsSettingRoutes);
 router.use("/file", filesRoutes);
 router.use("/abonnements", abonnementRoutes);
+router.use("/surveillants", surveillantRoutes);
+router.use("/retards", retardRoutes);
+router.use("/sorties", sortiesRoutes);
 
 module.exports = router;

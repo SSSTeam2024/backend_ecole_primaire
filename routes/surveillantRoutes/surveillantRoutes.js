@@ -13,5 +13,15 @@ router.delete(
   "/deleteSurveillant/:id",
   surveillantControllers.deleteSurveillant
 );
+router.post("/login", surveillantControllers.login);
+router.post("/logout/:id", surveillantControllers.logout);
+router.post(
+  "/getSurveillantByJwtToken",
+  surveillantControllers.getSurveillantByJwtToken
+);
+router.get(
+  "/getSurveillantById/:id",
+  surveillantControllers.getSurveillantById
+);
 
 module.exports = router;

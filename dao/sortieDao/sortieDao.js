@@ -1,7 +1,8 @@
 const Sortie = require("../../models/sortieModel/sortieModel");
 
 const createSortie = async (sortieData) => {
-  return await Sortie.create(sortieData);
+  const sortie = await Sortie.create(sortieData);
+  return await Sortie.findById(sortie._id).populate("id_eleve");
 };
 
 const getSorties = async () => {

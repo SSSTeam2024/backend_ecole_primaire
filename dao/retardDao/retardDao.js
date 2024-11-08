@@ -1,7 +1,8 @@
 const Retard = require("../../models/retardModel/retardModel");
 
 const createRetard = async (retardData) => {
-  return await Retard.create(retardData);
+  const retard = await Retard.create(retardData);
+  return await Retard.findById(retard._id).populate("id_eleve");
 };
 
 const getRetards = async () => {

@@ -6,6 +6,7 @@ const surveillantSchema = new mongoose.Schema({
   nom_utilisateur: String,
   mot_de_passe: String,
   tel: String,
+  api_token: String,
 });
 
 module.exports = mongoose.model("Surveillant", surveillantSchema);

@@ -39,7 +39,7 @@ const createSortie = async (sortieData) => {
     eleve: students,
     titre: `Sortie`,
     description: `Sortie: Votre enfant ${sortie.id_eleve.prenom} a quitté le lycée à ${sortie.heure}`,
-    key: "sorties",
+    key: "absences",
   });
 
   for (const eleve of students) {
@@ -47,7 +47,7 @@ const createSortie = async (sortieData) => {
     let notificationBody = {
       contents: `Sortie: Votre enfant ${sortie.id_eleve.prenom} a quitté le lycée à ${sortie.heure}`,
       title: `Un nouveau sortie`,
-      key: "sorties",
+      key: "absences",
       notificationId: notif._id,
       users: [etudiant.parent.onesignal_api_key],
     };

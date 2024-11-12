@@ -39,7 +39,7 @@ const createRetard = async (retardData) => {
     eleve: students,
     titre: `Retard`,
     description: `Retard: Votre enfant ${retard.id_eleve.prenom} est arrivé en retard au lycée à ${retard.heure}`,
-    key: "retards",
+    key: "absences",
   });
 
   for (const eleve of students) {
@@ -47,7 +47,7 @@ const createRetard = async (retardData) => {
     let notificationBody = {
       contents: `Retard: Votre enfant ${retard.id_eleve.prenom} est arrivé en retard au lycée à ${retard.heure}`,
       title: `Un nouveau Retard`,
-      key: "retards",
+      key: "absences",
       notificationId: notif._id,
       users: [etudiant.parent.onesignal_api_key],
     };

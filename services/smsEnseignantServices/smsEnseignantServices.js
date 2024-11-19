@@ -68,10 +68,15 @@ const deleteSms = async (id) => {
   return await smsDao.deleteSms(id);
 };
 
+const deletePendingSms = async () => {
+  return await smsDao.deletePendingSmses();
+};
+
 module.exports = {
   createSms,
   getSms,
   updateSms,
   deleteSms,
   sendCustomeSms,
+  deletePendingSms,
 };

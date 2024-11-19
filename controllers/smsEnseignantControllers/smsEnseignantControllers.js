@@ -85,10 +85,25 @@ const deleteSms = async (req, res) => {
   }
 };
 
+const deletePendingSms = async (req, res) => {
+  try {
+    const deleteSms = await smsServices.deletePendingSms();
+
+    if (!deleteSms) {
+      return res.status(404).send("Sms not found");
+    }
+    res.sendStatus(200);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send(error.message);
+  }
+};
+
 module.exports = {
   createSms,
   getSms,
   updateSms,
   deleteSms,
   sendPendingSmses,
+  deletePendingSms,
 };

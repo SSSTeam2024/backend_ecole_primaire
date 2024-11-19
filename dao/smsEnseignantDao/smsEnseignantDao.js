@@ -30,10 +30,18 @@ const deleteSms = async (id) => {
   return await SmsEnseignant.findByIdAndDelete(id);
 };
 
+const deletePendingSmses = async () => {
+  const query = {
+    status: "Pending",
+  };
+  return await SmsEnseignant.deleteMany(query);
+};
+
 module.exports = {
   createSms,
   getSms,
   updateSmsStatus,
   deleteSms,
   getPendingSmses,
+  deletePendingSmses,
 };

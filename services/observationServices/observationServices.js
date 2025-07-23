@@ -26,6 +26,7 @@ const createObservation = async (observationData, documents) => {
 
     for (const studentsByClass of eleves) {
       for (const student of studentsByClass) {
+        console.log("student: ", student);
         parents.push({
           phone: student.parent.phone,
           msg: "Il ya une nouvelle observation, vous pouvez la consulter en visitant l'application SLS Sousse.",

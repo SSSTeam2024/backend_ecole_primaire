@@ -401,11 +401,38 @@ const updateSms = async (id, updateData) => {
 };
 
 const deleteSms = async (ids) => {
-  return await smsDao.deleteSms(ids); // Pass the array of IDs
+  return await smsDao.deleteSms(ids);
 };
 
 const deletePendingSms = async () => {
   return await smsDao.deletePendingSmses();
+};
+
+const fetchSolde = async (api_key) => {
+  try {
+    const requestBody = JSON.stringify({ key: api_key });
+    const response = await fetch(
+      "https://app.tunisiesms.tn/smstoc/GetData.aspx",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json", // ✅ Correct
+        },
+        body: requestBody,
+      }
+    );
+
+    const rawText = await response.text();
+
+    const fixedText = rawText.replace(/'/g, '"').replace(/\s*:\s*/g, ":");
+
+    const data = JSON.parse(fixedText);
+
+    return data;
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    throw error;
+  }
 };
 
 module.exports = {
@@ -416,4 +443,5 @@ module.exports = {
   deleteSms,
   sendCustomeSms,
   deletePendingSms,
+  fetchSolde,
 };

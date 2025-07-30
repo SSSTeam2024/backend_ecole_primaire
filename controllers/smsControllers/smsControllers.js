@@ -108,6 +108,17 @@ const deletePendingSms = async (req, res) => {
   }
 };
 
+const fetchSolde = async (req, res) => {
+  try {
+    const { api_key } = req.body;
+    const result = await smsServices.fetchSolde(api_key);
+    res.status(201).json(result);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send(error.message);
+  }
+};
+
 module.exports = {
   createSms,
   getSms,
@@ -115,4 +126,5 @@ module.exports = {
   deleteSms,
   sendPendingSmses,
   deletePendingSms,
+  fetchSolde,
 };

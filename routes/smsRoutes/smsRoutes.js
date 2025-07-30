@@ -9,5 +9,5 @@ router.patch("/updateSms/:id", smsControllers.updateSms);
 router.delete("/deleteSms", smsControllers.deleteSms);
 router.post("/send-pending-smses", smsControllers.sendPendingSmses);
 router.delete("/delete-pending-smses", smsControllers.deletePendingSms);
-
+router.post("/soldeSms", smsControllers.fetchSolde);
 module.exports = router;
